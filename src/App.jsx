@@ -3996,24 +3996,20 @@ function getSuffix(n) {
 // AI GENERATION — PRIVACY-SAFE: only de-identified text is sent, never raw files
 async function aiGen(meta, tools, prompt, strat, ctx, docs, toneRules, maxTokens, sectionId, accessPassword, proxyUrl, apiKey, signal, model) {
   const openaiModel = model || OPENAI_MODEL_DEFAULT;
-  // Determine endpoint, auth, and API format based on mode
-  let apiEndpoint, headers, apiFormat;
+  // Determine endpoint and auth — OpenAI only
+  let apiEndpoint, headers;
 
   if (apiKey) {
     // Has OpenAI API key — use it (works both locally via Vite proxy and deployed via Vercel serverless function)
     apiEndpoint = OPENAI_API_ENDPOINT;
     headers = { "Content-Type": "application/json", "Authorization": `Bearer ${apiKey}` };
-    apiFormat = "openai";
   } else if (!IS_LOCAL && accessPassword && proxyUrl) {
     // Deployed mode: use Cloudflare proxy + access password
     apiEndpoint = proxyUrl.replace(/\/+$/, "") + "/v1/chat/completions";
     headers = { "Content-Type": "application/json", "X-Access-Password": accessPassword };
-    apiFormat = "openai";
   } else {
-    // Fallback: Anthropic API (available in Claude artifacts without API key)
-    apiEndpoint = "https://api.anthropic.com/v1/messages";
-    headers = { "Content-Type": "application/json" };
-    apiFormat = "anthropic";
+    // No API key and no proxy — cannot generate
+    return { ok: false, text: "No OpenAI API key found. Please enter your API key in Settings (⚙️ icon) to enable AI generation." };
   }
 
   const tNames = tools.filter((t) => t.used).map((t) => t.name).join(", ");
@@ -4102,41 +4098,6 @@ async function aiGen(meta, tools, prompt, strat, ctx, docs, toneRules, maxTokens
 
 
   try {
-    if (apiFormat === "anthropic") {
-      // Anthropic API via artifact sandbox
-      const anthropicMaxTokens = Math.min(maxTokens || 4000, 4096);
-      // Combine user abort signal with a 90s timeout signal
-      const timeoutController = new AbortController();
-      const timeoutId = setTimeout(() => timeoutController.abort(), 90000);
-      const combinedSignal = signal
-        ? AbortSignal.any ? AbortSignal.any([signal, timeoutController.signal]) : signal
-        : timeoutController.signal;
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: combinedSignal,
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: anthropicMaxTokens,
-          system: systemPrompt,
-          messages: [{ role: "user", content: userMessage }],
-        }),
-      });
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        const errBody = await response.json().catch(() => null);
-        if (response.status === 429) return { ok: false, text: "Rate limited. Please wait a moment and try again." };
-        return { ok: false, text: `API error (${response.status}): ${errBody?.error?.message || errBody?.error || "Unknown error"}` };
-      }
-
-      const data = await response.json();
-      let text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n");
-      if (!text) return { ok: false, text: "Generation returned empty." };
-      text = reidentifyText(text, meta);
-      return { ok: true, text };
-
-    } else {
       // OpenAI-compatible API (local or proxy) with auto-retry on rate limit
       const requestBody = {
         model: openaiModel,
@@ -4184,15 +4145,12 @@ async function aiGen(meta, tools, prompt, strat, ctx, docs, toneRules, maxTokens
         text = reidentifyText(text, meta);
         return { ok: true, text };
       }
-    }
   } catch (e) {
     if (e.name === "AbortError") {
       return { ok: false, text: signal?.aborted ? "Generation cancelled." : "Generation timed out (90s). Try a shorter section or simpler prompt." };
     }
     if (e.message?.includes("Failed to fetch") || e.message?.includes("NetworkError") || e.message?.includes("did not match")) {
-      return { ok: false, text: apiFormat === "anthropic"
-        ? "Cannot reach Anthropic API. This feature requires running inside a Claude artifact, or enter an OpenAI API key in Settings."
-        : "Network error. Check your connection and API settings." };
+      return { ok: false, text: "Network error. Check your connection and OpenAI API key in Settings." };
     }
     return { ok: false, text: "Generation error: " + e.message };
   }
