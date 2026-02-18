@@ -866,8 +866,6 @@ Math Problem Solving measures mathematical reasoning and applied math skills. [f
 
 Numerical Operations measures ability to solve written math calculation problems. [firstName] scored in the [NUMERICAL_OPERATIONS_RANGE] range (at around the [NUMERICAL_OPERATIONS_PERCENTILE] percentile).
 
-Composite Scores
-
 The Oral Language Composite provides an overall measure of oral language skills. [firstName]'s Oral Language Composite fell in the [ORAL_LANGUAGE_COMPOSITE_RANGE] range (at around the [ORAL_LANGUAGE_COMPOSITE_PERCENTILE] percentile).
 
 The Total Reading Composite provides an overall measure of reading ability, combining word reading accuracy, decoding, and reading comprehension. [firstName]'s Total Reading Composite fell in the [TOTAL_READING_RANGE] range (at around the [TOTAL_READING_PERCENTILE] percentile).
@@ -923,6 +921,27 @@ Requirements for WAIS sections:
 - Do NOT add information that is not in the source documents. Do NOT omit any scores that are present.
 - Use exact score values as they appear in the source. Do not round, estimate, or approximate.
 - Use professional school psychologist tone with cautious, evidence-based phrasing.
+
+CRITICAL — STRUCTURED SCORE SUMMARY: After the narrative section, you MUST include a clearly labeled score summary block in this EXACT format (one line per score). This is used for automatic table generation:
+--- SCORE SUMMARY ---
+FSIQ = [score], PR = [percentile]
+VCI = [score], PR = [percentile]
+PRI = [score], PR = [percentile]
+WMI = [score], PR = [percentile]
+PSI = [score], PR = [percentile]
+GAI = [score], PR = [percentile]
+SI = [scaled], PR = [percentile]
+VC = [scaled], PR = [percentile]
+IN = [scaled], PR = [percentile]
+BD = [scaled], PR = [percentile]
+MR = [scaled], PR = [percentile]
+VP = [scaled], PR = [percentile]
+DS = [scaled], PR = [percentile]
+AR = [scaled], PR = [percentile]
+SS = [scaled], PR = [percentile]
+CD = [scaled], PR = [percentile]
+--- END SCORE SUMMARY ---
+Include ONLY scores that are present in the source data. Omit any line where the score is not available.
 
 IMPORTANT — ANCILLARY INDEX ANALYSIS: After the five primary index scores, always include ancillary indexes in the WISC-V PDF report style. Include these paragraphs:
 1. Intro paragraph: "In addition to the index scores described above, [firstName] was administered subtests contributing to several ancillary index scores. Ancillary index scores do not replace the FSIQ and primary index scores, but are meant to provide additional information about [firstName]'s cognitive profile."
@@ -2121,6 +2140,75 @@ function detExtractInlineScores(text) {
   return results;
 }
 
+/** Extract subtest scores from AI-generated narrative text.
+ *  Handles patterns like: "Similarities ... scaled score of 10 (50th percentile)"
+ *  Returns [{name, scaledScore, percentile, qualitative}] or []. */
+function detExtractNarrativeSubtestScores(text) {
+  const results = [];
+  for (const name of DET_SUBTEST_NAMES) {
+    if (results.find((r) => r.name === name)) continue;
+    const esc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // Pattern: "Name ... scaled score of X ... Yth percentile" (within 200 chars)
+    const reNarr1 = new RegExp(esc + "[\\s\\S]{0,80}scaled\\s+score\\s+(?:of\\s+)?(\\d{1,2})(?:[\\s\\S]{0,80}?(\\d{1,3}(?:\\.\\d+)?)(?:st|nd|rd|th)\\s*percentile)?", "i");
+    // Pattern: "Name ... a score of X ... Yth percentile"
+    const reNarr2 = new RegExp(esc + "[\\s\\S]{0,60}(?:a\\s+)?score\\s+(?:of\\s+)?(\\d{1,2})(?:[,\\s][\\s\\S]{0,60}?(\\d{1,3}(?:\\.\\d+)?)(?:st|nd|rd|th))?", "i");
+    // Pattern: "Name (X, Yth percentile)" or "Name (scaled score = X; Yth percentile)"
+    const reNarr3 = new RegExp(esc + "\\s*\\([^)]*?(\\d{1,2})[^)]*?(\\d{1,3}(?:\\.\\d+)?)(?:st|nd|rd|th)\\s*percentile[^)]*?\\)", "i");
+
+    let m = text.match(reNarr1);
+    if (m && +m[1] >= SCALED_SCORE_MIN && +m[1] <= SCALED_SCORE_MAX) {
+      results.push({ name, scaledScore: +m[1], percentile: m[2] ? parseFloat(m[2]) : null, qualitative: scaledQualitative(+m[1]) });
+      continue;
+    }
+    m = text.match(reNarr3);
+    if (m && +m[1] >= SCALED_SCORE_MIN && +m[1] <= SCALED_SCORE_MAX) {
+      results.push({ name, scaledScore: +m[1], percentile: m[2] ? parseFloat(m[2]) : null, qualitative: scaledQualitative(+m[1]) });
+      continue;
+    }
+    m = text.match(reNarr2);
+    if (m && +m[1] >= SCALED_SCORE_MIN && +m[1] <= SCALED_SCORE_MAX) {
+      results.push({ name, scaledScore: +m[1], percentile: m[2] ? parseFloat(m[2]) : null, qualitative: scaledQualitative(+m[1]) });
+    }
+  }
+  return results;
+}
+
+/** Extract index scores from AI-generated narrative text.
+ *  Handles patterns like: "Full Scale IQ (FSIQ) of 98 (45th percentile, Average range)"
+ *  Returns [{abbrev, full, standardScore, percentile, ci, qualitative}] or null. */
+function detExtractNarrativeIndexScores(text) {
+  const results = [];
+  const seen = new Set();
+  for (const { abbrev, full } of DET_INDEX_DEFS) {
+    if (seen.has(abbrev)) continue;
+    const abbrEsc = abbrev.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const fullEsc = full.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    // Pattern: "Full Name (ABBREV) ... standard score of X ... Yth percentile" or "... score of X (Yth percentile)"
+    const reNarr1 = new RegExp("(?:" + fullEsc + "|" + abbrEsc + ")[\\s\\S]{0,120}(?:standard\\s+score|composite\\s+score|score|index\\s+score)\\s+(?:of\\s+|=\\s*|was\\s+)?(\\d{2,3})(?:[\\s\\S]{0,80}?(\\d{1,3}(?:\\.\\d+)?)(?:st|nd|rd|th)\\s*percentile)?", "i");
+    // Pattern: "ABBREV of X ... Yth percentile" or "ABBREV = X ... Yth percentile"
+    const reNarr2 = new RegExp("(?:" + abbrEsc + ")\\s*(?:of|=|was|:)\\s*(\\d{2,3})(?:[\\s\\S]{0,80}?(\\d{1,3}(?:\\.\\d+)?)(?:st|nd|rd|th)\\s*percentile)?", "i");
+    // Pattern: "ABBREV ... X (Yth percentile)" — number followed by pct in parens
+    const reNarr3 = new RegExp("(?:" + abbrEsc + ")[\\s\\S]{0,40}?(\\d{2,3})\\s*\\((?:(?:at\\s+)?(?:the\\s+)?)?(\\d{1,3}(?:\\.\\d+)?)(?:st|nd|rd|th)\\s*percentile", "i");
+
+    let m = text.match(reNarr1);
+    if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX) {
+      results.push({ abbrev, full, standardScore: +m[1], percentile: m[2] ? parseFloat(m[2]) : null, ci: null, qualitative: qualitativeLabel(+m[1]) });
+      seen.add(abbrev); continue;
+    }
+    m = text.match(reNarr3);
+    if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX) {
+      results.push({ abbrev, full, standardScore: +m[1], percentile: m[2] ? parseFloat(m[2]) : null, ci: null, qualitative: qualitativeLabel(+m[1]) });
+      seen.add(abbrev); continue;
+    }
+    m = text.match(reNarr2);
+    if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX) {
+      results.push({ abbrev, full, standardScore: +m[1], percentile: m[2] ? parseFloat(m[2]) : null, ci: null, qualitative: qualitativeLabel(+m[1]) });
+      seen.add(abbrev);
+    }
+  }
+  return results.length > 0 ? results : null;
+}
+
 /** Extract index/composite scores from inline text like "(VCI = 98, PR = 45, CI = 91-106)".
  *  Returns [{abbrev, full, standardScore, percentile, ci, qualitative}] or null. */
 function detExtractIndexScores(text) {
@@ -2840,10 +2928,13 @@ function extractAllScoresMap(docs) {
           const prefix = isWAIS ? "WAIS" : "WISC";
           const result = deterministicExtract(txt, d._docxTables || null, d._pdfPages || null);
           const t = result.appendix_tables;
+          let hasSubtests = false;
+          let hasIndexes = false;
           if (t.subtests) {
             for (const s of t.subtests) {
               const abbr = WISC_SUBTEST_ABBREV_MAP[s.name];
               if (!abbr) continue;
+              hasSubtests = true;
               if (s.scaledScore != null) map[`${prefix}.${abbr}.scaled`] = String(s.scaledScore);
               if (s.percentile != null) map[`${prefix}.${abbr}.percentile`] = String(s.percentile);
             }
@@ -2852,9 +2943,32 @@ function extractAllScoresMap(docs) {
           for (const s of allIdx) {
             const abbr = s.abbrev;
             if (!abbr) continue;
+            hasIndexes = true;
             if (s.standardScore != null) map[`${prefix}.${abbr}.score`] = String(s.standardScore);
             if (s.percentile != null) map[`${prefix}.${abbr}.percentile`] = String(s.percentile);
             map[`${prefix}.${abbr}.qualitative`] = s.qualitative || (s.standardScore != null ? qualitativeLabel(s.standardScore) : "");
+          }
+          // ── FALLBACK: Narrative extraction for AI-generated text or non-standard formats ──
+          if (!hasSubtests) {
+            const narrSubs = detExtractNarrativeSubtestScores(txt);
+            for (const s of narrSubs) {
+              const abbr = WISC_SUBTEST_ABBREV_MAP[s.name];
+              if (!abbr || map[`${prefix}.${abbr}.scaled`]) continue;
+              if (s.scaledScore != null) map[`${prefix}.${abbr}.scaled`] = String(s.scaledScore);
+              if (s.percentile != null) map[`${prefix}.${abbr}.percentile`] = String(s.percentile);
+            }
+          }
+          if (!hasIndexes) {
+            const narrIdx = detExtractNarrativeIndexScores(txt);
+            if (narrIdx) {
+              for (const s of narrIdx) {
+                const abbr = s.abbrev;
+                if (!abbr || map[`${prefix}.${abbr}.score`]) continue;
+                if (s.standardScore != null) map[`${prefix}.${abbr}.score`] = String(s.standardScore);
+                if (s.percentile != null) map[`${prefix}.${abbr}.percentile`] = String(s.percentile);
+                map[`${prefix}.${abbr}.qualitative`] = s.qualitative || (s.standardScore != null ? qualitativeLabel(s.standardScore) : "");
+              }
+            }
           }
         } catch (e) { /* parse error */ }
       }
@@ -3547,104 +3661,103 @@ function buildMemoryText(sc, firstName, pr) {
   const ssRng = (k) => sc[k] ? wraml3SSRange(sc[k].ss) : null;
   const ixPct = (k) => sc[k] ? ordinalPct(sc[k].pct) : null;
   const ixRng = (k) => sc[k] ? wraml3IndexRange(sc[k].score) : null;
-  // H() wraps score-dependent interpretive text in ⟦⟧ for review
-  const H = (t) => `⟦${t}⟧`;
   const parts = [];
-
-  // Helper: functional summary based on index percentile
-  function ixFunctional(pct, domain, context) {
-    if (pct >= 75) return H(`This indicates strong ${domain} abilities well above same-age peers. ${firstName} is expected to manage ${context} with ease.`);
-    if (pct >= 25) return H(`This indicates adequate ${domain} abilities consistent with same-age peers. ${firstName} is expected to manage ${context} found in academic, work, or home settings without significant difficulty.`);
-    if (pct >= 9) return H(`This suggests somewhat weaker ${domain} abilities compared to same-age peers. ${firstName} may occasionally experience difficulty with ${context} found in academic, work, or home settings.`);
-    if (pct >= 2) return H(`Given this level of performance, ${firstName} is expected to demonstrate ${domain} abilities lower than same-age peers. This may be noticeable with everyday ${context} found in academic, work, and home settings.`);
-    return H(`Given this level of performance, ${firstName} is expected to demonstrate ${domain} abilities notably lower than same-age peers. This is likely to be noticeable with everyday ${context} found in academic, work, and home settings and may require additional support.`);
-  }
-
-  // Helper: subtest-level interpretive note
-  function ssNote(pct, ability) {
-    if (pct >= 75) return H(`${Sub} demonstrated strong ${ability}.`);
-    if (pct >= 25) return H(`${Sub} was able to manage this task adequately.`);
-    if (pct >= 9) return H(`${Sub} demonstrated some difficulty with this task.`);
-    return H(`${Sub} experienced significant difficulty with this task.`);
-  }
 
   // Intro
   parts.push(`Selected subtests of the Wide Range Assessment of Memory and Learning-Third Edition (WRAML-3) were administered to examine ${firstName}'s auditory/verbal and visual memory for new information, and to determine how well ${sub} can retain and retrieve material. The Wide Range Assessment of Memory and Learning (3rd ed., WRAML3) is an individually administered, standardized assessment of memory, learning, and cognitive functions that support memory and learning processes. Specifically, the WRAML3 provides information about ${firstName}'s verbal and visual immediate and delayed recall, recognition, attention and concentration, and working memory.`);
 
   // General Immediate Memory
   if (sc.GIM) {
-    parts.push(`The General Immediate Memory Index is an estimate of overall immediate recall, measured across a wide range of tasks. The General Immediate Memory Index is derived from the scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention/Concentration Index. ${firstName} scored within the ${H(ixRng("GIM"))} range (at around the ${ixPct("GIM")} percentile). ${ixFunctional(sc.GIM.pct, "overall immediate recall", "memory demands")}`);
+    parts.push(`The General Immediate Memory Index is an estimate of overall immediate recall, measured across a wide range of tasks. The General Immediate Memory Index is derived from the scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention/Concentration Index. ${firstName} scored within the ${ixRng("GIM")} range (at around the ${ixPct("GIM")} percentile).`);
   }
 
   // Visual Immediate Memory
   if (sc.VIM) {
-    let t = `The Visual Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both meaningful and minimally-related rote visual information. The Visual Immediate Memory Index is derived from the scaled scores earned on Picture Memory and Design Learning. ${firstName} demonstrated ${H(ixRng("VIM"))} visual memory skills (around the ${ixPct("VIM")} percentile).`;
+    let t = `The Visual Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both meaningful and minimally-related rote visual information. The Visual Immediate Memory Index is derived from the scaled scores earned on Picture Memory and Design Learning. ${firstName} demonstrated ${ixRng("VIM")} visual memory skills (around the ${ixPct("VIM")} percentile).`;
     if (sc.DL) {
-      const dlPct = WRAML3_SS_TO_PCT[sc.DL.ss] ?? 50;
-      t += ` On the Design Memory subtest, ${firstName} was shown a single Design Learning Stimulus Card across four trials to parallel the administration procedures of the Verbal Learning subtest. The card has 18 different geometric shapes distributed across four quadrants. It is exposed for 10 seconds and then removed; after a 10-second delay ${sub} was asked to recall and draw the shapes in the correct locations. This procedure was repeated three times for a total of four learning trials. ${firstName}'s visual memory skills for simple information are ${H(ssRng("DL"))} (at around the ${ssPct("DL")} percentile).`;
+      t += ` On the Design Memory subtest, ${firstName} was shown a single Design Learning Stimulus Card across four trials to parallel the administration procedures of the Verbal Learning subtest. The card has 18 different geometric shapes distributed across four quadrants. It is exposed for 10 seconds and then removed; after a 10-second delay ${sub} was asked to recall and draw the shapes in the correct locations. This procedure was repeated three times for a total of four learning trials. ${firstName}'s visual memory skills for simple information are ${ssRng("DL")} (at around the ${ssPct("DL")} percentile).`;
     }
     if (sc.DLD) {
-      t += ` When asked to recall (i.e., draw) the design details in the correct locations after 20-30 min. delay, ${firstName} demonstrated ${H(ssRng("DLD"))} abilities to recall this information from ${pos} long-term memory (at around the ${ssPct("DLD")} percentile).`;
+      t += ` When asked to recall (i.e., draw) the design details in the correct locations after 20-30 min. delay, ${firstName} demonstrated ${ssRng("DLD")} abilities to recall this information from ${pos} long-term memory (at around the ${ssPct("DLD")} percentile).`;
     }
     if (sc.PM) {
-      t += ` On the Picture Memory subtest, ${firstName} was shown a meaningful scene. ${Sub} was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered in the second picture. ${firstName}'s performance was in the ${H(ssRng("PM"))} range (at around the ${ssPct("PM")} percentile).`;
+      t += ` On the Picture Memory subtest, ${firstName} was shown a meaningful scene. ${Sub} was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered in the second picture. ${firstName}'s performance was in the ${ssRng("PM")} range (at around the ${ssPct("PM")} percentile).`;
     }
     if (sc.PMD) {
-      t += ` When asked to identify elements that were changed, added, or moved after a 20–30 minute delay, ${firstName} demonstrated ${H(ssRng("PMD"))} skills (at around the ${ssPct("PMD")} percentile).`;
+      t += ` When asked to identify elements that were changed, added, or moved after a 20–30 minute delay, ${firstName} demonstrated ${ssRng("PMD")} skills (at around the ${ssPct("PMD")} percentile).`;
     }
-    t += ` ${ixFunctional(sc.VIM.pct, "visual memory", "visual memory demands")}`;
     parts.push(t);
   }
 
   // Verbal Immediate Memory
   if (sc.VBM) {
-    let t = `The Verbal Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both contextually-meaningful and relatively less-meaningful verbal information. The Verbal Immediate Memory Index is derived from the scaled scores earned on Story Memory and Verbal Learning. ${Pos} verbal memory skills are ${H(ixRng("VBM"))} (around the ${ixPct("VBM")} percentile). These subtests base heavily on one's ability to attend to rote visual and verbal information.`;
+    let t = `The Verbal Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both contextually-meaningful and relatively less-meaningful verbal information. The Verbal Immediate Memory Index is derived from the scaled scores earned on Story Memory and Verbal Learning. ${Pos} verbal memory skills are ${ixRng("VBM")} (around the ${ixPct("VBM")} percentile). These subtests base heavily on one's ability to attend to rote visual and verbal information.`;
     if (sc.SM) {
       const smPct = WRAML3_SS_TO_PCT[sc.SM.ss] ?? 50;
-      t += ` Story Memory assesses the student's ability to process, encode, and recall meaningful material that is presented in a sequential format. In the immediate portion, the examiner reads two stories (one at a time) and the examinee is asked to retell each story from memory. ${firstName} achieved ${H(ssRng("SM"))} scores in immediate memory (at around the ${ssPct("SM")} percentile). ${H(smPct >= 25 ? `${Sub} was able to remember the major points in the sequence or gist of the story.` : smPct >= 9 ? `${Sub} was able to remember some of the major points but missed several details.` : `${Sub} had difficulty recalling the major points and details of the story.`)}`;
+      t += ` Story Memory assesses the student's ability to process, encode, and recall meaningful material that is presented in a sequential format. In the immediate portion, the examiner reads two stories (one at a time) and the examinee is asked to retell each story from memory. ${firstName} achieved ${ssRng("SM")} scores in immediate memory (at around the ${ssPct("SM")} percentile).`;
     }
     if (sc.SMD) {
-      const smdPct = WRAML3_SS_TO_PCT[sc.SMD.ss] ?? 50;
-      t += ` On a delayed recall format, ${firstName} ${H(smdPct >= 25 ? `was able to remember information that ${sub} retained in the immediate portion` : `had difficulty retaining information over time`)}, putting ${pos} score at the ${H(ssRng("SMD"))} range (at around the ${ssPct("SMD")} percentile). ${H(smdPct >= 25 ? `${Sub} was able to recognize details from the story.` : `${Sub} experiences difficulties when asked to recognize some details from the story.`)}`;
+      t += ` On a delayed recall format, ${firstName}'s score was in the ${ssRng("SMD")} range (at around the ${ssPct("SMD")} percentile).`;
     }
     if (sc.VL) {
-      t += ` ${firstName}'s performance on the Verbal Learning subtest, which assesses ability to learn a list of unrelated words over four learning trials, is ${H(ssRng("VL"))} (at around the ${ssPct("VL")} percentile). It was noted that ${pos} performance was gradually increasing with each repetition`;
+      t += ` ${firstName}'s performance on the Verbal Learning subtest, which assesses ability to learn a list of unrelated words over four learning trials, is ${ssRng("VL")} (at around the ${ssPct("VL")} percentile).`;
     }
     if (sc.VLD) {
-      t += ` and ${firstName} was able to retrieve this information from ${pos} long-term memory, putting ${pos} performance in the ${H(ssRng("VLD"))} range (at around the ${ssPct("VLD")} percentile) on the delayed recall section.`;
-    } else if (sc.VL) {
-      t += `.`;
+      t += ` On the delayed recall section, ${firstName}'s performance was in the ${ssRng("VLD")} range (at around the ${ssPct("VLD")} percentile).`;
     }
-    t += ` ${ixFunctional(sc.VBM.pct, "verbal memory", "verbal memory demands")}`;
     parts.push(t);
   }
 
   // Attention/Concentration
   if (sc.AC) {
-    let t = `The Attention/Concentration Index provides an estimate of how well ${firstName} can learn and recall attentionally-demanding, relatively rote, sequential information. Both auditory and visual information are sampled. The Attention/Concentration Index is derived from the scaled scores earned on Finger Windows and Number Letter. ${Pos} Attention/Concentration abilities are ${H(ixRng("AC"))} (at around the ${ixPct("AC")} percentile).`;
+    let t = `The Attention/Concentration Index provides an estimate of how well ${firstName} can learn and recall attentionally-demanding, relatively rote, sequential information. Both auditory and visual information are sampled. The Attention/Concentration Index is derived from the scaled scores earned on Finger Windows and Number Letter. ${Pos} Attention/Concentration abilities are ${ixRng("AC")} (at around the ${ixPct("AC")} percentile).`;
     if (sc.FW) {
-      t += ` In the Attention and Concentration domain, on Finger Windows, ${firstName}'s ability to recall placement fell in the ${H(ssRng("FW"))} range (at around the ${ssPct("FW")} percentile). The Finger Windows subtest assesses the examinee's ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The pattern of windows becomes progressively longer as the subtest proceeds.`;
+      t += ` In the Attention and Concentration domain, on Finger Windows, ${firstName}'s ability to recall placement fell in the ${ssRng("FW")} range (at around the ${ssPct("FW")} percentile). The Finger Windows subtest assesses the examinee's ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The pattern of windows becomes progressively longer as the subtest proceeds.`;
     }
     if (sc.NL) {
-      t += ` On Number Letter, ${firstName} was asked to repeat a random mix of verbally presented numbers and letters. ${Sub} had to hear the items and produce them. ${Pos} verbal memory skill to produce a set of heard numbers and letters were in the ${H(ssRng("NL"))} range (at around the ${ssPct("NL")} percentile).`;
+      t += ` On Number Letter, ${firstName} was asked to repeat a random mix of verbally presented numbers and letters. ${Sub} had to hear the items and produce them. ${Pos} verbal memory skill to produce a set of heard numbers and letters were in the ${ssRng("NL")} range (at around the ${ssPct("NL")} percentile).`;
     }
-    t += ` ${ixFunctional(sc.AC.pct, "attention and concentration", "attentional demands")}`;
     parts.push(t);
   }
 
   // General Delayed
   if (sc.GD) {
-    parts.push(`The General Delayed Index is an estimate of longer-term storage of the information ${firstName} learned on the four immediate memory subtests (i.e., Picture Memory, Story Memory, Design Learning, and Verbal Learning) and is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes. ${firstName} demonstrated ${H(ixRng("GD"))} ability (at around the ${ixPct("GD")} percentile) to retain visual and verbal information over time. ${ixFunctional(sc.GD.pct, "long-term storage and retrieval", "everyday memory demands requiring retention over time")}`);
+    parts.push(`The General Delayed Index is an estimate of longer-term storage of the information ${firstName} learned on the four immediate memory subtests (i.e., Picture Memory, Story Memory, Design Learning, and Verbal Learning) and is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes. ${firstName} demonstrated ${ixRng("GD")} ability (at around the ${ixPct("GD")} percentile) to retain visual and verbal information over time.`);
   }
 
   // Visual Delayed
   if (sc.VD) {
-    parts.push(`The Visual Delayed Index is an estimate of how well ${firstName} can retain and retrieve both meaningful and minimally-related visual information after a 20-30 minute delay. The Visual Delayed Index is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. ${Pos} Visual Delayed memory is ${H(ixRng("VD"))} (at around the ${ixPct("VD")} percentile). ${ixFunctional(sc.VD.pct, "delayed visual recall", "visual memory demands")}`);
+    parts.push(`The Visual Delayed Index is an estimate of how well ${firstName} can retain and retrieve both meaningful and minimally-related visual information after a 20-30 minute delay. The Visual Delayed Index is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. ${Pos} Visual Delayed memory is ${ixRng("VD")} (at around the ${ixPct("VD")} percentile).`);
   }
 
   // Verbal Delayed
   if (sc.VBD) {
-    parts.push(`The Verbal Delayed Index is an estimate of how well ${firstName} can store and retrieve both meaningful and minimally-related verbal information after a 20-30 minute delay. The Verbal Delayed Index is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. ${firstName}'s Verbal Delayed memory skills are ${H(ixRng("VBD"))} (at around the ${ixPct("VBD")} percentile). ${ixFunctional(sc.VBD.pct, "delayed verbal recall", "verbal memory demands")}`);
+    parts.push(`The Verbal Delayed Index is an estimate of how well ${firstName} can store and retrieve both meaningful and minimally-related verbal information after a 20-30 minute delay. The Verbal Delayed Index is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. ${firstName}'s Verbal Delayed memory skills are ${ixRng("VBD")} (at around the ${ixPct("VBD")} percentile).`);
+  }
+
+  // Collect all scores for AI summary generation
+  const scoreSummaryLines = [];
+  if (sc.GIM) scoreSummaryLines.push(`General Immediate Memory Index: ${sc.GIM.score} (${ixRng("GIM")}, ${sc.GIM.pct}th percentile)`);
+  if (sc.VIM) scoreSummaryLines.push(`Visual Immediate Memory Index: ${sc.VIM.score} (${ixRng("VIM")}, ${sc.VIM.pct}th percentile)`);
+  if (sc.VBM) scoreSummaryLines.push(`Verbal Immediate Memory Index: ${sc.VBM.score} (${ixRng("VBM")}, ${sc.VBM.pct}th percentile)`);
+  if (sc.AC) scoreSummaryLines.push(`Attention/Concentration Index: ${sc.AC.score} (${ixRng("AC")}, ${sc.AC.pct}th percentile)`);
+  if (sc.GD) scoreSummaryLines.push(`General Delayed Index: ${sc.GD.score} (${ixRng("GD")}, ${sc.GD.pct}th percentile)`);
+  if (sc.VD) scoreSummaryLines.push(`Visual Delayed Index: ${sc.VD.score} (${ixRng("VD")}, ${sc.VD.pct}th percentile)`);
+  if (sc.VBD) scoreSummaryLines.push(`Verbal Delayed Index: ${sc.VBD.score} (${ixRng("VBD")}, ${sc.VBD.pct}th percentile)`);
+  if (sc.DL) scoreSummaryLines.push(`Design Learning: scaled ${sc.DL.ss} (${ssRng("DL")}, ${ssPct("DL")} percentile)`);
+  if (sc.PM) scoreSummaryLines.push(`Picture Memory: scaled ${sc.PM.ss} (${ssRng("PM")}, ${ssPct("PM")} percentile)`);
+  if (sc.SM) scoreSummaryLines.push(`Story Memory: scaled ${sc.SM.ss} (${ssRng("SM")}, ${ssPct("SM")} percentile)`);
+  if (sc.VL) scoreSummaryLines.push(`Verbal Learning: scaled ${sc.VL.ss} (${ssRng("VL")}, ${ssPct("VL")} percentile)`);
+  if (sc.FW) scoreSummaryLines.push(`Finger Windows: scaled ${sc.FW.ss} (${ssRng("FW")}, ${ssPct("FW")} percentile)`);
+  if (sc.NL) scoreSummaryLines.push(`Number Letter: scaled ${sc.NL.ss} (${ssRng("NL")}, ${ssPct("NL")} percentile)`);
+  if (sc.DLD) scoreSummaryLines.push(`Design Learning Delayed: scaled ${sc.DLD.ss} (${ssRng("DLD")}, ${ssPct("DLD")} percentile)`);
+  if (sc.PMD) scoreSummaryLines.push(`Picture Memory Delayed: scaled ${sc.PMD.ss} (${ssRng("PMD")}, ${ssPct("PMD")} percentile)`);
+  if (sc.SMD) scoreSummaryLines.push(`Story Memory Delayed: scaled ${sc.SMD.ss} (${ssRng("SMD")}, ${ssPct("SMD")} percentile)`);
+  if (sc.VLD) scoreSummaryLines.push(`Verbal Learning Delayed: scaled ${sc.VLD.ss} (${ssRng("VLD")}, ${ssPct("VLD")} percentile)`);
+
+  // Append score data block (hidden from display, used by AI summary generation)
+  if (scoreSummaryLines.length > 0) {
+    parts.push(`[MEMORY_SCORES_FOR_SUMMARY]\n${scoreSummaryLines.join("\n")}\n[/MEMORY_SCORES_FOR_SUMMARY]`);
   }
 
   return parts.join("\n\n");
@@ -3681,28 +3794,39 @@ function parseWIATScores(txt) {
   const scores = {};
   // Normalize whitespace
   const t = txt.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-  const sep = "[\\s|\\t]+";
 
   // Helper: try multiple patterns for a subtest name, return {ss, percentile} or null
   function extractScore(name) {
     const esc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     // Pattern 1: Raw  SS  CI  Percentile (full WIAT row)
-    const re1 = new RegExp(esc + "[\\s\\-]+(\\d+|-)(?:[\\s\\u00B9\\u00B2]*)\\s+(\\d{2,3})\\s+[\\d]+\\s*[-–—]\\s*[\\d]+\\s+(\\d{1,3})", "i");
+    const re1 = new RegExp(esc + "[\\s\\-]+(\\d+|-)(?:[\\s\\u00B9\\u00B2]*)\\s+(\\d{2,3})\\s+[\\d]+\\s*[-–—]\\s*[\\d]+\\s+(\\d{1,3}(?:\\.\\d+)?)", "i");
     // Pattern 2: SS  CI  Percentile (no raw score)
-    const re2 = new RegExp(esc + "[\\s\\-:]+(?:Standard\\s*Score)?[=:\\s]*(\\d{2,3})\\s+[\\d]+\\s*[-–—]\\s*[\\d]+\\s+(\\d{1,3})", "i");
+    const re2 = new RegExp(esc + "[\\s\\-:]+(?:Standard\\s*Score)?[=:\\s]*(\\d{2,3})\\s+[\\d]+\\s*[-–—]\\s*[\\d]+\\s+(\\d{1,3}(?:\\.\\d+)?)", "i");
     // Pattern 3: SS  Percentile only (two numbers)
-    const re3 = new RegExp(esc + "[\\s\\-:]+" + "(\\d{2,3})" + sep + "(\\d{1,3})(?:\\s|$|\\n|[,;])", "i");
+    const re3 = new RegExp(esc + "[\\s\\-:]+" + "(\\d{2,3})" + "[\\s\\t]+" + "(\\d{1,3}(?:\\.\\d+)?)(?:\\s|$|\\n|[,;])", "i");
     // Pattern 4: AI-formatted "Name: Standard Score = 102, Percentile = 55"
-    const re4 = new RegExp(esc + "[:\\s]+(?:Standard\\s*Score)?[=:\\s]*(\\d{2,3})[,;\\s]+(?:Percentile(?:\\s*Rank)?)?[=:\\s]*(\\d{1,3})", "i");
+    const re4 = new RegExp(esc + "[:\\s]+(?:Standard\\s*Score)?[=:\\s]*(\\d{2,3})[,;\\s]+(?:Percentile(?:\\s*Rank)?)?[=:\\s]*(\\d{1,3}(?:\\.\\d+)?)", "i");
+    // Pattern 5: Name (SS=102, PR=55) or inline parenthetical
+    const re5 = new RegExp(esc + "\\s*\\(?(?:SS[=:\\s]*)?(\\d{2,3})[,;\\s]+(?:PR[=:\\s]*|percentile[=:\\s]*)?(?:the\\s+)?(\\d{1,3}(?:\\.\\d+)?)(?:st|nd|rd|th)?\\)?", "i");
+    // Pattern 6: Name Composite Raw SS CI Percentile (composite rows with "Composite" between name and numbers)
+    const re6 = new RegExp(esc + "(?:\\s+Composite)?[\\s\\-]+(\\d+|-)(?:[\\s\\u00B9\\u00B2]*)\\s+(\\d{2,3})\\s+[\\d]+\\s*[-–—]\\s*[\\d]+\\s+(\\d{1,3}(?:\\.\\d+)?)", "i");
+    // Pattern 7: SS Percentile with ordinal suffix (e.g., "102  55th")
+    const re7 = new RegExp(esc + "[\\s\\-:]+" + "(\\d{2,3})" + "[\\s\\t]+" + "(\\d{1,3}(?:\\.\\d+)?)(?:st|nd|rd|th)", "i");
 
     let m = t.match(re1);
-    if (m) return { ss: parseInt(m[2], 10), percentile: parseInt(m[3], 10) };
+    if (m) return { ss: parseInt(m[2], 10), percentile: parseFloat(m[3]) };
     m = t.match(re2);
-    if (m) return { ss: parseInt(m[1], 10), percentile: parseInt(m[2], 10) };
+    if (m) return { ss: parseInt(m[1], 10), percentile: parseFloat(m[2]) };
+    m = t.match(re6);
+    if (m) return { ss: parseInt(m[2], 10), percentile: parseFloat(m[3]) };
     m = t.match(re4);
-    if (m && parseInt(m[1]) >= STANDARD_SCORE_MIN && parseInt(m[1]) <= STANDARD_SCORE_MAX) return { ss: parseInt(m[1], 10), percentile: parseInt(m[2], 10) };
+    if (m && parseInt(m[1]) >= STANDARD_SCORE_MIN && parseInt(m[1]) <= STANDARD_SCORE_MAX) return { ss: parseInt(m[1], 10), percentile: parseFloat(m[2]) };
+    m = t.match(re5);
+    if (m && parseInt(m[1]) >= STANDARD_SCORE_MIN && parseInt(m[1]) <= STANDARD_SCORE_MAX) return { ss: parseInt(m[1], 10), percentile: parseFloat(m[2]) };
+    m = t.match(re7);
+    if (m && parseInt(m[1]) >= STANDARD_SCORE_MIN && parseInt(m[1]) <= STANDARD_SCORE_MAX && parseFloat(m[2]) <= PERCENTILE_MAX) return { ss: parseInt(m[1], 10), percentile: parseFloat(m[2]) };
     m = t.match(re3);
-    if (m && parseInt(m[1]) >= STANDARD_SCORE_MIN && parseInt(m[1]) <= STANDARD_SCORE_MAX && parseInt(m[2]) <= PERCENTILE_MAX) return { ss: parseInt(m[1], 10), percentile: parseInt(m[2], 10) };
+    if (m && parseInt(m[1]) >= STANDARD_SCORE_MIN && parseInt(m[1]) <= STANDARD_SCORE_MAX && parseFloat(m[2]) <= PERCENTILE_MAX) return { ss: parseInt(m[1], 10), percentile: parseFloat(m[2]) };
     return null;
   }
 
@@ -3725,22 +3849,29 @@ function parseWIATScores(txt) {
     const result = extractScore(name);
     if (result) scores[key] = result;
   }
+  // Retry Oral Discourse with shortened name if not found
+  if (!scores.ORAL_DISCOURSE) {
+    const alt = extractScore("Oral Discourse");
+    if (alt) scores.ORAL_DISCOURSE = alt;
+  }
 
-  // Composites
+  // Composites — try with and without "Composite" suffix
   const compositeMap = {
-    ORAL_LANGUAGE_COMPOSITE: "Oral Language",
-    TOTAL_READING: "Total Reading",
-    BASIC_READING: "Basic Reading",
-    WRITTEN_EXPRESSION: "Written Expression",
-    MATHEMATICS_COMPOSITE: "Mathematics",
-    TOTAL_ACHIEVEMENT: "Total Achievement",
-    READING_COMPREHENSION_FLUENCY: "Reading Comprehension and Fluency",
-    ORAL_READING_FLUENCY: "Oral Reading Fluency",
+    ORAL_LANGUAGE_COMPOSITE: ["Oral Language Composite", "Oral Language"],
+    TOTAL_READING: ["Total Reading Composite", "Total Reading"],
+    BASIC_READING: ["Basic Reading Composite", "Basic Reading"],
+    WRITTEN_EXPRESSION: ["Written Expression Composite", "Written Expression"],
+    MATHEMATICS_COMPOSITE: ["Mathematics Composite", "Mathematics"],
+    TOTAL_ACHIEVEMENT: ["Total Achievement Composite", "Total Achievement"],
+    READING_COMPREHENSION_FLUENCY: ["Reading Comprehension and Fluency Composite", "Reading Comprehension and Fluency"],
+    ORAL_READING_FLUENCY: ["Oral Reading Fluency"],
   };
 
-  for (const [key, name] of Object.entries(compositeMap)) {
-    const result = extractScore(name);
-    if (result) scores[key] = result;
+  for (const [key, names] of Object.entries(compositeMap)) {
+    for (const name of names) {
+      const result = extractScore(name);
+      if (result) { scores[key] = result; break; }
+    }
   }
 
   return scores;
@@ -3776,7 +3907,7 @@ function buildWIATText(scores, firstName, pronounKey) {
     if (data && data.ss != null) {
       const range = ssToRange(data.ss);
       text = text.replace(rangeTag, range);
-      text = text.replace(pctTag, String(data.percentile) + "th");
+      text = text.replace(pctTag, String(data.percentile) + getSuffix(data.percentile));
     } else {
       unfilled++;
       text = text.replace(rangeTag, "⟦___⟧");
@@ -5669,11 +5800,32 @@ const SecEd = memo(function SecEd({
                 </div>
               </div>
             )}
-            {sid === "memory" && s?.content && s.content.includes("⟦") && (
-              <div className="mb-3 p-2.5 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2">
-                <AlertTriangle size={13} className="text-amber-500 mt-0.5 flex-shrink-0" />
+            {s?.content && s.content.includes("⟦") && (
+              <div className="mb-3 p-2.5 bg-amber-50 border border-amber-200 rounded-xl">
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle size={13} className="text-amber-500" />
+                    <span className="text-xs font-bold text-amber-800">
+                      Review needed
+                    </span>
+                  </div>
+                  {!locked && (
+                    <button
+                      onClick={() => {
+                        let updated = localContent.replace(/[⟦⟧]/g, "");
+                        setLocalContent(updated);
+                        onUpdateSec(sid, { content: updated });
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-emerald-600 rounded-lg hover:bg-emerald-500 transition-colors"
+                    >
+                      <Check size={11} /> Mark All Reviewed
+                    </button>
+                  )}
+                </div>
                 <div className="text-xs text-amber-800 leading-relaxed">
-                  <span className="font-bold">Review needed:</span> Text inside <span className="font-mono bg-amber-100 px-1 rounded">⟦brackets⟧</span> was auto-generated based on scores and needs your review. Edit or remove the brackets when confirmed.
+                  Text inside <span className="font-mono bg-amber-100 px-1 rounded">⟦brackets⟧</span> was auto-generated from scores and needs your review.
+                  {sid === "academic" && " Placeholders ⟦___⟧ could not be auto-filled — please enter the scores manually."}
+                  {" "}Edit the text if needed, then click <span className="font-semibold">Mark All Reviewed</span> to finalize.
                 </div>
               </div>
             )}
@@ -5728,14 +5880,6 @@ const SecEd = memo(function SecEd({
                 <div className="mt-2 flex items-center gap-1">
                   <Lock size={9} className="text-indigo-400" />
                   <span className="text-xs text-indigo-400 font-bold uppercase" style={{ fontSize: 7 }}>Fixed template — scores auto-filled from WIAT III Score Report PDF</span>
-                </div>
-              </div>
-            )}
-            {sid === "academic" && s?.content && s.content.includes("⟦") && (
-              <div className="mb-3 p-2.5 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-2">
-                <AlertTriangle size={13} className="text-amber-500 mt-0.5 flex-shrink-0" />
-                <div className="text-xs text-amber-800 leading-relaxed">
-                  <span className="font-bold">Review needed:</span> Text inside <span className="font-mono bg-amber-100 px-1 rounded">⟦brackets⟧</span> could not be auto-filled from the WIAT III report. Please enter the scores manually.
                 </div>
               </div>
             )}
@@ -6475,8 +6619,6 @@ Essay Composition measures written expression and organization. Liam scored in t
 Math Problem Solving measures mathematical reasoning and applied math skills. Liam scored in the Average range (at around the 42nd percentile).
 
 Numerical Operations measures ability to solve written math calculation problems. Liam scored in the Average range (at around the 39th percentile).
-
-Composite Scores:
 
 The Oral Language Composite provides an overall measure of oral language skills. Liam's Oral Language Composite fell in the Average range (at around the 50th percentile).
 
@@ -7269,24 +7411,29 @@ export default function App() {
         const allTextDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && !d.extractedText.startsWith("["));
 
         if (sid === "cognitive") {
-          let extracted = extractCognitiveText(selDocs(sid));
-          if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
-          if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
-          if (extracted) {
-            const content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
-            uSec(sid, { content });
-            showToast("Cognitive text extracted from uploaded report (no AI)", "success");
-            setGenning(false);
-            return;
-          } else if (wiscDocs.length > 0) {
-            // WISC doc exists but extraction failed — dump raw WISC text for manual editing
-            const rawDump = wiscDocs[0].extractedText;
-            uSec(sid, { content: rawDump });
-            showToast("Could not locate cognitive section anchors — full document text inserted for manual editing.", "warn");
-            setGenning(false);
-            return;
+          // ── WAIS-IV: Always use AI generation (WAIS reports need a full written narrative) ──
+          const isWAISSelected = tools.some(t => t.id === "wais-iv" && t.used);
+          if (!isWAISSelected) {
+            // WISC/WPPSI: try deterministic extraction first
+            let extracted = extractCognitiveText(selDocs(sid));
+            if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
+            if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
+            if (extracted) {
+              const content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
+              uSec(sid, { content });
+              showToast("Cognitive text extracted from uploaded report (no AI)", "success");
+              setGenning(false);
+              return;
+            } else if (wiscDocs.length > 0) {
+              // WISC doc exists but extraction failed — dump raw WISC text for manual editing
+              const rawDump = wiscDocs[0].extractedText;
+              uSec(sid, { content: rawDump });
+              showToast("Could not locate cognitive section anchors — full document text inserted for manual editing.", "warn");
+              setGenning(false);
+              return;
+            }
           }
-          // No WISC doc found — fall through to AI generation below
+          // WAIS-IV or no WISC doc found — fall through to AI generation below
         }
 
         if (sid === "summary") {
@@ -7342,6 +7489,14 @@ export default function App() {
             }
           }
 
+          // ── Merge stored WAIS scores from AI-generated cognitive section ──
+          const waisScores = secs.cognitive?._waisScores;
+          if (waisScores) {
+            for (const [k, val] of Object.entries(waisScores)) {
+              if (!scoreMap[k]) scoreMap[k] = val;
+            }
+          }
+
           const filledCount = Object.keys(scoreMap).length;
 
           // ── MANDATORY: Always build the 3 fixed tables (cognitive subtest, cognitive index, WIAT-III) ──
@@ -7358,13 +7513,71 @@ export default function App() {
         }
       }
 
-      // ── DETERMINISTIC: Memory from WRAML3 ──
+      // ── DETERMINISTIC + AI SUMMARY: Memory from WRAML3 ──
       if (sid === "memory") {
         const memDocs = selDocs(sid);
         const extracted = extractMemoryText(memDocs, derivedFirstName, meta.pronouns);
         if (extracted) {
-          uSec(sid, { content: extracted });
-          showToast("Memory text generated from WRAML3 report", "success");
+          // Extract the score summary block for AI
+          const scoreBlockMatch = extracted.match(/\[MEMORY_SCORES_FOR_SUMMARY\]\n([\s\S]*?)\n\[\/MEMORY_SCORES_FOR_SUMMARY\]/);
+          const cleanedText = extracted.replace(/\n*\[MEMORY_SCORES_FOR_SUMMARY\][\s\S]*?\[\/MEMORY_SCORES_FOR_SUMMARY\]\s*/, "").trim();
+
+          if (scoreBlockMatch) {
+            // Call AI for interpretive summary
+            uSec(sid, { content: cleanedText + "\n\n[Generating summary...]" });
+            try {
+              const summaryPrompt = `Write a Summary of Memory and Learning paragraph (150-250 words) for a psychoeducational assessment report.
+
+Based on the following WRAML-3 scores, write a cohesive summary that:
+1. Describes the student's overall memory and learning profile
+2. Compares immediate vs delayed memory
+3. Compares visual vs verbal memory
+4. Notes attention/concentration functioning
+5. Identifies clear strengths and weaknesses
+6. Describes implications for the student's academic functioning (e.g., how memory weaknesses may affect learning, note-taking, following instructions, retaining information)
+7. Uses cautious, professional language — "may", "suggests", "is expected to"
+
+SCORES:
+${scoreBlockMatch[1]}
+
+Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write in connected paragraphs. Do NOT restate individual scores — synthesize them into a functional narrative. Output only the summary paragraph(s).`;
+
+              const summaryResult = await aiGen(
+                meta, tools,
+                summaryPrompt,
+                { name: "Standard", desc: "Functional impact, strengths-based, Ontario style." },
+                "",
+                [],
+                GLOBAL_TONE_RULES,
+                2000,
+                "memory",
+                accessPassword,
+                proxyUrl,
+                apiKey,
+                controller.signal,
+                openaiModel
+              );
+
+              if (summaryResult.ok) {
+                let summary = cleanAIOutput(summaryResult.text, "memory");
+                // Ensure it starts with "Summary of Memory and Learning" heading if not present
+                if (!/summary\s+of\s+memory/i.test(summary)) {
+                  summary = "Summary of Memory and Learning\n\n" + summary;
+                }
+                uSec(sid, { content: cleanedText + "\n\n" + summary });
+                showToast("Memory text + AI summary generated from WRAML3 report", "success");
+              } else {
+                uSec(sid, { content: cleanedText });
+                showToast("Memory text generated — AI summary failed, please add manually", "warning");
+              }
+            } catch (e) {
+              uSec(sid, { content: cleanedText });
+              showToast("Memory text generated — AI summary failed, please add manually", "warning");
+            }
+          } else {
+            uSec(sid, { content: cleanedText });
+            showToast("Memory text generated from WRAML3 report", "success");
+          }
           setGenning(false);
           return;
         }
@@ -7567,7 +7780,45 @@ export default function App() {
           // Clean markdown artifacts and duplicate section titles from all non-table sections
           content = cleanAIOutput(content, sid);
         }
-        uSec(sid, { content });
+        // WAIS cognitive: extract structured score summary and strip it from display content
+        let waisExtractedScores = null;
+        if (sid === "cognitive" && /---\s*SCORE SUMMARY\s*---/.test(content)) {
+          const summaryMatch = content.match(/---\s*SCORE SUMMARY\s*---([\s\S]*?)---\s*END SCORE SUMMARY\s*---/);
+          if (summaryMatch) {
+            // Parse the score summary lines into a map
+            waisExtractedScores = {};
+            const lines = summaryMatch[1].trim().split("\n");
+            for (const line of lines) {
+              const m = line.match(/^([A-Z]{2,5})\s*=\s*(\d+)\s*,\s*PR\s*=\s*(\d+(?:\.\d+)?)/);
+              if (m) {
+                const abbr = m[1];
+                const score = parseInt(m[2], 10);
+                const pct = parseFloat(m[3]);
+                const isIndex = score >= STANDARD_SCORE_MIN;
+                const isScaled = score >= SCALED_SCORE_MIN && score <= SCALED_SCORE_MAX;
+                if (isIndex && !isScaled) {
+                  waisExtractedScores[`WAIS.${abbr}.score`] = String(score);
+                  waisExtractedScores[`WAIS.${abbr}.percentile`] = String(pct);
+                  waisExtractedScores[`WAIS.${abbr}.qualitative`] = qualitativeLabel(score);
+                } else if (isScaled) {
+                  // Could be either scaled or standard — check context
+                  const indexAbbrevs = ["FSIQ","VCI","PRI","WMI","PSI","GAI","NVI","CPI","VSI","FRI"];
+                  if (indexAbbrevs.includes(abbr)) {
+                    waisExtractedScores[`WAIS.${abbr}.score`] = String(score);
+                    waisExtractedScores[`WAIS.${abbr}.percentile`] = String(pct);
+                    waisExtractedScores[`WAIS.${abbr}.qualitative`] = qualitativeLabel(score);
+                  } else {
+                    waisExtractedScores[`WAIS.${abbr}.scaled`] = String(score);
+                    waisExtractedScores[`WAIS.${abbr}.percentile`] = String(pct);
+                  }
+                }
+              }
+            }
+            // Strip the score summary block from displayed content
+            content = content.replace(/\n*---\s*SCORE SUMMARY\s*---[\s\S]*?---\s*END SCORE SUMMARY\s*---\s*/, "").trim();
+          }
+        }
+        uSec(sid, { content, ...(waisExtractedScores ? { _waisScores: waisExtractedScores } : {}) });
         showToast("Section generated successfully", "success");
       } else {
         // Show error both as toast AND in section content so user can see it
