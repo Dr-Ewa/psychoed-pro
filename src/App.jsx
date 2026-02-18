@@ -820,19 +820,19 @@ Parents reported that [firstName] was born in {{X was born in}} after an uncompl
 
 const MEM_TEMPLATE = `Selected subtests of the Wide Range Assessment of Memory and Learning, Third Edition (WRAML-3) were administered to examine [firstName]'s memory and learning abilities. The WRAML-3 is an individually administered, standardized assessment designed to evaluate a broad range of memory, learning, and cognitive functions that support memory and learning processes. This instrument measures how well [firstName] can encode, store, and retrieve verbal and visual information both immediately after presentation and after a delay. Specifically, the WRAML-3 provides information about [firstName]'s verbal and visual immediate recall, delayed recall, recognition memory, attention and concentration, and working memory. Index scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Subtest scores are reported as scaled scores with a mean of 10 and a standard deviation of 3. Qualitative descriptors are used to describe the range of performance.
 
-The General Immediate Memory Index provides a broad estimate of [firstName]'s overall immediate recall ability, measured across a wide range of memory tasks involving both verbal and visual modalities. This index is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. [firstName] obtained a standard score of [GENERAL_IMMEDIATE_MEMORY_SCORE], which falls within the [GENERAL_IMMEDIATE_MEMORY_RANGE] range. This score provides an overall indication of how effectively [firstName] can take in and immediately reproduce new information across different types of content.
+The General Immediate Memory Index provides a broad estimate of [firstName]'s overall immediate recall ability, measured across a wide range of memory tasks involving both verbal and visual modalities. This index is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. [firstName] obtained a standard score of [GENERAL_IMMEDIATE_MEMORY_SCORE] ([GENERAL_IMMEDIATE_MEMORY_PERCENTILE] percentile), which falls within the [GENERAL_IMMEDIATE_MEMORY_RANGE] range. This score provides an overall indication of how effectively [firstName] can take in and immediately reproduce new information across different types of content.
 
-The Visual Immediate Memory Index is an estimate of how well [firstName] can learn and recall both meaningful and relatively unrelated visual information shortly after it is presented. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. [firstName] obtained a standard score of [VISUAL_IMMEDIATE_MEMORY_SCORE], which falls within the [VISUAL_IMMEDIATE_MEMORY_RANGE] range. On the Design Learning subtest, [firstName] was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, [firstName] was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials to assess [firstName]'s ability to acquire and consolidate visual information with repetition. [firstName] obtained a scaled score of [DESIGN_MEMORY_IMMEDIATE_SCORE], which falls within the [DESIGN_MEMORY_IMMEDIATE_RANGE] range. When asked to recall the design details in the correct locations after a twenty to thirty minute delay, [firstName] obtained a scaled score of [DESIGN_MEMORY_DELAYED_SCORE], which falls within the [DESIGN_MEMORY_DELAYED_RANGE] range, reflecting [possessive] ability to retain and retrieve visual spatial information from long term memory. On the Picture Memory subtest, [firstName] was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. This subtest measures visual memory for contextually meaningful material. [firstName] obtained a scaled score of [PICTURE_MEMORY_IMMEDIATE_SCORE], which falls within the [PICTURE_MEMORY_IMMEDIATE_RANGE] range. When asked to identify elements that were changed, added, or moved after a twenty to thirty minute delay, [firstName] obtained a scaled score of [PICTURE_MEMORY_DELAYED_SCORE], which falls within the [PICTURE_MEMORY_DELAYED_RANGE] range.
+The Visual Immediate Memory Index is an estimate of how well [firstName] can learn and recall both meaningful and relatively unrelated visual information shortly after it is presented. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. [firstName] obtained a standard score of [VISUAL_IMMEDIATE_MEMORY_SCORE] ([VISUAL_IMMEDIATE_MEMORY_PERCENTILE] percentile), which falls within the [VISUAL_IMMEDIATE_MEMORY_RANGE] range. On the Design Learning subtest, [firstName] was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, [firstName] was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials to assess [firstName]'s ability to acquire and consolidate visual information with repetition. [firstName] obtained a scaled score of [DESIGN_MEMORY_IMMEDIATE_SCORE] ([DESIGN_MEMORY_IMMEDIATE_PERCENTILE] percentile), which falls within the [DESIGN_MEMORY_IMMEDIATE_RANGE] range. When asked to recall the design details in the correct locations after a twenty to thirty minute delay, [firstName] obtained a scaled score of [DESIGN_MEMORY_DELAYED_SCORE] ([DESIGN_MEMORY_DELAYED_PERCENTILE] percentile), which falls within the [DESIGN_MEMORY_DELAYED_RANGE] range, reflecting [possessive] ability to retain and retrieve visual spatial information from long term memory. On the Picture Memory subtest, [firstName] was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. This subtest measures visual memory for contextually meaningful material. [firstName] obtained a scaled score of [PICTURE_MEMORY_IMMEDIATE_SCORE] ([PICTURE_MEMORY_IMMEDIATE_PERCENTILE] percentile), which falls within the [PICTURE_MEMORY_IMMEDIATE_RANGE] range. When asked to identify elements that were changed, added, or moved after a twenty to thirty minute delay, [firstName] obtained a scaled score of [PICTURE_MEMORY_DELAYED_SCORE] ([PICTURE_MEMORY_DELAYED_PERCENTILE] percentile), which falls within the [PICTURE_MEMORY_DELAYED_RANGE] range.
 
-The Verbal Immediate Memory Index is an estimate of how well [firstName] can learn and recall both contextually meaningful and relatively less meaningful verbal information shortly after it is presented. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. [firstName] obtained a standard score of [VERBAL_IMMEDIATE_MEMORY_SCORE], which falls within the [VERBAL_IMMEDIATE_MEMORY_RANGE] range. These subtests place heavy demands on the ability to attend to and encode verbal information. The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and [firstName] was asked to retell each story from memory. [firstName] obtained a scaled score of [STORY_MEMORY_IMMEDIATE_SCORE], which falls within the [STORY_MEMORY_IMMEDIATE_RANGE] range. On the delayed recall portion, administered after a twenty to thirty minute delay, [firstName] obtained a scaled score of [STORY_MEMORY_DELAYED_SCORE], which falls within the [STORY_MEMORY_DELAYED_RANGE] range, reflecting [possessive] ability to retain verbally presented narrative information over time. The Verbal Learning subtest assesses [firstName]'s ability to learn a list of unrelated words over four learning trials, measuring rote verbal learning and the benefit of repetition. [firstName] obtained a scaled score of [VERBAL_LEARNING_IMMEDIATE_SCORE], which falls within the [VERBAL_LEARNING_IMMEDIATE_RANGE] range. On the delayed recall section, administered after a twenty to thirty minute delay, [firstName] obtained a scaled score of [VERBAL_LEARNING_DELAYED_SCORE], which falls within the [VERBAL_LEARNING_DELAYED_RANGE] range, reflecting [possessive] ability to store and retrieve unrelated verbal material from long term memory.
+The Verbal Immediate Memory Index is an estimate of how well [firstName] can learn and recall both contextually meaningful and relatively less meaningful verbal information shortly after it is presented. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. [firstName] obtained a standard score of [VERBAL_IMMEDIATE_MEMORY_SCORE] ([VERBAL_IMMEDIATE_MEMORY_PERCENTILE] percentile), which falls within the [VERBAL_IMMEDIATE_MEMORY_RANGE] range. These subtests place heavy demands on the ability to attend to and encode verbal information. The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and [firstName] was asked to retell each story from memory. [firstName] obtained a scaled score of [STORY_MEMORY_IMMEDIATE_SCORE] ([STORY_MEMORY_IMMEDIATE_PERCENTILE] percentile), which falls within the [STORY_MEMORY_IMMEDIATE_RANGE] range. On the delayed recall portion, administered after a twenty to thirty minute delay, [firstName] obtained a scaled score of [STORY_MEMORY_DELAYED_SCORE] ([STORY_MEMORY_DELAYED_PERCENTILE] percentile), which falls within the [STORY_MEMORY_DELAYED_RANGE] range, reflecting [possessive] ability to retain verbally presented narrative information over time. The Verbal Learning subtest assesses [firstName]'s ability to learn a list of unrelated words over four learning trials, measuring rote verbal learning and the benefit of repetition. [firstName] obtained a scaled score of [VERBAL_LEARNING_IMMEDIATE_SCORE] ([VERBAL_LEARNING_IMMEDIATE_PERCENTILE] percentile), which falls within the [VERBAL_LEARNING_IMMEDIATE_RANGE] range. On the delayed recall section, administered after a twenty to thirty minute delay, [firstName] obtained a scaled score of [VERBAL_LEARNING_DELAYED_SCORE] ([VERBAL_LEARNING_DELAYED_PERCENTILE] percentile), which falls within the [VERBAL_LEARNING_DELAYED_RANGE] range, reflecting [possessive] ability to store and retrieve unrelated verbal material from long term memory.
 
-The Attention and Concentration Index provides an estimate of how well [firstName] can learn and recall attentionally demanding, relatively rote, sequential information. Both auditory and visual information are sampled within this domain. This index is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. [firstName] obtained a standard score of [ATTENTION_CONCENTRATION_SCORE], which falls within the [ATTENTION_CONCENTRATION_RANGE] range. The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The examiner points to a pattern of windows in a specified order, and [firstName] must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory. [firstName] obtained a scaled score of [FINGER_WINDOWS_SCORE], which falls within the [FINGER_WINDOWS_RANGE] range. The Number Letter subtest requires [firstName] to repeat a random mix of verbally presented numbers and letters in the exact order they were given. This subtest assesses auditory attention, working memory, and the ability to maintain sequential information. [firstName] obtained a scaled score of [NUMBER_LETTER_SCORE], which falls within the [NUMBER_LETTER_RANGE] range.
+The Attention and Concentration Index provides an estimate of how well [firstName] can learn and recall attentionally demanding, relatively rote, sequential information. Both auditory and visual information are sampled within this domain. This index is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. [firstName] obtained a standard score of [ATTENTION_CONCENTRATION_SCORE] ([ATTENTION_CONCENTRATION_PERCENTILE] percentile), which falls within the [ATTENTION_CONCENTRATION_RANGE] range. The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The examiner points to a pattern of windows in a specified order, and [firstName] must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory. [firstName] obtained a scaled score of [FINGER_WINDOWS_SCORE] ([FINGER_WINDOWS_PERCENTILE] percentile), which falls within the [FINGER_WINDOWS_RANGE] range. The Number Letter subtest requires [firstName] to repeat a random mix of verbally presented numbers and letters in the exact order they were given. This subtest assesses auditory attention, working memory, and the ability to maintain sequential information. [firstName] obtained a scaled score of [NUMBER_LETTER_SCORE] ([NUMBER_LETTER_PERCENTILE] percentile), which falls within the [NUMBER_LETTER_RANGE] range.
 
-The General Delayed Index provides an estimate of longer term storage and retrieval of the information [firstName] learned on the four immediate memory subtests, specifically Picture Memory, Story Memory, Design Learning, and Verbal Learning. This index is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes and reflects how well [firstName] can retain both visual and verbal information over a twenty to thirty minute period. [firstName] obtained a standard score of [GENERAL_DELAYED_SCORE], which falls within the [GENERAL_DELAYED_RANGE] range.
+The General Delayed Index provides an estimate of longer term storage and retrieval of the information [firstName] learned on the four immediate memory subtests, specifically Picture Memory, Story Memory, Design Learning, and Verbal Learning. This index is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes and reflects how well [firstName] can retain both visual and verbal information over a twenty to thirty minute period. [firstName] obtained a standard score of [GENERAL_DELAYED_SCORE] ([GENERAL_DELAYED_PERCENTILE] percentile), which falls within the [GENERAL_DELAYED_RANGE] range.
 
-The Visual Delayed Index is an estimate of how well [firstName] can retain and retrieve both meaningful and relatively unrelated visual information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. [firstName] obtained a standard score of [VISUAL_DELAYED_MEMORY_SCORE], which falls within the [VISUAL_DELAYED_MEMORY_RANGE] range.
+The Visual Delayed Index is an estimate of how well [firstName] can retain and retrieve both meaningful and relatively unrelated visual information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. [firstName] obtained a standard score of [VISUAL_DELAYED_MEMORY_SCORE] ([VISUAL_DELAYED_MEMORY_PERCENTILE] percentile), which falls within the [VISUAL_DELAYED_MEMORY_RANGE] range.
 
-The Verbal Delayed Index is an estimate of how well [firstName] can store and retrieve both meaningful and relatively unrelated verbal information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. [firstName] obtained a standard score of [VERBAL_DELAYED_MEMORY_SCORE], which falls within the [VERBAL_DELAYED_MEMORY_RANGE] range.`;
+The Verbal Delayed Index is an estimate of how well [firstName] can store and retrieve both meaningful and relatively unrelated verbal information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. [firstName] obtained a standard score of [VERBAL_DELAYED_MEMORY_SCORE] ([VERBAL_DELAYED_MEMORY_PERCENTILE] percentile), which falls within the [VERBAL_DELAYED_MEMORY_RANGE] range.`;
 
 const VMI_TEMPLATE = `[firstName] was administered the Beery Buktenica Developmental Test of Visual Motor Integration Sixth Edition to assess the extent to which [pronoun] can integrate both visual and motor abilities. On the Visual Motor Integration test, where [firstName] had to copy various geometric forms of increasing difficulty without erasing, [pronoun] demonstrated [VMI_RANGE] ability to integrate visual perception and fine motor requirements (at around the [VMI_PERCENTILE] percentile).`;
 
@@ -845,19 +845,19 @@ At the present moment, [firstName] obtained a Full Scale IQ score of [FSIQ_SCORE
 
 Verbal Comprehension
 
-The Verbal Comprehension Index (VCI) assesses verbal reasoning, concept formation, and access to acquired knowledge. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This pattern suggests that verbal reasoning represents an area of [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding and explaining ideas using language.
+The Verbal Comprehension Index (VCI) assesses verbal reasoning, concept formation, and access to acquired knowledge. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This pattern suggests that verbal reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding and explaining ideas using language.
 
 Perceptual Reasoning
 
-The Perceptual Reasoning Index (PRI) assesses nonverbal reasoning and visual analysis. [firstName] obtained a PRI score of [PRI_SCORE] ([PRI_PERCENTILE] percentile), which falls within the [PRI_DESCRIPTOR] range. This pattern suggests that visual reasoning represents an area of [PRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require solving novel problems using visual information.
+The Perceptual Reasoning Index (PRI) assesses nonverbal reasoning and visual analysis. [firstName] obtained a PRI score of [PRI_SCORE] ([PRI_PERCENTILE] percentile), which falls within the [PRI_DESCRIPTOR] range. This pattern suggests that visual reasoning represents [PRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require solving novel problems using visual information.
 
 Working Memory
 
-The Working Memory Index (WMI) assesses attention and the ability to hold and use information over short periods of time. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This pattern suggests that working memory represents an area of [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require following multi step instructions or mentally manipulating information.
+The Working Memory Index (WMI) assesses attention and the ability to hold and use information over short periods of time. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require following multi step instructions or mentally manipulating information.
 
 Processing Speed
 
-The Processing Speed Index (PSI) assesses the efficiency of scanning and responding to simple visual information under structured conditions. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This pattern suggests that processing efficiency represents an area of [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick visual attention and consistent pace.
+The Processing Speed Index (PSI) assesses the efficiency of scanning and responding to simple visual information under structured conditions. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick visual attention and consistent pace.
 
 Cognitive Profile Summary
 
@@ -872,23 +872,23 @@ At the present moment, [firstName] obtained a Full Scale IQ score of [FSIQ_SCORE
 
 Verbal Comprehension
 
-The Verbal Comprehension Index (VCI) assesses early verbal reasoning and understanding of language based concepts. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This pattern suggests that language based reasoning represents an area of [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding words and explaining ideas.
+The Verbal Comprehension Index (VCI) assesses early verbal reasoning and understanding of language based concepts. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This pattern suggests that language based reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding words and explaining ideas.
 
 Visual Spatial
 
-The Visual Spatial Index (VSI) assesses the ability to understand and organize visual information. [firstName] obtained a VSI score of [VSI_SCORE] ([VSI_PERCENTILE] percentile), which falls within the [VSI_DESCRIPTOR] range. This pattern suggests that visual spatial skills represent an area of [VSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require noticing details and working with shapes and patterns.
+The Visual Spatial Index (VSI) assesses the ability to understand and organize visual information. [firstName] obtained a VSI score of [VSI_SCORE] ([VSI_PERCENTILE] percentile), which falls within the [VSI_DESCRIPTOR] range. This pattern suggests that visual spatial skills represent [VSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require noticing details and working with shapes and patterns.
 
 Fluid Reasoning
 
-The Fluid Reasoning Index (FRI) assesses early problem solving with new information. [firstName] obtained a FRI score of [FRI_SCORE] ([FRI_PERCENTILE] percentile), which falls within the [FRI_DESCRIPTOR] range. This pattern suggests that early reasoning represents an area of [FRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require finding rules or relationships.
+The Fluid Reasoning Index (FRI) assesses early problem solving with new information. [firstName] obtained a FRI score of [FRI_SCORE] ([FRI_PERCENTILE] percentile), which falls within the [FRI_DESCRIPTOR] range. This pattern suggests that early reasoning represents [FRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require finding rules or relationships.
 
 Working Memory
 
-The Working Memory Index (WMI) assesses attention and the ability to hold and use information for short periods of time. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This pattern suggests that working memory represents an area of [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require listening and remembering instructions.
+The Working Memory Index (WMI) assesses attention and the ability to hold and use information for short periods of time. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require listening and remembering instructions.
 
 Processing Speed
 
-The Processing Speed Index (PSI) assesses the efficiency of noticing and responding to simple visual information under structured conditions. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This pattern suggests that processing efficiency represents an area of [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick and steady responding.
+The Processing Speed Index (PSI) assesses the efficiency of noticing and responding to simple visual information under structured conditions. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick and steady responding.
 
 Cognitive Profile Summary
 
@@ -984,10 +984,10 @@ Use provided scores only. Apply [FIRST_NAME] and pronouns throughout.`,
   memory: `WRAML-3 Memory and Learning Section Auto Population and Summary Generation.
 LOCKED TEMPLATE PROTECTION: Only replace placeholders. Do NOT rewrite, rephrase, shorten, expand, or modify existing sentences.
 Step 1: Extract scores from WRAML-3 Score Report PDF for each subtest and index.
-Step 2: For index standard score placeholders like [GENERAL_IMMEDIATE_MEMORY_SCORE], insert the standard score number. For index range placeholders like [GENERAL_IMMEDIATE_MEMORY_RANGE], determine classification: 40-69=Very Low, 70-79=Low, 80-89=Low Average, 90-109=Average, 110-119=High Average, 120-129=Very High, 130+=Extremely High.
-For subtest scaled score placeholders like [DESIGN_MEMORY_IMMEDIATE_SCORE], insert the scaled score number. For subtest range placeholders like [DESIGN_MEMORY_IMMEDIATE_RANGE], determine classification: 1-3=Very Low, 4-5=Low, 6-7=Low Average, 8-12=Average, 13-15=High Average, 16+=Very High.
-IMPORTANT: The WRAML-3 does NOT report percentile ranks. Do NOT include percentile values anywhere in the output.
-Step 3: Replace each placeholder with extracted values. Use standard scores for indexes and scaled scores for subtests.
+Step 2: For index standard score placeholders like [GENERAL_IMMEDIATE_MEMORY_SCORE], insert the standard score number. For index percentile placeholders like [GENERAL_IMMEDIATE_MEMORY_PERCENTILE], insert the percentile rank with ordinal suffix (e.g., 42nd, 1st, 95th). For index range placeholders like [GENERAL_IMMEDIATE_MEMORY_RANGE], determine classification: 40-69=Very Low, 70-79=Low, 80-89=Low Average, 90-109=Average, 110-119=High Average, 120-129=Very High, 130+=Extremely High.
+For subtest scaled score placeholders like [DESIGN_MEMORY_IMMEDIATE_SCORE], insert the scaled score number. For subtest percentile placeholders like [DESIGN_MEMORY_IMMEDIATE_PERCENTILE], convert scaled score to approximate percentile using: SS1=0.1, SS2=0.4, SS3=1, SS4=2, SS5=5, SS6=9, SS7=16, SS8=25, SS9=37, SS10=50, SS11=63, SS12=75, SS13=84, SS14=91, SS15=95, SS16=98, SS17=99.6, SS18=99.9, SS19=99.9 and add ordinal suffix. For subtest range placeholders like [DESIGN_MEMORY_IMMEDIATE_RANGE], determine classification: 1-3=Very Low, 4-5=Low, 6-7=Low Average, 8-12=Average, 13-15=High Average, 16+=Very High.
+IMPORTANT: Always include percentile ranks in parentheses after every score. Format: "standard score of 96 (39th percentile)" or "scaled score of 9 (37th percentile)".
+Step 3: Replace each placeholder with extracted values.
 Step 4: Use correct pronouns throughout.
 Step 5: Add Summary of Memory and Learning (150-250 words) covering overall functioning, immediate vs delayed, visual vs verbal, attention, strengths, weaknesses.
 Use cautious language. Avoid diagnosis. Output final report text only.`,
@@ -3428,6 +3428,7 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
   const nm = firstName || "[firstName]";
   const sc = scores || {};
   const isWAIS = cogTest === "wais-iv";
+  const isWPPSI = cogTest === "wppsi-iv";
   function v(key) { return sc[key] || "\u2014"; }
 
   const th = 'style="padding:3px 10px;border:0.5pt solid #666;font-size:11pt;text-align:left;font-weight:bold;font-family:\'Times New Roman\',Times,serif;line-height:1.0;margin:0"';
@@ -3524,8 +3525,54 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
     t2 += `</tbody></table>`;
     parts.push(t2);
 
+  } else if (isWPPSI) {
+    // ── TABLE 1: WPPSI-IV Subtest Score Summary ──
+    const wppsiSubtests = [
+      ["Receptive Vocabulary", "RV"],
+      ["Information", "IN"],
+      ["Block Design", "BD"],
+      ["Object Assembly", "OA"],
+      ["Matrix Reasoning", "MR"],
+      ["Picture Concepts", "PC"],
+      ["Picture Memory", "PM"],
+      ["Zoo Locations", "ZL"],
+      ["Bug Search", "BS"],
+      ["Cancellation", "CA"],
+    ];
+    let t1 = `<table ${tbl}>\n<caption ${cap}>Table 1. WPPSI-IV Subtest Score Summary</caption>\n`;
+    t1 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
+    wppsiSubtests.forEach(([name, abbr], i) => {
+      const scaledKey = `WPPSI.${abbr}.scaled`;
+      const pctKey = `WPPSI.${abbr}.percentile`;
+      const qualKey = `WPPSI.${abbr}.qualitative`;
+      const classification = sc[qualKey] || classifyScaled(scaledKey);
+      t1 += `<tr ${rowBg(i)}>${td(name)}${td(v(scaledKey), true)}${td(v(pctKey), true)}${td(classification, true)}</tr>\n`;
+    });
+    t1 += `</tbody></table>`;
+    parts.push(t1);
+
+    // ── TABLE 2: WPPSI-IV Index Score Summary ──
+    const wppsiIndexes = [
+      ["Verbal Comprehension Index (VCI)", "VCI"],
+      ["Visual Spatial Index (VSI)", "VSI"],
+      ["Fluid Reasoning Index (FRI)", "FRI"],
+      ["Working Memory Index (WMI)", "WMI"],
+      ["Processing Speed Index (PSI)", "PSI"],
+      ["Full Scale IQ (FSIQ)", "FSIQ"],
+    ];
+    let t2 = `<table ${tbl}>\n<caption ${cap}>Table 2. WPPSI-IV Index Score Summary</caption>\n`;
+    t2 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
+    wppsiIndexes.forEach(([name, abbr], i) => {
+      const scoreKey = `WPPSI.${abbr}.score`;
+      const pctKey = `WPPSI.${abbr}.percentile`;
+      const qualKey = `WPPSI.${abbr}.qualitative`;
+      const classification = sc[qualKey] || classifyStandard(scoreKey);
+      t2 += `<tr ${compBg(i)}>${tdBold(name)}${tdBold(v(scoreKey), true)}${tdBold(v(pctKey), true)}${tdBold(classification, true)}</tr>\n`;
+    });
+    t2 += `</tbody></table>`;
+    parts.push(t2);
+
   } else {
-    // ── TABLE 1: WISC-V Subtest Score Summary ──
     const wiscSubtests = [
       ["Similarities", "SI"],
       ["Vocabulary", "VC"],
@@ -3706,7 +3753,9 @@ function buildMemoryText(sc, firstName, pr) {
   const pos = pr?.possessive || "his";
   const Sub = sub.charAt(0).toUpperCase() + sub.slice(1);
   const Pos = pos.charAt(0).toUpperCase() + pos.slice(1);
+  const ssPct = (k) => sc[k] ? ordinalPct(WRAML3_SS_TO_PCT[sc[k].ss] ?? null) : null;
   const ssRng = (k) => sc[k] ? wraml3SSRange(sc[k].ss) : null;
+  const ixPct = (k) => sc[k] ? ordinalPct(sc[k].pct) : null;
   const ixRng = (k) => sc[k] ? wraml3IndexRange(sc[k].score) : null;
   const parts = [];
 
@@ -3715,91 +3764,91 @@ function buildMemoryText(sc, firstName, pr) {
 
   // General Immediate Memory
   if (sc.GIM) {
-    parts.push(`The General Immediate Memory Index provides a broad estimate of ${firstName}'s overall immediate recall ability, measured across a wide range of memory tasks involving both verbal and visual modalities. This index is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. ${firstName} obtained a standard score of ${sc.GIM.score}, which falls within the ${ixRng("GIM")} range. This score provides an overall indication of how effectively ${firstName} can take in and immediately reproduce new information across different types of content.`);
+    parts.push(`The General Immediate Memory Index provides a broad estimate of ${firstName}'s overall immediate recall ability, measured across a wide range of memory tasks involving both verbal and visual modalities. This index is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. ${firstName} obtained a standard score of ${sc.GIM.score} (${ixPct("GIM")} percentile), which falls within the ${ixRng("GIM")} range. This score provides an overall indication of how effectively ${firstName} can take in and immediately reproduce new information across different types of content.`);
   }
 
   // Visual Immediate Memory
   if (sc.VIM) {
-    let t = `The Visual Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both meaningful and relatively unrelated visual information shortly after it is presented. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. ${firstName} obtained a standard score of ${sc.VIM.score}, which falls within the ${ixRng("VIM")} range.`;
+    let t = `The Visual Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both meaningful and relatively unrelated visual information shortly after it is presented. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. ${firstName} obtained a standard score of ${sc.VIM.score} (${ixPct("VIM")} percentile), which falls within the ${ixRng("VIM")} range.`;
     if (sc.DL) {
-      t += ` On the Design Learning subtest, ${firstName} was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, ${firstName} was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials to assess ${firstName}'s ability to acquire and consolidate visual information with repetition. ${firstName} obtained a scaled score of ${sc.DL.ss}, which falls within the ${ssRng("DL")} range.`;
+      t += ` On the Design Learning subtest, ${firstName} was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, ${firstName} was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials to assess ${firstName}'s ability to acquire and consolidate visual information with repetition. ${firstName} obtained a scaled score of ${sc.DL.ss} (${ssPct("DL")} percentile), which falls within the ${ssRng("DL")} range.`;
     }
     if (sc.DLD) {
-      t += ` When asked to recall the design details in the correct locations after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.DLD.ss}, which falls within the ${ssRng("DLD")} range, reflecting ${pos} ability to retain and retrieve visual spatial information from long term memory.`;
+      t += ` When asked to recall the design details in the correct locations after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.DLD.ss} (${ssPct("DLD")} percentile), which falls within the ${ssRng("DLD")} range, reflecting ${pos} ability to retain and retrieve visual spatial information from long term memory.`;
     }
     if (sc.PM) {
-      t += ` On the Picture Memory subtest, ${firstName} was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. This subtest measures visual memory for contextually meaningful material. ${firstName} obtained a scaled score of ${sc.PM.ss}, which falls within the ${ssRng("PM")} range.`;
+      t += ` On the Picture Memory subtest, ${firstName} was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. This subtest measures visual memory for contextually meaningful material. ${firstName} obtained a scaled score of ${sc.PM.ss} (${ssPct("PM")} percentile), which falls within the ${ssRng("PM")} range.`;
     }
     if (sc.PMD) {
-      t += ` When asked to identify elements that were changed, added, or moved after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.PMD.ss}, which falls within the ${ssRng("PMD")} range.`;
+      t += ` When asked to identify elements that were changed, added, or moved after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.PMD.ss} (${ssPct("PMD")} percentile), which falls within the ${ssRng("PMD")} range.`;
     }
     parts.push(t);
   }
 
   // Verbal Immediate Memory
   if (sc.VBM) {
-    let t = `The Verbal Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both contextually meaningful and relatively less meaningful verbal information shortly after it is presented. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. ${firstName} obtained a standard score of ${sc.VBM.score}, which falls within the ${ixRng("VBM")} range. These subtests place heavy demands on the ability to attend to and encode verbal information.`;
+    let t = `The Verbal Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both contextually meaningful and relatively less meaningful verbal information shortly after it is presented. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. ${firstName} obtained a standard score of ${sc.VBM.score} (${ixPct("VBM")} percentile), which falls within the ${ixRng("VBM")} range. These subtests place heavy demands on the ability to attend to and encode verbal information.`;
     if (sc.SM) {
-      t += ` The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and ${firstName} was asked to retell each story from memory. ${firstName} obtained a scaled score of ${sc.SM.ss}, which falls within the ${ssRng("SM")} range.`;
+      t += ` The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and ${firstName} was asked to retell each story from memory. ${firstName} obtained a scaled score of ${sc.SM.ss} (${ssPct("SM")} percentile), which falls within the ${ssRng("SM")} range.`;
     }
     if (sc.SMD) {
-      t += ` On the delayed recall portion, administered after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.SMD.ss}, which falls within the ${ssRng("SMD")} range, reflecting ${pos} ability to retain verbally presented narrative information over time.`;
+      t += ` On the delayed recall portion, administered after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.SMD.ss} (${ssPct("SMD")} percentile), which falls within the ${ssRng("SMD")} range, reflecting ${pos} ability to retain verbally presented narrative information over time.`;
     }
     if (sc.VL) {
-      t += ` The Verbal Learning subtest assesses ${firstName}'s ability to learn a list of unrelated words over four learning trials, measuring rote verbal learning and the benefit of repetition. ${firstName} obtained a scaled score of ${sc.VL.ss}, which falls within the ${ssRng("VL")} range.`;
+      t += ` The Verbal Learning subtest assesses ${firstName}'s ability to learn a list of unrelated words over four learning trials, measuring rote verbal learning and the benefit of repetition. ${firstName} obtained a scaled score of ${sc.VL.ss} (${ssPct("VL")} percentile), which falls within the ${ssRng("VL")} range.`;
     }
     if (sc.VLD) {
-      t += ` On the delayed recall section, administered after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.VLD.ss}, which falls within the ${ssRng("VLD")} range, reflecting ${pos} ability to store and retrieve unrelated verbal material from long term memory.`;
+      t += ` On the delayed recall section, administered after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.VLD.ss} (${ssPct("VLD")} percentile), which falls within the ${ssRng("VLD")} range, reflecting ${pos} ability to store and retrieve unrelated verbal material from long term memory.`;
     }
     parts.push(t);
   }
 
   // Attention/Concentration
   if (sc.AC) {
-    let t = `The Attention and Concentration Index provides an estimate of how well ${firstName} can learn and recall attentionally demanding, relatively rote, sequential information. Both auditory and visual information are sampled within this domain. This index is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. ${firstName} obtained a standard score of ${sc.AC.score}, which falls within the ${ixRng("AC")} range.`;
+    let t = `The Attention and Concentration Index provides an estimate of how well ${firstName} can learn and recall attentionally demanding, relatively rote, sequential information. Both auditory and visual information are sampled within this domain. This index is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. ${firstName} obtained a standard score of ${sc.AC.score} (${ixPct("AC")} percentile), which falls within the ${ixRng("AC")} range.`;
     if (sc.FW) {
-      t += ` The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The examiner points to a pattern of windows in a specified order, and ${firstName} must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory. ${firstName} obtained a scaled score of ${sc.FW.ss}, which falls within the ${ssRng("FW")} range.`;
+      t += ` The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The examiner points to a pattern of windows in a specified order, and ${firstName} must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory. ${firstName} obtained a scaled score of ${sc.FW.ss} (${ssPct("FW")} percentile), which falls within the ${ssRng("FW")} range.`;
     }
     if (sc.NL) {
-      t += ` The Number Letter subtest requires ${firstName} to repeat a random mix of verbally presented numbers and letters in the exact order they were given. This subtest assesses auditory attention, working memory, and the ability to maintain sequential information. ${firstName} obtained a scaled score of ${sc.NL.ss}, which falls within the ${ssRng("NL")} range.`;
+      t += ` The Number Letter subtest requires ${firstName} to repeat a random mix of verbally presented numbers and letters in the exact order they were given. This subtest assesses auditory attention, working memory, and the ability to maintain sequential information. ${firstName} obtained a scaled score of ${sc.NL.ss} (${ssPct("NL")} percentile), which falls within the ${ssRng("NL")} range.`;
     }
     parts.push(t);
   }
 
   // General Delayed
   if (sc.GD) {
-    parts.push(`The General Delayed Index provides an estimate of longer term storage and retrieval of the information ${firstName} learned on the four immediate memory subtests, specifically Picture Memory, Story Memory, Design Learning, and Verbal Learning. This index is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes and reflects how well ${firstName} can retain both visual and verbal information over a twenty to thirty minute period. ${firstName} obtained a standard score of ${sc.GD.score}, which falls within the ${ixRng("GD")} range.`);
+    parts.push(`The General Delayed Index provides an estimate of longer term storage and retrieval of the information ${firstName} learned on the four immediate memory subtests, specifically Picture Memory, Story Memory, Design Learning, and Verbal Learning. This index is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes and reflects how well ${firstName} can retain both visual and verbal information over a twenty to thirty minute period. ${firstName} obtained a standard score of ${sc.GD.score} (${ixPct("GD")} percentile), which falls within the ${ixRng("GD")} range.`);
   }
 
   // Visual Delayed
   if (sc.VD) {
-    parts.push(`The Visual Delayed Index is an estimate of how well ${firstName} can retain and retrieve both meaningful and relatively unrelated visual information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. ${firstName} obtained a standard score of ${sc.VD.score}, which falls within the ${ixRng("VD")} range.`);
+    parts.push(`The Visual Delayed Index is an estimate of how well ${firstName} can retain and retrieve both meaningful and relatively unrelated visual information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. ${firstName} obtained a standard score of ${sc.VD.score} (${ixPct("VD")} percentile), which falls within the ${ixRng("VD")} range.`);
   }
 
   // Verbal Delayed
   if (sc.VBD) {
-    parts.push(`The Verbal Delayed Index is an estimate of how well ${firstName} can store and retrieve both meaningful and relatively unrelated verbal information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. ${firstName} obtained a standard score of ${sc.VBD.score}, which falls within the ${ixRng("VBD")} range.`);
+    parts.push(`The Verbal Delayed Index is an estimate of how well ${firstName} can store and retrieve both meaningful and relatively unrelated verbal information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. ${firstName} obtained a standard score of ${sc.VBD.score} (${ixPct("VBD")} percentile), which falls within the ${ixRng("VBD")} range.`);
   }
 
-  // Collect all scores for AI summary generation (standard scores for indexes, scaled scores for subtests)
+  // Collect all scores for AI summary generation
   const scoreSummaryLines = [];
-  if (sc.GIM) scoreSummaryLines.push(`General Immediate Memory Index: Standard Score ${sc.GIM.score} (${ixRng("GIM")})`);
-  if (sc.VIM) scoreSummaryLines.push(`Visual Immediate Memory Index: Standard Score ${sc.VIM.score} (${ixRng("VIM")})`);
-  if (sc.VBM) scoreSummaryLines.push(`Verbal Immediate Memory Index: Standard Score ${sc.VBM.score} (${ixRng("VBM")})`);
-  if (sc.AC) scoreSummaryLines.push(`Attention/Concentration Index: Standard Score ${sc.AC.score} (${ixRng("AC")})`);
-  if (sc.GD) scoreSummaryLines.push(`General Delayed Index: Standard Score ${sc.GD.score} (${ixRng("GD")})`);
-  if (sc.VD) scoreSummaryLines.push(`Visual Delayed Index: Standard Score ${sc.VD.score} (${ixRng("VD")})`);
-  if (sc.VBD) scoreSummaryLines.push(`Verbal Delayed Index: Standard Score ${sc.VBD.score} (${ixRng("VBD")})`);
-  if (sc.DL) scoreSummaryLines.push(`Design Learning: Scaled Score ${sc.DL.ss} (${ssRng("DL")})`);
-  if (sc.PM) scoreSummaryLines.push(`Picture Memory: Scaled Score ${sc.PM.ss} (${ssRng("PM")})`);
-  if (sc.SM) scoreSummaryLines.push(`Story Memory: Scaled Score ${sc.SM.ss} (${ssRng("SM")})`);
-  if (sc.VL) scoreSummaryLines.push(`Verbal Learning: Scaled Score ${sc.VL.ss} (${ssRng("VL")})`);
-  if (sc.FW) scoreSummaryLines.push(`Finger Windows: Scaled Score ${sc.FW.ss} (${ssRng("FW")})`);
-  if (sc.NL) scoreSummaryLines.push(`Number Letter: Scaled Score ${sc.NL.ss} (${ssRng("NL")})`);
-  if (sc.DLD) scoreSummaryLines.push(`Design Learning Delayed: Scaled Score ${sc.DLD.ss} (${ssRng("DLD")})`);
-  if (sc.PMD) scoreSummaryLines.push(`Picture Memory Delayed: Scaled Score ${sc.PMD.ss} (${ssRng("PMD")})`);
-  if (sc.SMD) scoreSummaryLines.push(`Story Memory Delayed: Scaled Score ${sc.SMD.ss} (${ssRng("SMD")})`);
-  if (sc.VLD) scoreSummaryLines.push(`Verbal Learning Delayed: Scaled Score ${sc.VLD.ss} (${ssRng("VLD")})`);
+  if (sc.GIM) scoreSummaryLines.push(`General Immediate Memory Index: Standard Score ${sc.GIM.score} (${ixRng("GIM")}, ${sc.GIM.pct}th percentile)`);
+  if (sc.VIM) scoreSummaryLines.push(`Visual Immediate Memory Index: Standard Score ${sc.VIM.score} (${ixRng("VIM")}, ${sc.VIM.pct}th percentile)`);
+  if (sc.VBM) scoreSummaryLines.push(`Verbal Immediate Memory Index: Standard Score ${sc.VBM.score} (${ixRng("VBM")}, ${sc.VBM.pct}th percentile)`);
+  if (sc.AC) scoreSummaryLines.push(`Attention/Concentration Index: Standard Score ${sc.AC.score} (${ixRng("AC")}, ${sc.AC.pct}th percentile)`);
+  if (sc.GD) scoreSummaryLines.push(`General Delayed Index: Standard Score ${sc.GD.score} (${ixRng("GD")}, ${sc.GD.pct}th percentile)`);
+  if (sc.VD) scoreSummaryLines.push(`Visual Delayed Index: Standard Score ${sc.VD.score} (${ixRng("VD")}, ${sc.VD.pct}th percentile)`);
+  if (sc.VBD) scoreSummaryLines.push(`Verbal Delayed Index: Standard Score ${sc.VBD.score} (${ixRng("VBD")}, ${sc.VBD.pct}th percentile)`);
+  if (sc.DL) scoreSummaryLines.push(`Design Learning: Scaled Score ${sc.DL.ss} (${ssRng("DL")}, ${ssPct("DL")} percentile)`);
+  if (sc.PM) scoreSummaryLines.push(`Picture Memory: Scaled Score ${sc.PM.ss} (${ssRng("PM")}, ${ssPct("PM")} percentile)`);
+  if (sc.SM) scoreSummaryLines.push(`Story Memory: Scaled Score ${sc.SM.ss} (${ssRng("SM")}, ${ssPct("SM")} percentile)`);
+  if (sc.VL) scoreSummaryLines.push(`Verbal Learning: Scaled Score ${sc.VL.ss} (${ssRng("VL")}, ${ssPct("VL")} percentile)`);
+  if (sc.FW) scoreSummaryLines.push(`Finger Windows: Scaled Score ${sc.FW.ss} (${ssRng("FW")}, ${ssPct("FW")} percentile)`);
+  if (sc.NL) scoreSummaryLines.push(`Number Letter: Scaled Score ${sc.NL.ss} (${ssRng("NL")}, ${ssPct("NL")} percentile)`);
+  if (sc.DLD) scoreSummaryLines.push(`Design Learning Delayed: Scaled Score ${sc.DLD.ss} (${ssRng("DLD")}, ${ssPct("DLD")} percentile)`);
+  if (sc.PMD) scoreSummaryLines.push(`Picture Memory Delayed: Scaled Score ${sc.PMD.ss} (${ssRng("PMD")}, ${ssPct("PMD")} percentile)`);
+  if (sc.SMD) scoreSummaryLines.push(`Story Memory Delayed: Scaled Score ${sc.SMD.ss} (${ssRng("SMD")}, ${ssPct("SMD")} percentile)`);
+  if (sc.VLD) scoreSummaryLines.push(`Verbal Learning Delayed: Scaled Score ${sc.VLD.ss} (${ssRng("VLD")}, ${ssPct("VLD")} percentile)`);
 
   // Append score data block (hidden from display, used by AI summary generation)
   if (scoreSummaryLines.length > 0) {
@@ -4276,8 +4325,8 @@ function fillWAISCognitiveTemplate(waisManual, firstName, pronouns) {
   text = text.replace(/\[PSI_DESCRIPTOR\]/g, psiDesc || "___");
   text = text.replace(/\[PSI_STRENGTH_OR_WEAKER\]/g, descriptorToStrengthLabel(psiDesc));
 
-  text = text.replace(/\[WAIS_STRENGTHS\]/g, m.strengths?.trim() || "areas aligning with higher index scores");
-  text = text.replace(/\[WAIS_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "areas aligning with lower index scores");
+  text = text.replace(/\[WAIS_STRENGTHS\]/g, m.strengths?.trim() || "verbal reasoning and visual reasoning");
+  text = text.replace(/\[WAIS_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "processing efficiency and working memory demands");
 
   text = personalize(text, firstName, pronouns);
   text = capitalizeSentences(text);
@@ -4324,8 +4373,8 @@ function fillWPPSICognitiveTemplate(wppsiManual, firstName, pronouns) {
   text = text.replace(/\[PSI_DESCRIPTOR\]/g, psiDesc || "___");
   text = text.replace(/\[PSI_STRENGTH_OR_WEAKER\]/g, descriptorToStrengthLabel(psiDesc));
 
-  text = text.replace(/\[WPPSI_STRENGTHS\]/g, m.strengths?.trim() || "areas aligning with higher index scores");
-  text = text.replace(/\[WPPSI_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "areas aligning with lower index scores");
+  text = text.replace(/\[WPPSI_STRENGTHS\]/g, m.strengths?.trim() || "language based reasoning and visual spatial skills");
+  text = text.replace(/\[WPPSI_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "processing efficiency and sustained attention demands");
 
   text = personalize(text, firstName, pronouns);
   text = capitalizeSentences(text);
@@ -5667,8 +5716,8 @@ const SecEd = memo(function SecEd({
 
   // Age-based instrument flags for cognitive manual entry UI
   const secEdAge = useMemo(() => ageFromAgeAtTesting(meta?.ageAtTesting), [meta?.ageAtTesting]);
-  const secEdUseWAIS = sid === "cognitive" && secEdAge ? secEdAge.totalMonths >= 192 : false;
-  const secEdUseWPPSI = sid === "cognitive" && secEdAge ? secEdAge.totalMonths < 72 : false;
+  const secEdUseWAIS = sid === "cognitive" && secEdAge ? secEdAge.totalMonths >= 203 : false;
+  const secEdUseWPPSI = sid === "cognitive" && secEdAge ? secEdAge.totalMonths < 83 : false;
 
   // Debounced text input: buffer keystrokes locally, sync to parent after 300ms idle
   const [localCtx, setLocalCtx] = useState(s?.ctx || "");
@@ -6943,13 +6992,13 @@ Liam was also administered subtests that contribute to the Cognitive Proficiency
 
   memory: `Selected subtests of the Wide Range Assessment of Memory and Learning, Third Edition (WRAML-3) were administered to examine Liam's memory and learning abilities. The WRAML-3 is an individually administered, standardized assessment designed to evaluate a broad range of memory, learning, and cognitive functions that support memory and learning processes. This instrument measures how well Liam can encode, store, and retrieve verbal and visual information both immediately after presentation and after a delay. Specifically, the WRAML-3 provides information about Liam's verbal and visual immediate recall, delayed recall, recognition memory, attention and concentration, and working memory. Index scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Subtest scores are reported as scaled scores with a mean of 10 and a standard deviation of 3. Qualitative descriptors are used to describe the range of performance.
 
-The General Immediate Memory Index provides a broad estimate of Liam's overall immediate recall ability, measured across a wide range of memory tasks involving both verbal and visual modalities. This index is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. Liam obtained a standard score of 96, which falls within the Average range. This score provides an overall indication of how effectively Liam can take in and immediately reproduce new information across different types of content.
+The General Immediate Memory Index provides a broad estimate of Liam's overall immediate recall ability, measured across a wide range of memory tasks involving both verbal and visual modalities. This index is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. Liam obtained a standard score of 96 (39th percentile), which falls within the Average range. This score provides an overall indication of how effectively Liam can take in and immediately reproduce new information across different types of content.
 
-The Visual Immediate Memory Index is an estimate of how well Liam can learn and recall both meaningful and relatively unrelated visual information shortly after it is presented. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. Liam obtained a standard score of 100, which falls within the Average range. On the Design Learning subtest, Liam was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, Liam was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials to assess Liam's ability to acquire and consolidate visual information with repetition. Liam obtained a scaled score of 9, which falls within the Average range. When asked to recall the design details in the correct locations after a twenty to thirty minute delay, Liam obtained a scaled score of 10, which falls within the Average range, reflecting his ability to retain and retrieve visual spatial information from long term memory. On the Picture Memory subtest, Liam was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. This subtest measures visual memory for contextually meaningful material. Liam obtained a scaled score of 11, which falls within the Average range. When asked to identify elements that were changed, added, or moved after a twenty to thirty minute delay, Liam obtained a scaled score of 10, which falls within the Average range.
+The Visual Immediate Memory Index is an estimate of how well Liam can learn and recall both meaningful and relatively unrelated visual information shortly after it is presented. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. Liam obtained a standard score of 100 (50th percentile), which falls within the Average range. On the Design Learning subtest, Liam was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, Liam was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials to assess Liam's ability to acquire and consolidate visual information with repetition. Liam obtained a scaled score of 9 (37th percentile), which falls within the Average range. When asked to recall the design details in the correct locations after a twenty to thirty minute delay, Liam obtained a scaled score of 10 (50th percentile), which falls within the Average range, reflecting his ability to retain and retrieve visual spatial information from long term memory. On the Picture Memory subtest, Liam was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. This subtest measures visual memory for contextually meaningful material. Liam obtained a scaled score of 11 (63rd percentile), which falls within the Average range. When asked to identify elements that were changed, added, or moved after a twenty to thirty minute delay, Liam obtained a scaled score of 10 (50th percentile), which falls within the Average range.
 
-The Verbal Immediate Memory Index is an estimate of how well Liam can learn and recall both contextually meaningful and relatively less meaningful verbal information shortly after it is presented. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. Liam obtained a standard score of 85, which falls within the Low Average range. These subtests place heavy demands on the ability to attend to and encode verbal information. The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and Liam was asked to retell each story from memory. Liam obtained a scaled score of 7, which falls within the Low Average range. On the delayed recall portion, administered after a twenty to thirty minute delay, Liam obtained a scaled score of 7, which falls within the Low Average range, reflecting his ability to retain verbally presented narrative information over time. The Verbal Learning subtest assesses Liam's ability to learn a list of unrelated words over four learning trials, measuring rote verbal learning and the benefit of repetition. Liam obtained a scaled score of 7, which falls within the Low Average range. On the delayed recall section, administered after a twenty to thirty minute delay, Liam obtained a scaled score of 8, which falls within the Average range, reflecting his ability to store and retrieve unrelated verbal material from long term memory.
+The Verbal Immediate Memory Index is an estimate of how well Liam can learn and recall both contextually meaningful and relatively less meaningful verbal information shortly after it is presented. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. Liam obtained a standard score of 85 (16th percentile), which falls within the Low Average range. These subtests place heavy demands on the ability to attend to and encode verbal information. The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and Liam was asked to retell each story from memory. Liam obtained a scaled score of 7 (16th percentile), which falls within the Low Average range. On the delayed recall portion, administered after a twenty to thirty minute delay, Liam obtained a scaled score of 7 (16th percentile), which falls within the Low Average range, reflecting his ability to retain verbally presented narrative information over time. The Verbal Learning subtest assesses Liam's ability to learn a list of unrelated words over four learning trials, measuring rote verbal learning and the benefit of repetition. Liam obtained a scaled score of 7 (16th percentile), which falls within the Low Average range. On the delayed recall section, administered after a twenty to thirty minute delay, Liam obtained a scaled score of 8 (25th percentile), which falls within the Average range, reflecting his ability to store and retrieve unrelated verbal material from long term memory.
 
-The Attention and Concentration Index provides an estimate of how well Liam can learn and recall attentionally demanding, relatively rote, sequential information. Both auditory and visual information are sampled within this domain. This index is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. Liam obtained a standard score of 85, which falls within the Low Average range. The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The examiner points to a pattern of windows in a specified order, and Liam must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory. Liam obtained a scaled score of 9, which falls within the Average range. The Number Letter subtest requires Liam to repeat a random mix of verbally presented numbers and letters in the exact order they were given. This subtest assesses auditory attention, working memory, and the ability to maintain sequential information. Liam obtained a scaled score of 6, which falls within the Low Average range.
+The Attention and Concentration Index provides an estimate of how well Liam can learn and recall attentionally demanding, relatively rote, sequential information. Both auditory and visual information are sampled within this domain. This index is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. Liam obtained a standard score of 85 (16th percentile), which falls within the Low Average range. The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The examiner points to a pattern of windows in a specified order, and Liam must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory. Liam obtained a scaled score of 9 (37th percentile), which falls within the Average range. The Number Letter subtest requires Liam to repeat a random mix of verbally presented numbers and letters in the exact order they were given. This subtest assesses auditory attention, working memory, and the ability to maintain sequential information. Liam obtained a scaled score of 6 (9th percentile), which falls within the Low Average range.
 
 Summary of Memory and Learning: Overall, Liam's memory functioning presents a mixed profile. His visual memory abilities are within the Average range, suggesting that he learns and retains visual material effectively. However, his verbal memory skills fall within the Low Average range, indicating that he may at times have difficulty learning and retaining verbally presented information. His attention and concentration scores suggest relative difficulty with tasks requiring sustained auditory attention and sequential processing. This pattern is consistent with his cognitive profile, where verbal reasoning strengths coexist with processing speed and working memory weaknesses. These findings may impact his ability to retain information from classroom lectures and verbal instructions without additional supports.`,
 
@@ -7215,8 +7264,8 @@ export default function App() {
 
   // ── Age-based cognitive instrument selection ──
   const derivedAge = useMemo(() => ageFromAgeAtTesting(meta.ageAtTesting), [meta.ageAtTesting]);
-  const useWAISByAge = derivedAge ? derivedAge.totalMonths >= 192 : false; // 16 years 0 months = 192 months
-  const useWPPSIByAge = derivedAge ? derivedAge.totalMonths < 72 : false;   // 6 years 0 months = 72 months
+  const useWAISByAge = derivedAge ? derivedAge.totalMonths >= 203 : false; // 16 years 11 months = 203 months
+  const useWPPSIByAge = derivedAge ? derivedAge.totalMonths < 83 : false;   // under 6 years 11 months = 83 months
 
   /** Shorthand: apply [firstName] + pronoun placeholders using current meta */
   const pz = useCallback((text) => personalize(text, derivedFirstName, meta.pronouns), [derivedFirstName, meta.pronouns]);
@@ -7275,8 +7324,8 @@ export default function App() {
     if (!derivedAge) return;
     const cogToolIds = new Set(["wais-iv", "wppsi-iv", "wisc-v"]);
     let targetId = "wisc-v";
-    if (derivedAge.totalMonths >= 192) targetId = "wais-iv";
-    else if (derivedAge.totalMonths < 72) targetId = "wppsi-iv";
+    if (derivedAge.totalMonths >= 203) targetId = "wais-iv";
+    else if (derivedAge.totalMonths < 83) targetId = "wppsi-iv";
     setTools((prev) => {
       let changed = false;
       const next = prev.map((t) => {
@@ -7474,6 +7523,38 @@ export default function App() {
       if (waisScores) {
         for (const [k, val] of Object.entries(waisScores)) {
           if (!scoreMap[k]) scoreMap[k] = val;
+        }
+      }
+
+      // Inject WAIS-IV manual scores into scoreMap for appendix tables
+      const waisManual = prev.cognitive?.waisManual;
+      if (waisManual) {
+        const wm = waisManual;
+        const waisIdx = [["FSIQ","fsiq"],["VCI","vci"],["PRI","pri"],["WMI","wmi"],["PSI","psi"]];
+        for (const [abbr, key] of waisIdx) {
+          if (wm[key + "Score"]) {
+            scoreMap[`WAIS.${abbr}.score`] = wm[key + "Score"];
+            if (wm[key + "Percentile"]) {
+              scoreMap[`WAIS.${abbr}.percentile`] = wm[key + "Percentile"];
+              scoreMap[`WAIS.${abbr}.qualitative`] = percentileToDescriptor(wm[key + "Percentile"]) || "";
+            }
+          }
+        }
+      }
+
+      // Inject WPPSI-IV manual scores into scoreMap for appendix tables
+      const wppsiManual = prev.cognitive?.wppsiManual;
+      if (wppsiManual) {
+        const wm = wppsiManual;
+        const wppsiIdx = [["FSIQ","fsiq"],["VCI","vci"],["VSI","vsi"],["FRI","fri"],["WMI","wmi"],["PSI","psi"]];
+        for (const [abbr, key] of wppsiIdx) {
+          if (wm[key + "Score"]) {
+            scoreMap[`WPPSI.${abbr}.score`] = wm[key + "Score"];
+            if (wm[key + "Percentile"]) {
+              scoreMap[`WPPSI.${abbr}.percentile`] = wm[key + "Percentile"];
+              scoreMap[`WPPSI.${abbr}.qualitative`] = percentileToDescriptor(wm[key + "Percentile"]) || "";
+            }
+          }
         }
       }
 
