@@ -818,46 +818,46 @@ Parents reported that [firstName] was born in {{X was born in}} after an uncompl
 
 {{Information obtained during the interview}}`;
 
-const MEM_TEMPLATE = `Selected subtests of the Wide Range Assessment of Memory and Learning, Third Edition (WRAML-3) were administered to examine [firstName]'s memory and learning abilities. The WRAML-3 is an individually administered, standardized assessment designed to evaluate a broad range of memory, learning, and cognitive functions that support memory and learning processes. This instrument measures how well [firstName] can encode, store, and retrieve verbal and visual information both immediately after presentation and after a delay. Specifically, the WRAML-3 provides information about [firstName]'s verbal and visual immediate recall, delayed recall, recognition memory, attention and concentration, and working memory. Index scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Subtest scores are reported as scaled scores with a mean of 10 and a standard deviation of 3. Qualitative descriptors are used to describe the range of performance.
+const MEM_TEMPLATE = `Selected subtests of the Wide Range Assessment of Memory and Learning, Third Edition (WRAML-3) were administered to examine [firstName]'s memory and learning abilities. The WRAML-3 is an individually administered, standardized assessment designed to evaluate a broad range of memory, learning, and cognitive functions that underlie everyday learning. Memory is a foundational skill that supports virtually all areas of academic achievement. The ability to take in new information, hold it in mind, organize it, and later retrieve it when needed is essential for following classroom instruction, learning to read, acquiring mathematical concepts, and completing written assignments. Weaknesses in memory functioning can affect a student's performance even when intellectual ability and motivation are adequate. The WRAML-3 measures how well [firstName] can encode, store, and retrieve verbal and visual information both immediately after presentation and after a delay of approximately twenty to thirty minutes. Specifically, it provides information about [firstName]'s verbal and visual immediate recall, delayed recall, recognition memory, attention and concentration, and working memory. Index scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Subtest scores are reported as scaled scores with a mean of 10 and a standard deviation of 3. Qualitative descriptors are used to describe the range of performance.
 
-The General Immediate Memory Index provides a broad estimate of [firstName]'s overall immediate recall ability, measured across a wide range of memory tasks involving both verbal and visual modalities. This index is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. [firstName] obtained a standard score of [GENERAL_IMMEDIATE_MEMORY_SCORE] ([GENERAL_IMMEDIATE_MEMORY_PERCENTILE] percentile), which falls within the [GENERAL_IMMEDIATE_MEMORY_RANGE] range. This score provides an overall indication of how effectively [firstName] can take in and immediately reproduce new information across different types of content.
+The General Immediate Memory Index provides a broad estimate of [firstName]'s overall ability to take in and immediately reproduce new information across a wide range of memory tasks. This composite draws upon both verbal and visual memory channels, as well as attention and concentration, and therefore reflects the general efficiency with which [firstName] can register and recall newly presented material. It is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. [firstName] obtained a standard score of [GENERAL_IMMEDIATE_MEMORY_SCORE] ([GENERAL_IMMEDIATE_MEMORY_PERCENTILE] percentile), which falls within the [GENERAL_IMMEDIATE_MEMORY_RANGE] range. This suggests that [firstName]'s overall capacity to take in and immediately recall new information across both verbal and visual modalities is [GENERAL_IMMEDIATE_MEMORY_RANGE] when compared to same age peers.
 
-The Visual Immediate Memory Index is an estimate of how well [firstName] can learn and recall both meaningful and relatively unrelated visual information shortly after it is presented. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. [firstName] obtained a standard score of [VISUAL_IMMEDIATE_MEMORY_SCORE] ([VISUAL_IMMEDIATE_MEMORY_PERCENTILE] percentile), which falls within the [VISUAL_IMMEDIATE_MEMORY_RANGE] range. On the Design Learning subtest, [firstName] was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, [firstName] was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials to assess [firstName]'s ability to acquire and consolidate visual information with repetition. [firstName] obtained a scaled score of [DESIGN_MEMORY_IMMEDIATE_SCORE] ([DESIGN_MEMORY_IMMEDIATE_PERCENTILE] percentile), which falls within the [DESIGN_MEMORY_IMMEDIATE_RANGE] range. When asked to recall the design details in the correct locations after a twenty to thirty minute delay, [firstName] obtained a scaled score of [DESIGN_MEMORY_DELAYED_SCORE] ([DESIGN_MEMORY_DELAYED_PERCENTILE] percentile), which falls within the [DESIGN_MEMORY_DELAYED_RANGE] range, reflecting [possessive] ability to retain and retrieve visual spatial information from long term memory. On the Picture Memory subtest, [firstName] was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. This subtest measures visual memory for contextually meaningful material. [firstName] obtained a scaled score of [PICTURE_MEMORY_IMMEDIATE_SCORE] ([PICTURE_MEMORY_IMMEDIATE_PERCENTILE] percentile), which falls within the [PICTURE_MEMORY_IMMEDIATE_RANGE] range. When asked to identify elements that were changed, added, or moved after a twenty to thirty minute delay, [firstName] obtained a scaled score of [PICTURE_MEMORY_DELAYED_SCORE] ([PICTURE_MEMORY_DELAYED_PERCENTILE] percentile), which falls within the [PICTURE_MEMORY_DELAYED_RANGE] range.
+The Visual Immediate Memory Index is an estimate of how well [firstName] can learn and recall visual information shortly after it is presented. Visual memory plays an important role in many classroom activities, including remembering what was written on the board, recalling the layout of a page or diagram, and recognizing previously seen material. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. [firstName] obtained a standard score of [VISUAL_IMMEDIATE_MEMORY_SCORE] ([VISUAL_IMMEDIATE_MEMORY_PERCENTILE] percentile), which falls within the [VISUAL_IMMEDIATE_MEMORY_RANGE] range, suggesting that [possessive] ability to take in and immediately recall visual information is [VISUAL_IMMEDIATE_MEMORY_RANGE] relative to same age peers. On the Design Learning subtest, [firstName] was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, [firstName] was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials, providing an opportunity to observe how well [firstName] benefits from repeated exposure to the same visual material. This type of task is similar to situations in which students must learn and remember spatial arrangements, such as map details or geometric configurations. [firstName] obtained a scaled score of [DESIGN_MEMORY_IMMEDIATE_SCORE] ([DESIGN_MEMORY_IMMEDIATE_PERCENTILE] percentile), which falls within the [DESIGN_MEMORY_IMMEDIATE_RANGE] range. When asked to recall the design details in the correct locations after a twenty to thirty minute delay, [firstName] obtained a scaled score of [DESIGN_MEMORY_DELAYED_SCORE] ([DESIGN_MEMORY_DELAYED_PERCENTILE] percentile), which falls within the [DESIGN_MEMORY_DELAYED_RANGE] range. This delayed score reflects how well [firstName] can consolidate and later retrieve visual spatial information from long term memory, a skill that is important for retaining learned material from one lesson to the next. On the Picture Memory subtest, [firstName] was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. Unlike Design Learning, this subtest draws on memory for contextually rich and meaningful visual information, which is more similar to everyday visual experiences. [firstName] obtained a scaled score of [PICTURE_MEMORY_IMMEDIATE_SCORE] ([PICTURE_MEMORY_IMMEDIATE_PERCENTILE] percentile), which falls within the [PICTURE_MEMORY_IMMEDIATE_RANGE] range. When asked to identify elements that were changed, added, or moved after a twenty to thirty minute delay, [firstName] obtained a scaled score of [PICTURE_MEMORY_DELAYED_SCORE] ([PICTURE_MEMORY_DELAYED_PERCENTILE] percentile), which falls within the [PICTURE_MEMORY_DELAYED_RANGE] range.
 
-The Verbal Immediate Memory Index is an estimate of how well [firstName] can learn and recall both contextually meaningful and relatively less meaningful verbal information shortly after it is presented. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. [firstName] obtained a standard score of [VERBAL_IMMEDIATE_MEMORY_SCORE] ([VERBAL_IMMEDIATE_MEMORY_PERCENTILE] percentile), which falls within the [VERBAL_IMMEDIATE_MEMORY_RANGE] range. These subtests place heavy demands on the ability to attend to and encode verbal information. The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and [firstName] was asked to retell each story from memory. [firstName] obtained a scaled score of [STORY_MEMORY_IMMEDIATE_SCORE] ([STORY_MEMORY_IMMEDIATE_PERCENTILE] percentile), which falls within the [STORY_MEMORY_IMMEDIATE_RANGE] range. On the delayed recall portion, administered after a twenty to thirty minute delay, [firstName] obtained a scaled score of [STORY_MEMORY_DELAYED_SCORE] ([STORY_MEMORY_DELAYED_PERCENTILE] percentile), which falls within the [STORY_MEMORY_DELAYED_RANGE] range, reflecting [possessive] ability to retain verbally presented narrative information over time. The Verbal Learning subtest assesses [firstName]'s ability to learn a list of unrelated words over four learning trials, measuring rote verbal learning and the benefit of repetition. [firstName] obtained a scaled score of [VERBAL_LEARNING_IMMEDIATE_SCORE] ([VERBAL_LEARNING_IMMEDIATE_PERCENTILE] percentile), which falls within the [VERBAL_LEARNING_IMMEDIATE_RANGE] range. On the delayed recall section, administered after a twenty to thirty minute delay, [firstName] obtained a scaled score of [VERBAL_LEARNING_DELAYED_SCORE] ([VERBAL_LEARNING_DELAYED_PERCENTILE] percentile), which falls within the [VERBAL_LEARNING_DELAYED_RANGE] range, reflecting [possessive] ability to store and retrieve unrelated verbal material from long term memory.
+The Verbal Immediate Memory Index is an estimate of how well [firstName] can learn and recall verbal information shortly after hearing it. Verbal memory is central to classroom learning because much of what is taught is delivered through spoken language. The ability to listen to a teacher's explanation, hold the key ideas in mind, and recall them accurately is essential for following instructions, participating in discussions, and learning from lectures. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. [firstName] obtained a standard score of [VERBAL_IMMEDIATE_MEMORY_SCORE] ([VERBAL_IMMEDIATE_MEMORY_PERCENTILE] percentile), which falls within the [VERBAL_IMMEDIATE_MEMORY_RANGE] range, suggesting that [possessive] ability to take in and immediately recall verbally presented information is [VERBAL_IMMEDIATE_MEMORY_RANGE] relative to same age peers. The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and [firstName] was asked to retell each story from memory. Because the material is organized into a meaningful narrative, this subtest reflects how well [firstName] can use contextual meaning and story structure to support recall. [firstName] obtained a scaled score of [STORY_MEMORY_IMMEDIATE_SCORE] ([STORY_MEMORY_IMMEDIATE_PERCENTILE] percentile), which falls within the [STORY_MEMORY_IMMEDIATE_RANGE] range. On the delayed recall portion, administered after a twenty to thirty minute delay, [firstName] obtained a scaled score of [STORY_MEMORY_DELAYED_SCORE] ([STORY_MEMORY_DELAYED_PERCENTILE] percentile), which falls within the [STORY_MEMORY_DELAYED_RANGE] range. This delayed score reflects [possessive] ability to consolidate and retain meaningful verbal information over time, which is important for remembering what was taught earlier in a lesson or on a previous day. The Verbal Learning subtest assesses [firstName]'s ability to learn a list of unrelated words over four learning trials. Because the words are not connected by meaning, this task places heavier demands on rote verbal learning and measures how well [firstName] benefits from repetition when the material itself provides few contextual cues to support recall. [firstName] obtained a scaled score of [VERBAL_LEARNING_IMMEDIATE_SCORE] ([VERBAL_LEARNING_IMMEDIATE_PERCENTILE] percentile), which falls within the [VERBAL_LEARNING_IMMEDIATE_RANGE] range. On the delayed recall section, administered after a twenty to thirty minute delay, [firstName] obtained a scaled score of [VERBAL_LEARNING_DELAYED_SCORE] ([VERBAL_LEARNING_DELAYED_PERCENTILE] percentile), which falls within the [VERBAL_LEARNING_DELAYED_RANGE] range, reflecting [possessive] ability to store and later retrieve rote verbal material from long term memory.
 
-The Attention and Concentration Index provides an estimate of how well [firstName] can learn and recall attentionally demanding, relatively rote, sequential information. Both auditory and visual information are sampled within this domain. This index is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. [firstName] obtained a standard score of [ATTENTION_CONCENTRATION_SCORE] ([ATTENTION_CONCENTRATION_PERCENTILE] percentile), which falls within the [ATTENTION_CONCENTRATION_RANGE] range. The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The examiner points to a pattern of windows in a specified order, and [firstName] must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory. [firstName] obtained a scaled score of [FINGER_WINDOWS_SCORE] ([FINGER_WINDOWS_PERCENTILE] percentile), which falls within the [FINGER_WINDOWS_RANGE] range. The Number Letter subtest requires [firstName] to repeat a random mix of verbally presented numbers and letters in the exact order they were given. This subtest assesses auditory attention, working memory, and the ability to maintain sequential information. [firstName] obtained a scaled score of [NUMBER_LETTER_SCORE] ([NUMBER_LETTER_PERCENTILE] percentile), which falls within the [NUMBER_LETTER_RANGE] range.
+The Attention and Concentration Index provides an estimate of how well [firstName] can learn and recall attentionally demanding, relatively rote, sequential information. Attention and concentration underlie all forms of memory because information cannot be stored effectively if it is not attended to in the first place. This domain is particularly relevant to tasks that require sustained focus, such as listening to multi step directions, copying from the board, or following a sequence of classroom instructions. Both auditory and visual information are sampled within this index. It is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. [firstName] obtained a standard score of [ATTENTION_CONCENTRATION_SCORE] ([ATTENTION_CONCENTRATION_PERCENTILE] percentile), which falls within the [ATTENTION_CONCENTRATION_RANGE] range, suggesting that [possessive] ability to attend to and remember sequentially presented information is [ATTENTION_CONCENTRATION_RANGE] relative to same age peers. The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations. The examiner points to a pattern of holes, or windows, in a card in a specified order, and [firstName] must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory and the ability to maintain a mental representation of a spatial sequence. [firstName] obtained a scaled score of [FINGER_WINDOWS_SCORE] ([FINGER_WINDOWS_PERCENTILE] percentile), which falls within the [FINGER_WINDOWS_RANGE] range. The Number Letter subtest requires [firstName] to listen to a random mix of numbers and letters presented verbally and repeat them back in the exact order they were given. This task assesses auditory attention, working memory, and the ability to hold and reproduce sequential auditory information, which is similar to what is required when following a series of spoken instructions in the classroom. [firstName] obtained a scaled score of [NUMBER_LETTER_SCORE] ([NUMBER_LETTER_PERCENTILE] percentile), which falls within the [NUMBER_LETTER_RANGE] range.
 
-The General Delayed Index provides an estimate of longer term storage and retrieval of the information [firstName] learned on the four immediate memory subtests, specifically Picture Memory, Story Memory, Design Learning, and Verbal Learning. This index is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes and reflects how well [firstName] can retain both visual and verbal information over a twenty to thirty minute period. [firstName] obtained a standard score of [GENERAL_DELAYED_SCORE] ([GENERAL_DELAYED_PERCENTILE] percentile), which falls within the [GENERAL_DELAYED_RANGE] range.
+The General Delayed Index provides an estimate of how well [firstName] can retain and later retrieve information that was learned earlier in the assessment session. After the immediate memory subtests were administered, approximately twenty to thirty minutes were allowed to pass before [firstName] was asked to recall the same material again without any additional exposure. This delayed recall format is important because it reflects the kind of memory required for learning in school, where students must remember information from one part of a lesson to the next, or from one day to the next. This index is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes and reflects how well [firstName] can retain both visual and verbal information over time. [firstName] obtained a standard score of [GENERAL_DELAYED_SCORE] ([GENERAL_DELAYED_PERCENTILE] percentile), which falls within the [GENERAL_DELAYED_RANGE] range, suggesting that [possessive] overall ability to consolidate and retrieve previously learned material after a delay is [GENERAL_DELAYED_RANGE] relative to same age peers.
 
-The Visual Delayed Index is an estimate of how well [firstName] can retain and retrieve both meaningful and relatively unrelated visual information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. [firstName] obtained a standard score of [VISUAL_DELAYED_MEMORY_SCORE] ([VISUAL_DELAYED_MEMORY_PERCENTILE] percentile), which falls within the [VISUAL_DELAYED_MEMORY_RANGE] range.
+The Visual Delayed Index is an estimate of how well [firstName] can retain and retrieve visual information after a twenty to thirty minute delay. This index reflects the ability to consolidate visual material into longer term storage and access it when needed, which is relevant for tasks such as remembering diagrams, visual instructions, or the layout of previously seen material. It is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. [firstName] obtained a standard score of [VISUAL_DELAYED_MEMORY_SCORE] ([VISUAL_DELAYED_MEMORY_PERCENTILE] percentile), which falls within the [VISUAL_DELAYED_MEMORY_RANGE] range.
 
-The Verbal Delayed Index is an estimate of how well [firstName] can store and retrieve both meaningful and relatively unrelated verbal information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. [firstName] obtained a standard score of [VERBAL_DELAYED_MEMORY_SCORE] ([VERBAL_DELAYED_MEMORY_PERCENTILE] percentile), which falls within the [VERBAL_DELAYED_MEMORY_RANGE] range.`;
+The Verbal Delayed Index is an estimate of how well [firstName] can store and retrieve verbal information after a twenty to thirty minute delay. This index reflects the ability to consolidate verbally presented material into longer term memory and retrieve it when needed, which is essential for retaining information from classroom instruction, remembering what was read in a passage, or recalling details from a previous lesson. It is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. [firstName] obtained a standard score of [VERBAL_DELAYED_MEMORY_SCORE] ([VERBAL_DELAYED_MEMORY_PERCENTILE] percentile), which falls within the [VERBAL_DELAYED_MEMORY_RANGE] range.`;
 
 const VMI_TEMPLATE = `[firstName] was administered the Beery Buktenica Developmental Test of Visual Motor Integration Sixth Edition to assess the extent to which [pronoun] can integrate both visual and motor abilities. On the Visual Motor Integration test, where [firstName] had to copy various geometric forms of increasing difficulty without erasing, [pronoun] demonstrated [VMI_RANGE] ability to integrate visual perception and fine motor requirements (at around the [VMI_PERCENTILE] percentile).`;
 
 // ── WAIS-IV COGNITIVE TEMPLATE (ages 16+) ──
 const WAIS_COG_TEMPLATE = `Cognitive Functioning
 
-The Wechsler Adult Intelligence Scale, Fourth Edition (WAIS-IV), was administered to assess overall cognitive functioning. The WAIS-IV provides a Full Scale IQ (FSIQ), which represents an estimate of overall intellectual ability, as well as index scores that reflect specific areas of cognitive functioning, including Verbal Comprehension, Perceptual Reasoning, Working Memory, and Processing Speed. Scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Percentile ranks indicate how performance compares to same age peers.
+The Wechsler Adult Intelligence Scale, Fourth Edition (WAIS-IV), was administered to assess overall cognitive functioning. Cognitive ability is a foundational factor that influences how efficiently an individual can acquire new knowledge, reason through complex problems, and adapt to the demands of academic and vocational settings. The WAIS-IV provides a Full Scale IQ (FSIQ), which represents a broad estimate of overall intellectual ability, as well as four index scores that reflect specific areas of cognitive functioning: Verbal Comprehension, Perceptual Reasoning, Working Memory, and Processing Speed. Taken together, these index scores provide a profile of cognitive strengths and areas of relative weakness that can help explain patterns of performance in school, at work, and in daily life. It is important to note that the FSIQ is most meaningful when the index scores are relatively consistent with one another. When significant variability exists across indexes, the individual index scores may provide a more accurate picture of cognitive functioning than the FSIQ alone. Scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Percentile ranks indicate how performance compares to same age peers.
 
-At the present moment, [firstName] obtained a Full Scale IQ score of [FSIQ_SCORE] ([FSIQ_PERCENTILE] percentile), which falls within the [FSIQ_DESCRIPTOR] range.
+At the present moment, [firstName] obtained a Full Scale IQ score of [FSIQ_SCORE] ([FSIQ_PERCENTILE] percentile), which falls within the [FSIQ_DESCRIPTOR] range. This score provides a broad estimate of [firstName]'s overall intellectual ability and suggests that [possessive] general cognitive functioning is [FSIQ_DESCRIPTOR] when compared to same age peers.
 
 Verbal Comprehension
 
-The Verbal Comprehension Index (VCI) assesses verbal reasoning, concept formation, and access to acquired knowledge. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This pattern suggests that verbal reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding and explaining ideas using language.
+The Verbal Comprehension Index (VCI) measures the ability to reason with verbal information, form and apply verbal concepts, and draw upon acquired knowledge and language skills. This domain is central to many aspects of everyday functioning, including understanding spoken and written language, expressing ideas clearly, following verbal instructions, and engaging in classroom discussions or workplace communication. Strong verbal comprehension supports the ability to learn from reading, understand complex instructions, and communicate ideas effectively. Individuals who perform well in this area tend to benefit from language based instruction and can often explain their reasoning with ease. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This suggests that [firstName]'s ability to reason using language, understand verbal concepts, and apply acquired knowledge is [VCI_DESCRIPTOR] relative to same age peers. This pattern suggests that verbal reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding and explaining ideas using language.
 
 Perceptual Reasoning
 
-The Perceptual Reasoning Index (PRI) assesses nonverbal reasoning and visual analysis. [firstName] obtained a PRI score of [PRI_SCORE] ([PRI_PERCENTILE] percentile), which falls within the [PRI_DESCRIPTOR] range. This pattern suggests that visual reasoning represents [PRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require solving novel problems using visual information.
+The Perceptual Reasoning Index (PRI) measures the ability to reason with nonverbal, visually presented information, including analysing visual patterns, solving novel problems without relying on language, and understanding spatial relationships. This domain is important for tasks that require figuring things out without verbal instruction, such as interpreting charts and graphs, understanding mechanical or spatial concepts, assembling objects, navigating unfamiliar environments, and solving problems that have not been encountered before. Strong perceptual reasoning supports the ability to think flexibly, recognize patterns, and approach novel situations with effective problem solving strategies. [firstName] obtained a PRI score of [PRI_SCORE] ([PRI_PERCENTILE] percentile), which falls within the [PRI_DESCRIPTOR] range. This suggests that [firstName]'s ability to analyse visual information, identify patterns, and reason through novel nonverbal problems is [PRI_DESCRIPTOR] relative to same age peers. This pattern suggests that visual reasoning represents [PRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require solving novel problems using visual information.
 
 Working Memory
 
-The Working Memory Index (WMI) assesses attention and the ability to hold and use information over short periods of time. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require following multi step instructions or mentally manipulating information.
+The Working Memory Index (WMI) measures the ability to hold information in mind temporarily, manipulate it mentally, and use it to complete a task. Working memory is essential for a wide range of academic and daily activities, including following multi step instructions, performing mental arithmetic, taking notes while listening, reading comprehension, and keeping track of information during conversations or complex tasks. Weaknesses in working memory can lead to difficulty following through on instructions, losing track of what one was doing, and needing information to be repeated. Even when an individual understands the material, limited working memory can make it difficult to manage the demands of tasks that require holding several pieces of information in mind at once. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This suggests that [firstName]'s ability to hold information in mind, mentally manipulate it, and use it to complete a task is [WMI_DESCRIPTOR] relative to same age peers. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require following multi step instructions or mentally manipulating information.
 
 Processing Speed
 
-The Processing Speed Index (PSI) assesses the efficiency of scanning and responding to simple visual information under structured conditions. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick visual attention and consistent pace.
+The Processing Speed Index (PSI) measures the speed and accuracy with which an individual can scan, identify, and respond to simple visual information under timed conditions. Processing speed is not a measure of how quickly someone thinks in general, but rather how efficiently they can perform routine cognitive tasks that require sustained visual attention and consistent output. This domain is relevant to many academic and vocational activities, including completing timed tests, copying information, scanning text for specific details, and keeping pace with the flow of classroom instruction or workplace demands. Slower processing speed can mean that an individual requires more time to complete routine tasks, even when they fully understand the material. This can sometimes be mistaken for a lack of understanding or motivation, when in reality the individual simply needs more time to demonstrate what they know. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This suggests that [firstName]'s speed and accuracy when performing routine visual cognitive tasks is [PSI_DESCRIPTOR] relative to same age peers. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick visual attention and consistent pace.
 
 Cognitive Profile Summary
 
@@ -866,29 +866,29 @@ Overall, [firstName] demonstrates cognitive functioning within the [FSIQ_DESCRIP
 // ── WPPSI-IV COGNITIVE TEMPLATE (ages < 6) ──
 const WPPSI_COG_TEMPLATE = `Cognitive Functioning
 
-The Wechsler Preschool and Primary Scale of Intelligence, Fourth Edition (WPPSI-IV), was administered to assess overall cognitive functioning. The WPPSI-IV provides a Full Scale IQ (FSIQ), which represents an estimate of overall intellectual ability, as well as index scores that reflect specific areas of early cognitive development. Scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Percentile ranks indicate how performance compares to same age peers.
+The Wechsler Preschool and Primary Scale of Intelligence, Fourth Edition (WPPSI-IV), was administered to assess overall cognitive functioning. Cognitive ability in early childhood provides important information about how a young child is developing the thinking skills that will support future learning. At this stage of development, cognitive abilities are still emerging and can be influenced by a wide range of factors, including language exposure, early learning experiences, temperament, and the child's comfort and engagement during testing. The WPPSI-IV provides a Full Scale IQ (FSIQ), which represents a broad estimate of overall intellectual ability, as well as five index scores that reflect specific areas of early cognitive development: Verbal Comprehension, Visual Spatial, Fluid Reasoning, Working Memory, and Processing Speed. Taken together, these index scores provide a profile of cognitive strengths and areas of relative weakness that can help identify where a young child may benefit from additional support as they transition into formal schooling. It is important to note that the FSIQ is most meaningful when the index scores are relatively consistent with one another. When significant variability exists across indexes, the individual index scores may provide a more accurate picture of cognitive functioning than the FSIQ alone. Scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Percentile ranks indicate how performance compares to same age peers.
 
-At the present moment, [firstName] obtained a Full Scale IQ score of [FSIQ_SCORE] ([FSIQ_PERCENTILE] percentile), which falls within the [FSIQ_DESCRIPTOR] range.
+At the present moment, [firstName] obtained a Full Scale IQ score of [FSIQ_SCORE] ([FSIQ_PERCENTILE] percentile), which falls within the [FSIQ_DESCRIPTOR] range. This score provides a broad estimate of [firstName]'s overall intellectual ability and suggests that [possessive] general cognitive functioning is [FSIQ_DESCRIPTOR] when compared to same age peers.
 
 Verbal Comprehension
 
-The Verbal Comprehension Index (VCI) assesses early verbal reasoning and understanding of language based concepts. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This pattern suggests that language based reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding words and explaining ideas.
+The Verbal Comprehension Index (VCI) measures early verbal reasoning and understanding of language based concepts. This domain reflects how well a young child can understand words, express ideas, and use language to reason about the world. Verbal comprehension is foundational for early literacy development, following verbal instructions from caregivers and teachers, participating in group learning activities, and building the vocabulary and language skills that support reading readiness. Children who perform well in this area tend to learn effectively from spoken explanations, can express their needs and ideas with relative ease, and are typically well prepared for the language demands of formal schooling. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This suggests that [firstName]'s ability to understand verbal concepts, use language to reason, and express ideas is [VCI_DESCRIPTOR] relative to same age peers. This pattern suggests that language based reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding words and explaining ideas.
 
 Visual Spatial
 
-The Visual Spatial Index (VSI) assesses the ability to understand and organize visual information. [firstName] obtained a VSI score of [VSI_SCORE] ([VSI_PERCENTILE] percentile), which falls within the [VSI_DESCRIPTOR] range. This pattern suggests that visual spatial skills represent [VSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require noticing details and working with shapes and patterns.
+The Visual Spatial Index (VSI) measures the ability to understand and organize visual information, including perceiving spatial relationships, analysing visual details, and mentally constructing designs or patterns. Visual spatial skills support a wide range of early learning activities, including recognizing shapes and letters, understanding the layout of a page, assembling puzzles, navigating physical spaces, and developing early mathematical concepts such as size, position, and quantity. Children who perform well in this area tend to notice visual details, enjoy building and constructing activities, and can often learn effectively from pictures, diagrams, and demonstrations. [firstName] obtained a VSI score of [VSI_SCORE] ([VSI_PERCENTILE] percentile), which falls within the [VSI_DESCRIPTOR] range. This suggests that [firstName]'s ability to perceive, analyse, and organize visual spatial information is [VSI_DESCRIPTOR] relative to same age peers. This pattern suggests that visual spatial skills represent [VSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require noticing details and working with shapes and patterns.
 
 Fluid Reasoning
 
-The Fluid Reasoning Index (FRI) assesses early problem solving with new information. [firstName] obtained a FRI score of [FRI_SCORE] ([FRI_PERCENTILE] percentile), which falls within the [FRI_DESCRIPTOR] range. This pattern suggests that early reasoning represents [FRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require finding rules or relationships.
+The Fluid Reasoning Index (FRI) measures early problem solving ability when working with new information that has not been previously learned. Fluid reasoning reflects the capacity to identify patterns, understand relationships between concepts, and figure out rules or solutions without relying on previously acquired knowledge. This domain is important because it provides information about how well a young child can approach unfamiliar problems and think flexibly, which supports learning across many different areas. Children who perform well in fluid reasoning tend to pick up on new concepts quickly, notice how things are connected, and can often figure out what comes next in a pattern or sequence. [firstName] obtained a FRI score of [FRI_SCORE] ([FRI_PERCENTILE] percentile), which falls within the [FRI_DESCRIPTOR] range. This suggests that [firstName]'s ability to reason through new problems, identify patterns, and understand relationships between concepts is [FRI_DESCRIPTOR] relative to same age peers. This pattern suggests that early reasoning represents [FRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require finding rules or relationships.
 
 Working Memory
 
-The Working Memory Index (WMI) assesses attention and the ability to hold and use information for short periods of time. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require listening and remembering instructions.
+The Working Memory Index (WMI) measures the ability to hold information in mind temporarily and use it to complete a task. In early childhood, working memory supports the ability to follow multi step directions, remember what a teacher just said while carrying out an instruction, keep track of a sequence of activities, and begin to manage simple mental tasks such as counting or sorting. Weaknesses in working memory at this age can look like difficulty following directions that involve more than one step, frequently forgetting what was just said, or losing track of what they were doing in the middle of an activity. Even when a young child understands what is being asked, limited working memory can make it difficult to hold all the pieces of a task in mind long enough to complete it. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This suggests that [firstName]'s ability to hold information in mind and use it to complete a task is [WMI_DESCRIPTOR] relative to same age peers. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require listening and remembering instructions.
 
 Processing Speed
 
-The Processing Speed Index (PSI) assesses the efficiency of noticing and responding to simple visual information under structured conditions. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick and steady responding.
+The Processing Speed Index (PSI) measures the speed and accuracy with which a young child can notice and respond to simple visual information under structured conditions. Processing speed is not a measure of how quickly a child thinks in general, but rather how efficiently they can perform simple, routine visual tasks that require sustained attention and consistent output. In early childhood, this domain is relevant to activities such as scanning a page for a specific picture, completing simple matching tasks, and keeping pace with structured group activities. Slower processing speed can mean that a young child needs more time to complete routine tasks, even when they understand the activity. This can sometimes be mistaken for a lack of interest or understanding when the child simply requires additional time to demonstrate their abilities. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This suggests that [firstName]'s speed and accuracy when performing simple visual tasks is [PSI_DESCRIPTOR] relative to same age peers. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick and steady responding.
 
 Cognitive Profile Summary
 
@@ -3747,6 +3747,173 @@ function parseWRAML3Scores(txt) {
   return sc;
 }
 
+// ── WAIS-IV Score Parser ──
+// Extracts FSIQ, VCI, PRI, WMI, PSI from WAIS-IV score report PDF text
+function parseWAISScores(txt) {
+  if (!txt || txt.length < 50) return null;
+  const sc = {};
+  // Pattern pairs: [key, indexName regex, abbreviation regex]
+  const indexes = [
+    ["fsiq", /Full\s*Scale(?:\s*IQ)?/i, /FSIQ/],
+    ["vci",  /Verbal\s*Comprehension(?:\s*Index)?/i, /VCI/],
+    ["pri",  /Perceptual\s*Reasoning(?:\s*Index)?/i, /PRI/],
+    ["wmi",  /Working\s*Memory(?:\s*Index)?/i, /WMI/],
+    ["psi",  /Processing\s*Speed(?:\s*Index)?/i, /PSI/],
+  ];
+  for (const [key, namePat, abbrPat] of indexes) {
+    // Try: "IndexName  score  percentile" or "IndexName  score  percentile  CI"
+    // Also try: "ABBR  score  percentile"
+    const patterns = [
+      new RegExp(namePat.source + "\\s+(?:Index\\s+)?(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", namePat.flags),
+      new RegExp(abbrPat.source + "\\s+(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", abbrPat.flags),
+      // Table format: "ABBR  sumScaled  compositeScore  percentile  CI"
+      new RegExp(abbrPat.source + "\\s+\\d+\\s+(\\d{2,3})\\s+(\\d{1,3})\\s+\\d+", abbrPat.flags),
+    ];
+    for (const p of patterns) {
+      const m = txt.match(p);
+      if (m) {
+        const score = +m[1];
+        const pct = +m[2];
+        if (score >= 40 && score <= 160 && pct >= 0 && pct <= 100) {
+          sc[key] = { score, pct };
+          break;
+        }
+      }
+    }
+  }
+  // Need at least FSIQ + 2 indexes to be valid
+  const keys = Object.keys(sc);
+  if (!sc.fsiq || keys.length < 3) return null;
+  return sc;
+}
+
+// ── WPPSI-IV Score Parser ──
+// Extracts FSIQ, VCI, VSI, FRI, WMI, PSI from WPPSI-IV score report PDF text
+function parseWPPSIScores(txt) {
+  if (!txt || txt.length < 50) return null;
+  const sc = {};
+  const indexes = [
+    ["fsiq", /Full\s*Scale(?:\s*IQ)?/i, /FSIQ/],
+    ["vci",  /Verbal\s*Comprehension(?:\s*Index)?/i, /VCI/],
+    ["vsi",  /Visual\s*Spatial(?:\s*Index)?/i, /VSI/],
+    ["fri",  /Fluid\s*Reasoning(?:\s*Index)?/i, /FRI/],
+    ["wmi",  /Working\s*Memory(?:\s*Index)?/i, /WMI/],
+    ["psi",  /Processing\s*Speed(?:\s*Index)?/i, /PSI/],
+  ];
+  for (const [key, namePat, abbrPat] of indexes) {
+    const patterns = [
+      new RegExp(namePat.source + "\\s+(?:Index\\s+)?(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", namePat.flags),
+      new RegExp(abbrPat.source + "\\s+(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", abbrPat.flags),
+      new RegExp(abbrPat.source + "\\s+\\d+\\s+(\\d{2,3})\\s+(\\d{1,3})\\s+\\d+", abbrPat.flags),
+    ];
+    for (const p of patterns) {
+      const m = txt.match(p);
+      if (m) {
+        const score = +m[1];
+        const pct = +m[2];
+        if (score >= 40 && score <= 160 && pct >= 0 && pct <= 100) {
+          sc[key] = { score, pct };
+          break;
+        }
+      }
+    }
+  }
+  const keys = Object.keys(sc);
+  if (!sc.fsiq || keys.length < 3) return null;
+  return sc;
+}
+
+// ── Auto-derive strengths/weaknesses from parsed scores ──
+function deriveStrengthsWeaknesses(scores, indexList) {
+  // indexList: [[key, label], ...] e.g. [["vci","verbal reasoning"], ["pri","visual reasoning"]]
+  if (!scores) return { strengths: "", weaker: "" };
+  const entries = indexList.filter(([k]) => scores[k]).map(([k, label]) => ({ key: k, label, score: scores[k].score }));
+  if (entries.length < 2) return { strengths: "", weaker: "" };
+  const avg = entries.reduce((s, e) => s + e.score, 0) / entries.length;
+  const strong = entries.filter(e => e.score >= avg + 3).sort((a, b) => b.score - a.score);
+  const weak = entries.filter(e => e.score <= avg - 3).sort((a, b) => a.score - b.score);
+  // If no clear differentiation, use highest/lowest
+  if (strong.length === 0 && weak.length === 0) {
+    const sorted = [...entries].sort((a, b) => b.score - a.score);
+    if (sorted[0].score > sorted[sorted.length - 1].score) {
+      strong.push(sorted[0]);
+      weak.push(sorted[sorted.length - 1]);
+    }
+  }
+  return {
+    strengths: strong.length > 0 ? strong.map(e => e.label).join(" and ") : entries.filter(e => e.score >= avg).map(e => e.label).join(" and "),
+    weaker: weak.length > 0 ? weak.map(e => e.label).join(" and ") : entries.filter(e => e.score < avg).map(e => e.label).join(" and "),
+  };
+}
+
+// ── Extract WAIS-IV cognitive text from docs ──
+function extractWAISCogText(docs, firstName, pronouns) {
+  if (!docs || docs.length === 0) return null;
+  for (const d of docs) {
+    const txt = d.extractedText || "";
+    if (!txt || txt.length < 100) continue;
+    if (!/WAIS|Wechsler\s*Adult/i.test(txt)) continue;
+    const sc = parseWAISScores(txt);
+    if (!sc) continue;
+    // Build manual-like object from parsed scores
+    const wm = {};
+    if (sc.fsiq) { wm.fsiqScore = String(sc.fsiq.score); wm.fsiqPercentile = String(sc.fsiq.pct); }
+    if (sc.vci) { wm.vciScore = String(sc.vci.score); wm.vciPercentile = String(sc.vci.pct); }
+    if (sc.pri) { wm.priScore = String(sc.pri.score); wm.priPercentile = String(sc.pri.pct); }
+    if (sc.wmi) { wm.wmiScore = String(sc.wmi.score); wm.wmiPercentile = String(sc.wmi.pct); }
+    if (sc.psi) { wm.psiScore = String(sc.psi.score); wm.psiPercentile = String(sc.psi.pct); }
+    // Auto-derive strengths/weaknesses
+    const sw = deriveStrengthsWeaknesses(sc, [
+      ["vci", "verbal reasoning"], ["pri", "visual reasoning"],
+      ["wmi", "working memory"], ["psi", "processing efficiency"],
+    ]);
+    wm.strengths = sw.strengths;
+    wm.weakerAreas = sw.weaker;
+    return { wm, scores: sc };
+  }
+  return null;
+}
+
+// ── Extract WPPSI-IV cognitive text from docs ──
+function extractWPPSICogText(docs, firstName, pronouns) {
+  if (!docs || docs.length === 0) return null;
+  for (const d of docs) {
+    const txt = d.extractedText || "";
+    if (!txt || txt.length < 100) continue;
+    if (!/WPPSI|Wechsler\s*Preschool/i.test(txt)) continue;
+    const sc = parseWPPSIScores(txt);
+    if (!sc) continue;
+    const wm = {};
+    if (sc.fsiq) { wm.fsiqScore = String(sc.fsiq.score); wm.fsiqPercentile = String(sc.fsiq.pct); }
+    if (sc.vci) { wm.vciScore = String(sc.vci.score); wm.vciPercentile = String(sc.vci.pct); }
+    if (sc.vsi) { wm.vsiScore = String(sc.vsi.score); wm.vsiPercentile = String(sc.vsi.pct); }
+    if (sc.fri) { wm.friScore = String(sc.fri.score); wm.friPercentile = String(sc.fri.pct); }
+    if (sc.wmi) { wm.wmiScore = String(sc.wmi.score); wm.wmiPercentile = String(sc.wmi.pct); }
+    if (sc.psi) { wm.psiScore = String(sc.psi.score); wm.psiPercentile = String(sc.psi.pct); }
+    const sw = deriveStrengthsWeaknesses(sc, [
+      ["vci", "language based reasoning"], ["vsi", "visual spatial skills"],
+      ["fri", "fluid reasoning"], ["wmi", "working memory"], ["psi", "processing efficiency"],
+    ]);
+    wm.strengths = sw.strengths;
+    wm.weakerAreas = sw.weaker;
+    return { wm, scores: sc };
+  }
+  return null;
+}
+
+// ── Build score summary block for AI academic impact ──
+function buildCogScoreSummary(testName, scores, indexLabels) {
+  const lines = [];
+  lines.push(`Test: ${testName}`);
+  for (const [key, label] of indexLabels) {
+    if (scores[key]) {
+      const desc = percentileToDescriptor(scores[key].pct);
+      lines.push(`${label}: ${scores[key].score} (${scores[key].pct}th percentile, ${desc})`);
+    }
+  }
+  return lines.join("\n");
+}
+
 function buildMemoryText(sc, firstName, pr) {
   const sub = pr?.subject || "he";
   const obj = pr?.object || "him";
@@ -3760,24 +3927,24 @@ function buildMemoryText(sc, firstName, pr) {
   const parts = [];
 
   // Intro
-  parts.push(`Selected subtests of the Wide Range Assessment of Memory and Learning, Third Edition (WRAML-3) were administered to examine ${firstName}'s memory and learning abilities. The WRAML-3 is an individually administered, standardized assessment designed to evaluate a broad range of memory, learning, and cognitive functions that support memory and learning processes. This instrument measures how well ${firstName} can encode, store, and retrieve verbal and visual information both immediately after presentation and after a delay. Specifically, the WRAML-3 provides information about ${firstName}'s verbal and visual immediate recall, delayed recall, recognition memory, attention and concentration, and working memory. Index scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Subtest scores are reported as scaled scores with a mean of 10 and a standard deviation of 3. Qualitative descriptors are used to describe the range of performance.`);
+  parts.push(`Selected subtests of the Wide Range Assessment of Memory and Learning, Third Edition (WRAML-3) were administered to examine ${firstName}'s memory and learning abilities. The WRAML-3 is an individually administered, standardized assessment designed to evaluate a broad range of memory, learning, and cognitive functions that underlie everyday learning. Memory is a foundational skill that supports virtually all areas of academic achievement. The ability to take in new information, hold it in mind, organize it, and later retrieve it when needed is essential for following classroom instruction, learning to read, acquiring mathematical concepts, and completing written assignments. Weaknesses in memory functioning can affect a student's performance even when intellectual ability and motivation are adequate. The WRAML-3 measures how well ${firstName} can encode, store, and retrieve verbal and visual information both immediately after presentation and after a delay of approximately twenty to thirty minutes. Specifically, it provides information about ${firstName}'s verbal and visual immediate recall, delayed recall, recognition memory, attention and concentration, and working memory. Index scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Subtest scores are reported as scaled scores with a mean of 10 and a standard deviation of 3. Qualitative descriptors are used to describe the range of performance.`);
 
   // General Immediate Memory
   if (sc.GIM) {
-    parts.push(`The General Immediate Memory Index provides a broad estimate of ${firstName}'s overall immediate recall ability, measured across a wide range of memory tasks involving both verbal and visual modalities. This index is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. ${firstName} obtained a standard score of ${sc.GIM.score} (${ixPct("GIM")} percentile), which falls within the ${ixRng("GIM")} range. This score provides an overall indication of how effectively ${firstName} can take in and immediately reproduce new information across different types of content.`);
+    parts.push(`The General Immediate Memory Index provides a broad estimate of ${firstName}'s overall ability to take in and immediately reproduce new information across a wide range of memory tasks. This composite draws upon both verbal and visual memory channels, as well as attention and concentration, and therefore reflects the general efficiency with which ${firstName} can register and recall newly presented material. It is derived from the combined scores earned on the Verbal Immediate Memory Index, the Visual Immediate Memory Index, and the Attention and Concentration Index. ${firstName} obtained a standard score of ${sc.GIM.score} (${ixPct("GIM")} percentile), which falls within the ${ixRng("GIM")} range. This suggests that ${firstName}'s overall capacity to take in and immediately recall new information across both verbal and visual modalities is ${ixRng("GIM")} when compared to same age peers.`);
   }
 
   // Visual Immediate Memory
   if (sc.VIM) {
-    let t = `The Visual Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both meaningful and relatively unrelated visual information shortly after it is presented. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. ${firstName} obtained a standard score of ${sc.VIM.score} (${ixPct("VIM")} percentile), which falls within the ${ixRng("VIM")} range.`;
+    let t = `The Visual Immediate Memory Index is an estimate of how well ${firstName} can learn and recall visual information shortly after it is presented. Visual memory plays an important role in many classroom activities, including remembering what was written on the board, recalling the layout of a page or diagram, and recognizing previously seen material. This index is derived from the scaled scores earned on the Picture Memory and Design Learning subtests. ${firstName} obtained a standard score of ${sc.VIM.score} (${ixPct("VIM")} percentile), which falls within the ${ixRng("VIM")} range, suggesting that ${pos} ability to take in and immediately recall visual information is ${ixRng("VIM")} relative to same age peers.`;
     if (sc.DL) {
-      t += ` On the Design Learning subtest, ${firstName} was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, ${firstName} was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials to assess ${firstName}'s ability to acquire and consolidate visual information with repetition. ${firstName} obtained a scaled score of ${sc.DL.ss} (${ssPct("DL")} percentile), which falls within the ${ssRng("DL")} range.`;
+      t += ` On the Design Learning subtest, ${firstName} was shown a stimulus card containing geometric shapes distributed across four quadrants. The card was exposed for ten seconds and then removed. After a brief delay, ${firstName} was asked to recall and draw the shapes in the correct locations. This procedure was repeated across four learning trials, providing an opportunity to observe how well ${firstName} benefits from repeated exposure to the same visual material. This type of task is similar to situations in which students must learn and remember spatial arrangements, such as map details or geometric configurations. ${firstName} obtained a scaled score of ${sc.DL.ss} (${ssPct("DL")} percentile), which falls within the ${ssRng("DL")} range.`;
     }
     if (sc.DLD) {
-      t += ` When asked to recall the design details in the correct locations after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.DLD.ss} (${ssPct("DLD")} percentile), which falls within the ${ssRng("DLD")} range, reflecting ${pos} ability to retain and retrieve visual spatial information from long term memory.`;
+      t += ` When asked to recall the design details in the correct locations after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.DLD.ss} (${ssPct("DLD")} percentile), which falls within the ${ssRng("DLD")} range. This delayed score reflects how well ${firstName} can consolidate and later retrieve visual spatial information from long term memory, a skill that is important for retaining learned material from one lesson to the next.`;
     }
     if (sc.PM) {
-      t += ` On the Picture Memory subtest, ${firstName} was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. This subtest measures visual memory for contextually meaningful material. ${firstName} obtained a scaled score of ${sc.PM.ss} (${ssPct("PM")} percentile), which falls within the ${ssRng("PM")} range.`;
+      t += ` On the Picture Memory subtest, ${firstName} was shown a meaningful visual scene and was then asked to look at a second, similar scene. Memory of the original picture is indicated by identifying elements that were altered, added, or removed in the second picture. Unlike Design Learning, this subtest draws on memory for contextually rich and meaningful visual information, which is more similar to everyday visual experiences. ${firstName} obtained a scaled score of ${sc.PM.ss} (${ssPct("PM")} percentile), which falls within the ${ssRng("PM")} range.`;
     }
     if (sc.PMD) {
       t += ` When asked to identify elements that were changed, added, or moved after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.PMD.ss} (${ssPct("PMD")} percentile), which falls within the ${ssRng("PMD")} range.`;
@@ -3787,47 +3954,47 @@ function buildMemoryText(sc, firstName, pr) {
 
   // Verbal Immediate Memory
   if (sc.VBM) {
-    let t = `The Verbal Immediate Memory Index is an estimate of how well ${firstName} can learn and recall both contextually meaningful and relatively less meaningful verbal information shortly after it is presented. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. ${firstName} obtained a standard score of ${sc.VBM.score} (${ixPct("VBM")} percentile), which falls within the ${ixRng("VBM")} range. These subtests place heavy demands on the ability to attend to and encode verbal information.`;
+    let t = `The Verbal Immediate Memory Index is an estimate of how well ${firstName} can learn and recall verbal information shortly after hearing it. Verbal memory is central to classroom learning because much of what is taught is delivered through spoken language. The ability to listen to a teacher's explanation, hold the key ideas in mind, and recall them accurately is essential for following instructions, participating in discussions, and learning from lectures. This index is derived from the scaled scores earned on the Story Memory and Verbal Learning subtests. ${firstName} obtained a standard score of ${sc.VBM.score} (${ixPct("VBM")} percentile), which falls within the ${ixRng("VBM")} range, suggesting that ${pos} ability to take in and immediately recall verbally presented information is ${ixRng("VBM")} relative to same age peers.`;
     if (sc.SM) {
-      t += ` The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and ${firstName} was asked to retell each story from memory. ${firstName} obtained a scaled score of ${sc.SM.ss} (${ssPct("SM")} percentile), which falls within the ${ssRng("SM")} range.`;
+      t += ` The Story Memory subtest assesses the ability to process, encode, and recall meaningful material that is presented in a sequential narrative format. In the immediate portion, the examiner reads two stories one at a time, and ${firstName} was asked to retell each story from memory. Because the material is organized into a meaningful narrative, this subtest reflects how well ${firstName} can use contextual meaning and story structure to support recall. ${firstName} obtained a scaled score of ${sc.SM.ss} (${ssPct("SM")} percentile), which falls within the ${ssRng("SM")} range.`;
     }
     if (sc.SMD) {
-      t += ` On the delayed recall portion, administered after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.SMD.ss} (${ssPct("SMD")} percentile), which falls within the ${ssRng("SMD")} range, reflecting ${pos} ability to retain verbally presented narrative information over time.`;
+      t += ` On the delayed recall portion, administered after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.SMD.ss} (${ssPct("SMD")} percentile), which falls within the ${ssRng("SMD")} range. This delayed score reflects ${pos} ability to consolidate and retain meaningful verbal information over time, which is important for remembering what was taught earlier in a lesson or on a previous day.`;
     }
     if (sc.VL) {
-      t += ` The Verbal Learning subtest assesses ${firstName}'s ability to learn a list of unrelated words over four learning trials, measuring rote verbal learning and the benefit of repetition. ${firstName} obtained a scaled score of ${sc.VL.ss} (${ssPct("VL")} percentile), which falls within the ${ssRng("VL")} range.`;
+      t += ` The Verbal Learning subtest assesses ${firstName}'s ability to learn a list of unrelated words over four learning trials. Because the words are not connected by meaning, this task places heavier demands on rote verbal learning and measures how well ${firstName} benefits from repetition when the material itself provides few contextual cues to support recall. ${firstName} obtained a scaled score of ${sc.VL.ss} (${ssPct("VL")} percentile), which falls within the ${ssRng("VL")} range.`;
     }
     if (sc.VLD) {
-      t += ` On the delayed recall section, administered after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.VLD.ss} (${ssPct("VLD")} percentile), which falls within the ${ssRng("VLD")} range, reflecting ${pos} ability to store and retrieve unrelated verbal material from long term memory.`;
+      t += ` On the delayed recall section, administered after a twenty to thirty minute delay, ${firstName} obtained a scaled score of ${sc.VLD.ss} (${ssPct("VLD")} percentile), which falls within the ${ssRng("VLD")} range, reflecting ${pos} ability to store and later retrieve rote verbal material from long term memory.`;
     }
     parts.push(t);
   }
 
   // Attention/Concentration
   if (sc.AC) {
-    let t = `The Attention and Concentration Index provides an estimate of how well ${firstName} can learn and recall attentionally demanding, relatively rote, sequential information. Both auditory and visual information are sampled within this domain. This index is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. ${firstName} obtained a standard score of ${sc.AC.score} (${ixPct("AC")} percentile), which falls within the ${ixRng("AC")} range.`;
+    let t = `The Attention and Concentration Index provides an estimate of how well ${firstName} can learn and recall attentionally demanding, relatively rote, sequential information. Attention and concentration underlie all forms of memory because information cannot be stored effectively if it is not attended to in the first place. This domain is particularly relevant to tasks that require sustained focus, such as listening to multi step directions, copying from the board, or following a sequence of classroom instructions. Both auditory and visual information are sampled within this index. It is derived from the scaled scores earned on the Finger Windows and Number Letter subtests. ${firstName} obtained a standard score of ${sc.AC.score} (${ixPct("AC")} percentile), which falls within the ${ixRng("AC")} range, suggesting that ${pos} ability to attend to and remember sequentially presented information is ${ixRng("AC")} relative to same age peers.`;
     if (sc.FW) {
-      t += ` The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations using a card with holes, or windows. The examiner points to a pattern of windows in a specified order, and ${firstName} must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory. ${firstName} obtained a scaled score of ${sc.FW.ss} (${ssPct("FW")} percentile), which falls within the ${ssRng("FW")} range.`;
+      t += ` The Finger Windows subtest assesses the ability to attend to and remember a sequence of spatial locations. The examiner points to a pattern of holes, or windows, in a card in a specified order, and ${firstName} must reproduce the sequence from memory. The pattern of windows becomes progressively longer as the subtest proceeds, placing increasing demands on visual sequential memory and the ability to maintain a mental representation of a spatial sequence. ${firstName} obtained a scaled score of ${sc.FW.ss} (${ssPct("FW")} percentile), which falls within the ${ssRng("FW")} range.`;
     }
     if (sc.NL) {
-      t += ` The Number Letter subtest requires ${firstName} to repeat a random mix of verbally presented numbers and letters in the exact order they were given. This subtest assesses auditory attention, working memory, and the ability to maintain sequential information. ${firstName} obtained a scaled score of ${sc.NL.ss} (${ssPct("NL")} percentile), which falls within the ${ssRng("NL")} range.`;
+      t += ` The Number Letter subtest requires ${firstName} to listen to a random mix of numbers and letters presented verbally and repeat them back in the exact order they were given. This task assesses auditory attention, working memory, and the ability to hold and reproduce sequential auditory information, which is similar to what is required when following a series of spoken instructions in the classroom. ${firstName} obtained a scaled score of ${sc.NL.ss} (${ssPct("NL")} percentile), which falls within the ${ssRng("NL")} range.`;
     }
     parts.push(t);
   }
 
   // General Delayed
   if (sc.GD) {
-    parts.push(`The General Delayed Index provides an estimate of longer term storage and retrieval of the information ${firstName} learned on the four immediate memory subtests, specifically Picture Memory, Story Memory, Design Learning, and Verbal Learning. This index is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes and reflects how well ${firstName} can retain both visual and verbal information over a twenty to thirty minute period. ${firstName} obtained a standard score of ${sc.GD.score} (${ixPct("GD")} percentile), which falls within the ${ixRng("GD")} range.`);
+    parts.push(`The General Delayed Index provides an estimate of how well ${firstName} can retain and later retrieve information that was learned earlier in the assessment session. After the immediate memory subtests were administered, approximately twenty to thirty minutes were allowed to pass before ${firstName} was asked to recall the same material again without any additional exposure. This delayed recall format is important because it reflects the kind of memory required for learning in school, where students must remember information from one part of a lesson to the next, or from one day to the next. This index is derived from the scores earned on the Visual Delayed and Verbal Delayed Indexes and reflects how well ${firstName} can retain both visual and verbal information over time. ${firstName} obtained a standard score of ${sc.GD.score} (${ixPct("GD")} percentile), which falls within the ${ixRng("GD")} range, suggesting that ${pos} overall ability to consolidate and retrieve previously learned material after a delay is ${ixRng("GD")} relative to same age peers.`);
   }
 
   // Visual Delayed
   if (sc.VD) {
-    parts.push(`The Visual Delayed Index is an estimate of how well ${firstName} can retain and retrieve both meaningful and relatively unrelated visual information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. ${firstName} obtained a standard score of ${sc.VD.score} (${ixPct("VD")} percentile), which falls within the ${ixRng("VD")} range.`);
+    parts.push(`The Visual Delayed Index is an estimate of how well ${firstName} can retain and retrieve visual information after a twenty to thirty minute delay. This index reflects the ability to consolidate visual material into longer term storage and access it when needed, which is relevant for tasks such as remembering diagrams, visual instructions, or the layout of previously seen material. It is derived from the subtest scaled scores of Picture Memory Delayed and Design Learning Delayed. ${firstName} obtained a standard score of ${sc.VD.score} (${ixPct("VD")} percentile), which falls within the ${ixRng("VD")} range.`);
   }
 
   // Verbal Delayed
   if (sc.VBD) {
-    parts.push(`The Verbal Delayed Index is an estimate of how well ${firstName} can store and retrieve both meaningful and relatively unrelated verbal information after a twenty to thirty minute delay. This index is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. ${firstName} obtained a standard score of ${sc.VBD.score} (${ixPct("VBD")} percentile), which falls within the ${ixRng("VBD")} range.`);
+    parts.push(`The Verbal Delayed Index is an estimate of how well ${firstName} can store and retrieve verbal information after a twenty to thirty minute delay. This index reflects the ability to consolidate verbally presented material into longer term memory and retrieve it when needed, which is essential for retaining information from classroom instruction, remembering what was read in a passage, or recalling details from a previous lesson. It is derived from the subtest scaled scores of Story Memory Delayed and Verbal Learning Delayed. ${firstName} obtained a standard score of ${sc.VBD.score} (${ixPct("VBD")} percentile), which falls within the ${ixRng("VBD")} range.`);
   }
 
   // Collect all scores for AI summary generation
@@ -7914,75 +8081,167 @@ export default function App() {
         const allTextDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && !d.extractedText.startsWith("["));
 
         if (sid === "cognitive") {
-          // ── WAIS-IV: Deterministic template from manual entry (age >= 16) ──
+          // ── Helper: Generate AI academic impact summary for cognitive scores ──
+          const generateCogImpactSummary = async (baseContent, testName, scoreSummary) => {
+            uSec(sid, { content: baseContent + "\n\n[Generating academic impact summary...]" });
+            try {
+              const impactPrompt = `Write an Academic Impact paragraph (150-250 words) for a psychoeducational assessment report.
+
+Based on the following ${testName} cognitive scores, write a cohesive paragraph that:
+1. Describes how this cognitive profile is expected to impact academic functioning
+2. Connects specific cognitive strengths to areas where the student is likely to perform well academically
+3. Connects specific cognitive weaknesses to areas where the student may experience academic difficulty
+4. Addresses implications for reading, writing, mathematics, and classroom learning as relevant
+5. Discusses how the pattern of strengths and weaknesses may interact (e.g., strong verbal but weak processing speed may mean the student understands content but struggles with timed work)
+6. Uses cautious, professional language — "may", "suggests", "is expected to", "at times"
+
+SCORES:
+${scoreSummary}
+
+Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write in connected paragraphs. Do NOT restate individual scores — synthesize them into a functional academic narrative. Output only the paragraph(s).`;
+
+              const result = await aiGen(
+                meta, tools, impactPrompt,
+                { name: "Standard", desc: "Functional impact, strengths-based, Ontario style." },
+                "", [], GLOBAL_TONE_RULES, 2000, "cognitive",
+                accessPassword, proxyUrl, apiKey, controller.signal, openaiModel
+              );
+              if (result.ok) {
+                let impact = cleanAIOutput(result.text, "cognitive");
+                if (!/academic\s+impact|implications?\s+for\s+academic|impact\s+on\s+learning/i.test(impact)) {
+                  impact = "Academic Impact\n\n" + impact;
+                }
+                return baseContent + "\n\n" + impact;
+              }
+            } catch (e) { /* fall through */ }
+            return baseContent;
+          };
+
+          // ── WAIS-IV (age >= 16): Try PDF extraction first, then manual entry ──
           if (useWAISByAge) {
-            const wm = secs.cognitive?.waisManual || {};
-            const missing = [];
-            if (!wm.fsiqScore?.trim()) missing.push("FSIQ Score");
-            if (!wm.fsiqPercentile?.trim()) missing.push("FSIQ Percentile");
-            if (!wm.vciScore?.trim()) missing.push("VCI Score");
-            if (!wm.vciPercentile?.trim()) missing.push("VCI Percentile");
-            if (!wm.priScore?.trim()) missing.push("PRI Score");
-            if (!wm.priPercentile?.trim()) missing.push("PRI Percentile");
-            if (!wm.wmiScore?.trim()) missing.push("WMI Score");
-            if (!wm.wmiPercentile?.trim()) missing.push("WMI Percentile");
-            if (!wm.psiScore?.trim()) missing.push("PSI Score");
-            if (!wm.psiPercentile?.trim()) missing.push("PSI Percentile");
-            if (missing.length > 0) {
-              showToast("Missing fields: " + missing.join(", "), "error");
-              setGenning(false);
-              return;
+            // Try PDF extraction
+            const waisDocs = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WAIS|Wechsler\s*Adult/i.test(d.extractedText));
+            const pdfResult = extractWAISCogText(waisDocs.length > 0 ? waisDocs : allTextDocs);
+            let wm, scoreSummary;
+            if (pdfResult) {
+              wm = pdfResult.wm;
+              scoreSummary = buildCogScoreSummary("WAIS-IV", pdfResult.scores, [
+                ["fsiq", "Full Scale IQ"], ["vci", "Verbal Comprehension"], ["pri", "Perceptual Reasoning"],
+                ["wmi", "Working Memory"], ["psi", "Processing Speed"],
+              ]);
+              // Also populate manual fields so UI stays in sync
+              uSec(sid, { waisManual: { ...secs.cognitive?.waisManual, ...wm } });
+            } else {
+              // Fall back to manual entry
+              wm = secs.cognitive?.waisManual || {};
+              const missing = [];
+              if (!wm.fsiqScore?.trim()) missing.push("FSIQ Score");
+              if (!wm.fsiqPercentile?.trim()) missing.push("FSIQ Percentile");
+              if (!wm.vciScore?.trim()) missing.push("VCI Score");
+              if (!wm.vciPercentile?.trim()) missing.push("VCI Percentile");
+              if (!wm.priScore?.trim()) missing.push("PRI Score");
+              if (!wm.priPercentile?.trim()) missing.push("PRI Percentile");
+              if (!wm.wmiScore?.trim()) missing.push("WMI Score");
+              if (!wm.wmiPercentile?.trim()) missing.push("WMI Percentile");
+              if (!wm.psiScore?.trim()) missing.push("PSI Score");
+              if (!wm.psiPercentile?.trim()) missing.push("PSI Percentile");
+              if (missing.length > 0) {
+                showToast("No WAIS-IV scores found in PDFs. Missing manual fields: " + missing.join(", "), "error");
+                setGenning(false);
+                return;
+              }
+              scoreSummary = `Test: WAIS-IV\nFull Scale IQ: ${wm.fsiqScore} (${wm.fsiqPercentile}th percentile)\nVerbal Comprehension: ${wm.vciScore} (${wm.vciPercentile}th percentile)\nPerceptual Reasoning: ${wm.priScore} (${wm.priPercentile}th percentile)\nWorking Memory: ${wm.wmiScore} (${wm.wmiPercentile}th percentile)\nProcessing Speed: ${wm.psiScore} (${wm.psiPercentile}th percentile)`;
             }
-            const content = fillWAISCognitiveTemplate(wm, derivedFirstName || "[firstName]", meta.pronouns);
+            let content = fillWAISCognitiveTemplate(wm, derivedFirstName || "[firstName]", meta.pronouns);
+            content = await generateCogImpactSummary(content, "WAIS-IV", scoreSummary);
             uSec(sid, { content });
-            showToast("WAIS-IV cognitive section generated from manual scores.", "success");
+            showToast(pdfResult ? "WAIS-IV cognitive section auto-populated from PDF + AI academic impact." : "WAIS-IV cognitive section generated from manual scores + AI academic impact.", "success");
             setGenning(false);
             return;
           }
 
-          // ── WPPSI-IV: Deterministic template from manual entry (age < 6) ──
+          // ── WPPSI-IV (age < 6y11m): Try PDF extraction first, then manual entry ──
           if (useWPPSIByAge) {
-            const wm = secs.cognitive?.wppsiManual || {};
-            const missing = [];
-            if (!wm.fsiqScore?.trim()) missing.push("FSIQ Score");
-            if (!wm.fsiqPercentile?.trim()) missing.push("FSIQ Percentile");
-            if (!wm.vciScore?.trim()) missing.push("VCI Score");
-            if (!wm.vciPercentile?.trim()) missing.push("VCI Percentile");
-            if (!wm.vsiScore?.trim()) missing.push("VSI Score");
-            if (!wm.vsiPercentile?.trim()) missing.push("VSI Percentile");
-            if (!wm.friScore?.trim()) missing.push("FRI Score");
-            if (!wm.friPercentile?.trim()) missing.push("FRI Percentile");
-            if (!wm.wmiScore?.trim()) missing.push("WMI Score");
-            if (!wm.wmiPercentile?.trim()) missing.push("WMI Percentile");
-            if (!wm.psiScore?.trim()) missing.push("PSI Score");
-            if (!wm.psiPercentile?.trim()) missing.push("PSI Percentile");
-            if (missing.length > 0) {
-              showToast("Missing fields: " + missing.join(", "), "error");
-              setGenning(false);
-              return;
+            const wppsiDocs = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
+            const pdfResult = extractWPPSICogText(wppsiDocs.length > 0 ? wppsiDocs : allTextDocs);
+            let wm, scoreSummary;
+            if (pdfResult) {
+              wm = pdfResult.wm;
+              scoreSummary = buildCogScoreSummary("WPPSI-IV", pdfResult.scores, [
+                ["fsiq", "Full Scale IQ"], ["vci", "Verbal Comprehension"], ["vsi", "Visual Spatial"],
+                ["fri", "Fluid Reasoning"], ["wmi", "Working Memory"], ["psi", "Processing Speed"],
+              ]);
+              uSec(sid, { wppsiManual: { ...secs.cognitive?.wppsiManual, ...wm } });
+            } else {
+              wm = secs.cognitive?.wppsiManual || {};
+              const missing = [];
+              if (!wm.fsiqScore?.trim()) missing.push("FSIQ Score");
+              if (!wm.fsiqPercentile?.trim()) missing.push("FSIQ Percentile");
+              if (!wm.vciScore?.trim()) missing.push("VCI Score");
+              if (!wm.vciPercentile?.trim()) missing.push("VCI Percentile");
+              if (!wm.vsiScore?.trim()) missing.push("VSI Score");
+              if (!wm.vsiPercentile?.trim()) missing.push("VSI Percentile");
+              if (!wm.friScore?.trim()) missing.push("FRI Score");
+              if (!wm.friPercentile?.trim()) missing.push("FRI Percentile");
+              if (!wm.wmiScore?.trim()) missing.push("WMI Score");
+              if (!wm.wmiPercentile?.trim()) missing.push("WMI Percentile");
+              if (!wm.psiScore?.trim()) missing.push("PSI Score");
+              if (!wm.psiPercentile?.trim()) missing.push("PSI Percentile");
+              if (missing.length > 0) {
+                showToast("No WPPSI-IV scores found in PDFs. Missing manual fields: " + missing.join(", "), "error");
+                setGenning(false);
+                return;
+              }
+              scoreSummary = `Test: WPPSI-IV\nFull Scale IQ: ${wm.fsiqScore} (${wm.fsiqPercentile}th percentile)\nVerbal Comprehension: ${wm.vciScore} (${wm.vciPercentile}th percentile)\nVisual Spatial: ${wm.vsiScore} (${wm.vsiPercentile}th percentile)\nFluid Reasoning: ${wm.friScore} (${wm.friPercentile}th percentile)\nWorking Memory: ${wm.wmiScore} (${wm.wmiPercentile}th percentile)\nProcessing Speed: ${wm.psiScore} (${wm.psiPercentile}th percentile)`;
             }
-            const content = fillWPPSICognitiveTemplate(wm, derivedFirstName || "[firstName]", meta.pronouns);
+            let content = fillWPPSICognitiveTemplate(wm, derivedFirstName || "[firstName]", meta.pronouns);
+            content = await generateCogImpactSummary(content, "WPPSI-IV", scoreSummary);
             uSec(sid, { content });
-            showToast("WPPSI-IV cognitive section generated from manual scores.", "success");
+            showToast(pdfResult ? "WPPSI-IV cognitive section auto-populated from PDF + AI academic impact." : "WPPSI-IV cognitive section generated from manual scores + AI academic impact.", "success");
             setGenning(false);
             return;
           }
 
-          // ── WAIS-IV (legacy): AI generation when WAIS tool manually selected ──
+          // ── WISC-V / default: Deterministic extraction from Q-interactive PDF ──
           const isWAISSelected = tools.some(t => t.id === "wais-iv" && t.used);
           if (!isWAISSelected) {
-            // WISC/WPPSI: try deterministic extraction first
             let extracted = extractCognitiveText(selDocs(sid));
             if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
             if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
             if (extracted) {
-              const content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
+              let content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
+              // Try to extract WISC scores for AI academic impact
+              const wiscScoreDocs = wiscDocs.length > 0 ? wiscDocs : selDocs(sid);
+              let wiscScoreSummary = null;
+              for (const d of wiscScoreDocs) {
+                const txt = d.extractedText || "";
+                // Extract basic WISC scores for summary
+                const fsiq = txt.match(/Full\s*Scale\s*IQ[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                const vci = txt.match(/(?:Verbal\s*Comprehension|VCI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                const vsi = txt.match(/(?:Visual\s*Spatial|VSI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                const fri = txt.match(/(?:Fluid\s*Reasoning|FRI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                const wmi = txt.match(/(?:Working\s*Memory|WMI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                const psi = txt.match(/(?:Processing\s*Speed|PSI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                if (fsiq) {
+                  const lines = ["Test: WISC-V"];
+                  if (fsiq) lines.push(`Full Scale IQ: ${fsiq[1]} (${fsiq[2]}th percentile)`);
+                  if (vci) lines.push(`Verbal Comprehension: ${vci[1]} (${vci[2]}th percentile)`);
+                  if (vsi) lines.push(`Visual Spatial: ${vsi[1]} (${vsi[2]}th percentile)`);
+                  if (fri) lines.push(`Fluid Reasoning: ${fri[1]} (${fri[2]}th percentile)`);
+                  if (wmi) lines.push(`Working Memory: ${wmi[1]} (${wmi[2]}th percentile)`);
+                  if (psi) lines.push(`Processing Speed: ${psi[1]} (${psi[2]}th percentile)`);
+                  wiscScoreSummary = lines.join("\n");
+                  break;
+                }
+              }
+              if (wiscScoreSummary) {
+                content = await generateCogImpactSummary(content, "WISC-V", wiscScoreSummary);
+              }
               uSec(sid, { content });
-              showToast("Cognitive text extracted from uploaded report (no AI)", "success");
+              showToast("Cognitive text extracted from uploaded report" + (wiscScoreSummary ? " + AI academic impact" : ""), "success");
               setGenning(false);
               return;
             } else if (wiscDocs.length > 0) {
-              // WISC doc exists but extraction failed — dump raw WISC text for manual editing
               const rawDump = wiscDocs[0].extractedText;
               uSec(sid, { content: rawDump });
               showToast("Could not locate cognitive section anchors — full document text inserted for manual editing.", "warn");
@@ -7990,7 +8249,7 @@ export default function App() {
               return;
             }
           }
-          // WAIS-IV or no WISC doc found — fall through to AI generation below
+          // No extraction succeeded — fall through to AI generation below
         }
 
         if (sid === "summary") {
@@ -8547,21 +8806,81 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
           const allTextDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && !d.extractedText.startsWith("["));
 
           if (sid === "cognitive") {
+            // ── Helper: AI academic impact (same as pipeline 1) ──
+            const genCogImpact = async (base, testName, scoreSummary) => {
+              try {
+                const impactPrompt = `Write an Academic Impact paragraph (150-250 words) for a psychoeducational assessment report.\n\nBased on the following ${testName} cognitive scores, write a cohesive paragraph that:\n1. Describes how this cognitive profile is expected to impact academic functioning\n2. Connects specific cognitive strengths to areas where the student is likely to perform well academically\n3. Connects specific cognitive weaknesses to areas where the student may experience academic difficulty\n4. Addresses implications for reading, writing, mathematics, and classroom learning as relevant\n5. Uses cautious, professional language — "may", "suggests", "is expected to"\n\nSCORES:\n${scoreSummary}\n\nUse [firstName] and correct pronouns throughout. Do NOT use bullet points. Write in connected paragraphs. Output only the paragraph(s).`;
+                const result = await aiGen(meta, tools, impactPrompt, { name: "Standard", desc: "Functional impact, strengths-based, Ontario style." }, "", [], GLOBAL_TONE_RULES, 2000, "cognitive", accessPassword, proxyUrl, apiKey, controller.signal, openaiModel);
+                if (result.ok) {
+                  let impact = cleanAIOutput(result.text, "cognitive");
+                  if (!/academic\s+impact|implications?\s+for\s+academic/i.test(impact)) impact = "Academic Impact\n\n" + impact;
+                  return base + "\n\n" + impact;
+                }
+              } catch (e) { /* fall through */ }
+              return base;
+            };
+
+            // Try WAIS PDF extraction (age >= 16y11m)
+            if (useWAISByAge) {
+              const waisDocs = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WAIS|Wechsler\s*Adult/i.test(d.extractedText));
+              const pdfResult = extractWAISCogText(waisDocs.length > 0 ? waisDocs : allTextDocs);
+              let wm = pdfResult ? pdfResult.wm : secs.cognitive?.waisManual || {};
+              if (pdfResult) uSec(sid, { waisManual: { ...secs.cognitive?.waisManual, ...wm } });
+              const hasScores = wm.fsiqScore?.trim() && wm.vciScore?.trim();
+              if (hasScores) {
+                let content = fillWAISCognitiveTemplate(wm, derivedFirstName || "[firstName]", meta.pronouns);
+                const scoreSummary = pdfResult ? buildCogScoreSummary("WAIS-IV", pdfResult.scores, [["fsiq","Full Scale IQ"],["vci","Verbal Comprehension"],["pri","Perceptual Reasoning"],["wmi","Working Memory"],["psi","Processing Speed"]]) : `Test: WAIS-IV\nFSIQ: ${wm.fsiqScore} (${wm.fsiqPercentile}th)\nVCI: ${wm.vciScore} (${wm.vciPercentile}th)\nPRI: ${wm.priScore} (${wm.priPercentile}th)\nWMI: ${wm.wmiScore} (${wm.wmiPercentile}th)\nPSI: ${wm.psiScore} (${wm.psiPercentile}th)`;
+                content = await genCogImpact(content, "WAIS-IV", scoreSummary);
+                uSec(sid, { content }); localContent[sid] = content; succeeded++; continue;
+              }
+            }
+
+            // Try WPPSI PDF extraction (age < 6y11m)
+            if (useWPPSIByAge) {
+              const wppsiDocs = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
+              const pdfResult = extractWPPSICogText(wppsiDocs.length > 0 ? wppsiDocs : allTextDocs);
+              let wm = pdfResult ? pdfResult.wm : secs.cognitive?.wppsiManual || {};
+              if (pdfResult) uSec(sid, { wppsiManual: { ...secs.cognitive?.wppsiManual, ...wm } });
+              const hasScores = wm.fsiqScore?.trim() && wm.vciScore?.trim();
+              if (hasScores) {
+                let content = fillWPPSICognitiveTemplate(wm, derivedFirstName || "[firstName]", meta.pronouns);
+                const scoreSummary = pdfResult ? buildCogScoreSummary("WPPSI-IV", pdfResult.scores, [["fsiq","Full Scale IQ"],["vci","Verbal Comprehension"],["vsi","Visual Spatial"],["fri","Fluid Reasoning"],["wmi","Working Memory"],["psi","Processing Speed"]]) : `Test: WPPSI-IV\nFSIQ: ${wm.fsiqScore}\nVCI: ${wm.vciScore}\nVSI: ${wm.vsiScore}\nFRI: ${wm.friScore}\nWMI: ${wm.wmiScore}\nPSI: ${wm.psiScore}`;
+                content = await genCogImpact(content, "WPPSI-IV", scoreSummary);
+                uSec(sid, { content }); localContent[sid] = content; succeeded++; continue;
+              }
+            }
+
+            // WISC-V: existing deterministic extraction + AI impact
             let extracted = extractCognitiveText(selDocs(sid));
             if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
             if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
             if (extracted) {
-              const content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
-              uSec(sid, { content });
-              localContent[sid] = content;
-              succeeded++;
-              continue;
+              let content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
+              // Try WISC score extraction for AI impact
+              const scoreDocs = wiscDocs.length > 0 ? wiscDocs : selDocs(sid);
+              for (const d of scoreDocs) {
+                const txt = d.extractedText || "";
+                const fsiq = txt.match(/Full\s*Scale\s*IQ[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                if (fsiq) {
+                  const lines = ["Test: WISC-V", `Full Scale IQ: ${fsiq[1]} (${fsiq[2]}th percentile)`];
+                  const vci = txt.match(/(?:Verbal\s*Comprehension|VCI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                  const vsi = txt.match(/(?:Visual\s*Spatial|VSI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                  const fri = txt.match(/(?:Fluid\s*Reasoning|FRI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                  const wmi = txt.match(/(?:Working\s*Memory|WMI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                  const psi = txt.match(/(?:Processing\s*Speed|PSI)[^\d]*([\d]{2,3})\s+(\d{1,3})/i);
+                  if (vci) lines.push(`Verbal Comprehension: ${vci[1]} (${vci[2]}th percentile)`);
+                  if (vsi) lines.push(`Visual Spatial: ${vsi[1]} (${vsi[2]}th percentile)`);
+                  if (fri) lines.push(`Fluid Reasoning: ${fri[1]} (${fri[2]}th percentile)`);
+                  if (wmi) lines.push(`Working Memory: ${wmi[1]} (${wmi[2]}th percentile)`);
+                  if (psi) lines.push(`Processing Speed: ${psi[1]} (${psi[2]}th percentile)`);
+                  content = await genCogImpact(content, "WISC-V", lines.join("\n"));
+                  break;
+                }
+              }
+              uSec(sid, { content }); localContent[sid] = content; succeeded++; continue;
             } else if (wiscDocs.length > 0) {
               const content = wiscDocs[0].extractedText;
-              uSec(sid, { content });
-              localContent[sid] = content;
-              succeeded++;
-              continue;
+              uSec(sid, { content }); localContent[sid] = content; succeeded++; continue;
             }
           } else if (sid === "summary") {
             const extracted = extractSummaryText(wiscDocs.length > 0 ? wiscDocs : allTextDocs);
@@ -8619,15 +8938,26 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
           // Deterministic extraction succeeded above (with continue) or failed — fall through to AI
         }
 
-        // ── DETERMINISTIC: Memory from WRAML3 ──
+        // ── DETERMINISTIC + AI SUMMARY: Memory from WRAML3 ──
                 if (sid === "memory") {
           const memDocs = selDocs(sid);
           const extracted = extractMemoryText(memDocs, derivedFirstName, meta.pronouns);
           if (extracted) {
-            uSec(sid, { content: extracted });
-            localContent[sid] = extracted;
-            succeeded++;
-            continue;
+            const scoreBlockMatch = extracted.match(/\[MEMORY_SCORES_FOR_SUMMARY\]\n([\s\S]*?)\n\[\/MEMORY_SCORES_FOR_SUMMARY\]/);
+            const cleanedText = extracted.replace(/\n*\[MEMORY_SCORES_FOR_SUMMARY\][\s\S]*?\[\/MEMORY_SCORES_FOR_SUMMARY\]\s*/, "").trim();
+            if (scoreBlockMatch) {
+              try {
+                const summaryPrompt = `Write a Summary of Memory and Learning paragraph (150-250 words) for a psychoeducational assessment report.\n\nBased on the following WRAML-3 scores, write a cohesive summary that:\n1. Describes the student's overall memory and learning profile\n2. Compares immediate vs delayed memory\n3. Compares visual vs verbal memory\n4. Notes attention/concentration functioning\n5. Identifies clear strengths and weaknesses\n6. Describes implications for the student's academic functioning (e.g., how memory weaknesses may affect learning, note-taking, following instructions, retaining information)\n7. Uses cautious, professional language — "may", "suggests", "is expected to"\n\nSCORES:\n${scoreBlockMatch[1]}\n\nUse [firstName] and correct pronouns throughout. Do NOT use bullet points. Write in connected paragraphs. Output only the summary paragraph(s).`;
+                const summaryResult = await aiGen(meta, tools, summaryPrompt, { name: "Standard", desc: "Functional impact, strengths-based, Ontario style." }, "", [], GLOBAL_TONE_RULES, 2000, "memory", accessPassword, proxyUrl, apiKey, controller.signal, openaiModel);
+                if (summaryResult.ok) {
+                  let summary = cleanAIOutput(summaryResult.text, "memory");
+                  if (!/summary\s+of\s+memory/i.test(summary)) summary = "Summary of Memory and Learning\n\n" + summary;
+                  const content = cleanedText + "\n\n" + summary;
+                  uSec(sid, { content }); localContent[sid] = content; succeeded++; continue;
+                }
+              } catch (e) { /* fall through to no-summary */ }
+            }
+            uSec(sid, { content: cleanedText }); localContent[sid] = cleanedText; succeeded++; continue;
           }
         }
 
