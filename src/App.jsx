@@ -3798,6 +3798,95 @@ function parseWIATScores(txt) {
   // Normalize whitespace
   const t = txt.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
+  // ── SPECIAL: Parse "Subtest Score Summary" main table (positional) ──
+  // In WIAT PDFs extracted by pdfminer/pdf.js, names and numbers are on separate lines in column order:
+  //   Subtest\n\nListening Comprehension\n\nReading Comprehension\n...\n\nRaw\nScore\n\nStandard\nScore\n...
+  //   -\n261\n45\n...(raw scores)...\n84\n82\n75\n...(standard scores)...\n75-93\n73-91\n...(CIs)...\n14\n12\n5\n...(PRs)
+  try {
+    const mainHeadIdx = t.search(/Subtest\s+Score\s+Summary\s*\n/i);
+    if (mainHeadIdx >= 0) {
+      // Find the boundary: ends at footnotes "- Indicates" or "Subtest Component" or chart section
+      const sectionEnd = t.search(/- Indicates a subtest|Subtest Score Profile|Subtest Component Score/i);
+      const mainSection = sectionEnd > mainHeadIdx ? t.slice(mainHeadIdx, sectionEnd) : t.slice(mainHeadIdx, mainHeadIdx + 3000);
+
+      // Extract subtest names (between "Subtest\n" and "Raw\nScore")
+      const nameStart = mainSection.search(/\nSubtest\s*\n/i);
+      const rawStart = mainSection.search(/\nRaw\s*\nScore/i);
+      if (nameStart >= 0 && rawStart > nameStart) {
+        const nameZone = mainSection.slice(nameStart, rawStart);
+        const subtestNames = nameZone.split("\n").map(l => l.trim()).filter(l =>
+          /^[A-Z]/i.test(l) && !/^(Subtest|Raw|Standard|Score|90%|Confidence|Percentile|Normal|Curve|Grade|Age|Growth|Equiv)/i.test(l)
+        );
+
+        // Collect all data tokens after column headers end (after "Growth\nScore")
+        const dataStart = mainSection.search(/Growth\s*\nScore/i);
+        if (dataStart >= 0) {
+          const dataZone = mainSection.slice(dataStart + 12); // skip "Growth\nScore"
+          const tokens = []; // numbers and dashes
+          for (const line of dataZone.split("\n")) {
+            const trimmed = line.trim();
+            if (/^-$/.test(trimmed)) tokens.push("-");
+            else if (/^\d+$/.test(trimmed)) tokens.push(parseInt(trimmed, 10));
+            else if (/^\d+\s*[-–—]\s*\d+$/.test(trimmed)) {
+              // CI range like "75-93"
+              tokens.push(trimmed); // keep as string for CI column
+            }
+            // Skip everything else (>12.9, >19:11, etc.)
+            else if (/^>\d/.test(trimmed)) tokens.push(trimmed);
+            else if (/^\d+:\d+/.test(trimmed)) tokens.push(trimmed); // age equiv like "11:2"
+            else if (/^\d+\.\d+$/.test(trimmed)) tokens.push(parseFloat(trimmed)); // grade equiv like "7.4"
+          }
+
+          const N = subtestNames.length;
+          // Columns: Raw(N), SS(N), CI(N), PR(N), NCE(N), Stanine(N), GradeEquiv(N), AgeEquiv(N), GrowthScore(N)
+          // Total tokens = N * 9
+          // Find SS and PR columns by counting through raw scores first
+          // Raw scores may be "-" or numbers, so count N tokens for raw
+          if (N >= 3 && tokens.length >= N * 4) {
+            // Extract just the numeric columns: skip raw (N tokens), then SS is next N, skip CI (N tokens), then PR is next N
+            const rawCol = tokens.slice(0, N);
+            // SS column: next N values after raw (should all be 2-3 digit numbers)
+            const ssStartIdx = N;
+            const ssCol = [];
+            for (let i = ssStartIdx; i < ssStartIdx + N && i < tokens.length; i++) {
+              ssCol.push(typeof tokens[i] === "number" ? tokens[i] : null);
+            }
+            // CI column: next N values (ranges as strings)
+            const ciStartIdx = ssStartIdx + N;
+            // PR column: next N values after CI
+            const prStartIdx = ciStartIdx + N;
+            const prCol = [];
+            for (let i = prStartIdx; i < prStartIdx + N && i < tokens.length; i++) {
+              prCol.push(typeof tokens[i] === "number" ? tokens[i] : null);
+            }
+
+            const subtestKeyMap = {
+              "Listening Comprehension": "LISTENING_COMPREHENSION",
+              "Reading Comprehension": "READING_COMPREHENSION",
+              "Math Problem Solving": "MATH_PROBLEM_SOLVING",
+              "Sentence Composition": "SENTENCE_COMPOSITION",
+              "Word Reading": "WORD_READING",
+              "Essay Composition": "ESSAY_COMPOSITION",
+              "Pseudoword Decoding": "PSEUDOWORD_DECODING",
+              "Numerical Operations": "NUMERICAL_OPERATIONS",
+              "Spelling": "SPELLING",
+            };
+
+            for (let i = 0; i < N; i++) {
+              const name = subtestNames[i];
+              const key = subtestKeyMap[name];
+              const ss = ssCol[i];
+              const pr = prCol[i];
+              if (key && ss != null && ss >= STANDARD_SCORE_MIN && ss <= STANDARD_SCORE_MAX && pr != null) {
+                if (!scores[key]) scores[key] = { ss, percentile: pr };
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch (e) { /* main subtest positional parsing failed */ }
+
   // ── SPECIAL: Parse "Subtest Component Score Summary" section ──
   // In WIAT PDFs extracted by pdfminer/pdf.js, numbers appear one-per-line in COLUMN order:
   //   Raw1, Raw2, ..., RawN, SS1, SS2, ..., SSN, PR1, PR2, ..., PRN, NCE1..., Stanine1...
@@ -3964,6 +4053,7 @@ function parseWIATScores(txt) {
   };
 
   for (const [key, name] of Object.entries(subtestMap)) {
+    if (scores[key]) continue; // Already found by positional parser
     const result = extractScore(name);
     if (result) scores[key] = result;
   }
@@ -3986,6 +4076,7 @@ function parseWIATScores(txt) {
   };
 
   for (const [key, names] of Object.entries(compositeMap)) {
+    if (scores[key]) continue; // Already found by positional parser
     for (const name of names) {
       const result = extractScore(name);
       if (result) { scores[key] = result; break; }
