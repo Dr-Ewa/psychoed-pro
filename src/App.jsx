@@ -2641,6 +2641,8 @@ const WISC_SUBTEST_ABBREV_MAP = {
   "Matrix Reasoning": "MR", "Figure Weights": "FW", "Digit Span": "DS", "Picture Span": "PS",
   "Coding": "CD", "Symbol Search": "SS", "Information": "IN", "Comprehension": "CO",
   "Arithmetic": "AR", "Letter-Number Sequencing": "LN", "Cancellation": "CA",
+  "Naming Speed Literacy": "NSL", "Naming Speed Quantity": "NSQ",
+  "Immediate Symbol Translation": "IST", "Delayed Symbol Translation": "DST", "Recognition Symbol Translation": "RST",
 };
 // Mapping: parseWIATScores keys → template placeholder keys
 const WIAT_KEY_MAP = {
@@ -3040,7 +3042,7 @@ function extractAllScoresMap(docs) {
           if (!hasIndexes && isWAIS) {
             const parsed = parseWAISScores(txt);
             if (parsed) {
-              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["pri","PRI"],["wmi","WMI"],["psi","PSI"],["gai","GAI"]];
+              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["pri","PRI"],["wmi","WMI"],["psi","PSI"],["gai","GAI"],["cpi","CPI"]];
               for (const [k, abbr] of idxMap) {
                 if (parsed[k] && !map[`WAIS.${abbr}.score`]) {
                   map[`WAIS.${abbr}.score`] = String(parsed[k].score);
@@ -3061,7 +3063,7 @@ function extractAllScoresMap(docs) {
           if (!hasIndexes && isWPPSI) {
             const parsed = parseWPPSIScores(txt);
             if (parsed) {
-              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["vsi","VSI"],["fri","FRI"],["wmi","WMI"],["psi","PSI"]];
+              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["vsi","VSI"],["fri","FRI"],["wmi","WMI"],["psi","PSI"],["gai","GAI"],["cpi","CPI"],["nvi","NVI"],["vai","VAI"]];
               for (const [k, abbr] of idxMap) {
                 if (parsed[k] && !map[`WPPSI.${abbr}.score`]) {
                   map[`WPPSI.${abbr}.score`] = String(parsed[k].score);
@@ -3124,7 +3126,7 @@ function extractAllScoresMap(docs) {
         try {
           const sc = parseWRAML3Scores(txt);
           // Indexes
-          const ixMap = { GIM:"GIM", VIM:"VIM", VBM:"VBM", AC:"AC", GD:"GD", VD:"VD", VBD:"VBD" };
+          const ixMap = { GIM:"GIM", VIM:"VIM", VBM:"VBM", AC:"AC", GD:"GD", VD:"VD", VBD:"VBD", SM_IDX:"SM_IDX" };
           for (const [k, mk] of Object.entries(ixMap)) {
             if (!sc[k]) continue;
             map[`WRAML.${mk}.score`] = String(sc[k].score);
@@ -3132,7 +3134,7 @@ function extractAllScoresMap(docs) {
             map[`WRAML.${mk}.qualitative`] = wraml3IndexRange(sc[k].score);
           }
           // Subtests (immediate)
-          const ssMap = { PM:"PM", DL:"DL", SM:"SM", VL:"VL", FW:"FW", NL:"NL" };
+          const ssMap = { PM:"PM", DL:"DL", SM:"SM", VL:"VL", FW:"FW", NL:"NL", SEM:"SEM", SR:"SR" };
           for (const [k, mk] of Object.entries(ssMap)) {
             if (!sc[k]) continue;
             map[`WRAML.${mk}.score`] = String(sc[k].ss);
@@ -3567,14 +3569,19 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
       ["Similarities", "SI"],
       ["Vocabulary", "VC"],
       ["Information", "IN"],
+      ["Comprehension", "CO"],
       ["Block Design", "BD"],
       ["Matrix Reasoning", "MR"],
       ["Visual Puzzles", "VP"],
+      ["Figure Weights", "FW"],
+      ["Picture Completion", "PC"],
       ["Digit Span", "DS"],
       ["Arithmetic", "AR"],
+      ["Letter-Number Sequencing", "LN"],
       ["Symbol Search", "SS"],
       ["Coding", "CD"],
-    ];
+      ["Cancellation", "CA"],
+    ].filter(([, abbr]) => sc[`WAIS.${abbr}.scaled`]);
     let t1 = `<table ${tbl}>\n<caption ${cap}>Table 1. WAIS-IV Subtest Score Summary</caption>\n`;
     t1 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     waisSubtests.forEach(([name, abbr], i) => {
@@ -3595,7 +3602,8 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
       ["Processing Speed Index (PSI)", "PSI"],
       ["Full Scale IQ (FSIQ)", "FSIQ"],
       ["General Ability Index (GAI)", "GAI"],
-    ];
+      ["Cognitive Proficiency Index (CPI)", "CPI"],
+    ].filter(([, abbr]) => sc[`WAIS.${abbr}.score`]);
     let t2 = `<table ${tbl}>\n<caption ${cap}>Table 2. WAIS-IV Index Score Summary</caption>\n`;
     t2 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     waisIndexes.forEach(([name, abbr], i) => {
@@ -3611,8 +3619,12 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
   } else if (isWPPSI) {
     // ── TABLE 1: WPPSI-IV Subtest Score Summary ──
     const wppsiSubtests = [
-      ["Receptive Vocabulary", "RV"],
       ["Information", "IN"],
+      ["Similarities", "SI"],
+      ["Vocabulary", "VC"],
+      ["Comprehension", "CO"],
+      ["Receptive Vocabulary", "RV"],
+      ["Picture Naming", "PN"],
       ["Block Design", "BD"],
       ["Object Assembly", "OA"],
       ["Matrix Reasoning", "MR"],
@@ -3621,7 +3633,8 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
       ["Zoo Locations", "ZL"],
       ["Bug Search", "BS"],
       ["Cancellation", "CA"],
-    ];
+      ["Animal Coding", "AC"],
+    ].filter(([, abbr]) => sc[`WPPSI.${abbr}.scaled`]);
     let t1 = `<table ${tbl}>\n<caption ${cap}>Table 1. WPPSI-IV Subtest Score Summary</caption>\n`;
     t1 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wppsiSubtests.forEach(([name, abbr], i) => {
@@ -3642,7 +3655,11 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
       ["Working Memory Index (WMI)", "WMI"],
       ["Processing Speed Index (PSI)", "PSI"],
       ["Full Scale IQ (FSIQ)", "FSIQ"],
-    ];
+      ["General Ability Index (GAI)", "GAI"],
+      ["Cognitive Proficiency Index (CPI)", "CPI"],
+      ["Nonverbal Index (NVI)", "NVI"],
+      ["Vocabulary Acquisition Index (VAI)", "VAI"],
+    ].filter(([, abbr]) => sc[`WPPSI.${abbr}.score`]);
     let t2 = `<table ${tbl}>\n<caption ${cap}>Table 2. WPPSI-IV Index Score Summary</caption>\n`;
     t2 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wppsiIndexes.forEach(([name, abbr], i) => {
@@ -3659,14 +3676,22 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
     const wiscSubtests = [
       ["Similarities", "SI"],
       ["Vocabulary", "VC"],
+      ["Information", "IN"],
+      ["Comprehension", "CO"],
       ["Block Design", "BD"],
-      ["Matrix Reasoning", "MR"],
       ["Visual Puzzles", "VP"],
+      ["Matrix Reasoning", "MR"],
       ["Figure Weights", "FW"],
+      ["Picture Span", "PS"],
       ["Digit Span", "DS"],
+      ["Letter-Number Sequencing", "LN"],
+      ["Arithmetic", "AR"],
       ["Coding", "CD"],
       ["Symbol Search", "SS"],
-    ];
+      ["Cancellation", "CA"],
+      ["Naming Speed Literacy", "NSL"],
+      ["Naming Speed Quantity", "NSQ"],
+    ].filter(([, abbr]) => sc[`WISC.${abbr}.scaled`]);
     let t1 = `<table ${tbl}>\n<caption ${cap}>Table 1. WISC-V Subtest Score Summary</caption>\n`;
     t1 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wiscSubtests.forEach(([name, abbr], i) => {
@@ -3687,7 +3712,15 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
       ["Working Memory Index (WMI)", "WMI"],
       ["Processing Speed Index (PSI)", "PSI"],
       ["Full Scale IQ (FSIQ)", "FSIQ"],
-    ];
+      ["General Ability Index (GAI)", "GAI"],
+      ["Cognitive Proficiency Index (CPI)", "CPI"],
+      ["Nonverbal Index (NVI)", "NVI"],
+      ["Quantitative Reasoning Index (QRI)", "QRI"],
+      ["Auditory Working Memory Index (AWMI)", "AWMI"],
+      ["Naming Speed Index (NSI)", "NSI"],
+      ["Symbol Translation Index (STI)", "STI"],
+      ["Storage and Retrieval Index (SRI)", "SRI"],
+    ].filter(([, abbr]) => sc[`WISC.${abbr}.score`]);
     let t2 = `<table ${tbl}>\n<caption ${cap}>Table 2. WISC-V Index Score Summary</caption>\n`;
     t2 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wiscIndexes.forEach(([name, abbr], i) => {
@@ -3760,11 +3793,13 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
       ["Picture Memory", "PM"],
       ["Finger Windows", "FW"],
       ["Number Letter", "NL"],
+      ["Sentence Memory", "SEM"],
+      ["Sentence Recall", "SR"],
       ["Story Memory Delayed", "SMD"],
       ["Verbal Learning Delayed", "VLD"],
       ["Design Learning Delayed", "DLD"],
       ["Picture Memory Delayed", "PMD"],
-    ];
+    ].filter(([, key]) => sc[`WRAML.${key}.score`]);
     let t5 = `<table ${tbl}>\n<caption ${cap}>Table 5. WRAML-3 Subtest Score Summary</caption>\n`;
     t5 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wramlSubtests.forEach(([name, key], i) => {
@@ -3786,7 +3821,8 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
       ["General Delayed Memory (GD)", "GD"],
       ["Verbal Delayed Memory (VBD)", "VBD"],
       ["Visual Delayed Memory (VD)", "VD"],
-    ];
+      ["Screener Memory (SM_IDX)", "SM_IDX"],
+    ].filter(([, key]) => sc[`WRAML.${key}.score`]);
     let t6 = `<table ${tbl}>\n<caption ${cap}>Table 6. WRAML-3 Index Score Summary</caption>\n`;
     t6 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wramlIndexes.forEach(([name, key], i) => {
@@ -3893,6 +3929,8 @@ function parseWRAML3Scores(txt) {
     ["VL", /Verbal Learning(?!\s+(?:Delayed|Recognition))\s+(\d+)\s+(\d+)/],
     ["FW", /Finger Windows\s+(\d+)\s+(\d+)/],
     ["NL", /Number Letter\s+(\d+)\s+(\d+)/],
+    ["SEM", /Sentence Memory\s+(\d+)\s+(\d+)/],
+    ["SR", /Sentence Recall\s+(\d+)\s+(\d+)/],
   ];
   for (const [k, p] of ssPats) { const m = txt.match(p); if (m) sc[k] = { raw: +m[1], ss: +m[2] }; }
   const dlPats = [
@@ -3918,6 +3956,7 @@ function parseWAISScores(txt) {
     ["wmi",  /Working\s*Memory(?:\s*Index)?/i, /WMI/],
     ["psi",  /Processing\s*Speed(?:\s*Index)?/i, /PSI/],
     ["gai",  /General\s*Ability(?:\s*Index)?/i, /GAI/],
+    ["cpi",  /Cognitive\s*Proficiency(?:\s*Index)?/i, /CPI/],
   ];
   for (const [key, namePat, abbrPat] of indexes) {
     const patterns = [
@@ -3949,6 +3988,11 @@ function parseWAISScores(txt) {
     ["AR", /Arithmetic/i],
     ["SS", /Symbol\s*Search/i],
     ["CD", /Coding/i],
+    ["CO", /(?<!Oral\s+Discourse\s+)Comprehension(?!\s+(?:and|&)\s+Fluency)/i],
+    ["FW", /Figure\s*Weights/i],
+    ["LN", /Letter[\s-]*Number\s*Sequencing/i],
+    ["CA", /Cancellation/i],
+    ["PC", /Picture\s*Completion/i],
   ];
   sc.subtests = {};
   for (const [abbr, namePat] of subtests) {
@@ -3988,6 +4032,10 @@ function parseWPPSIScores(txt) {
     ["fri",  /Fluid\s*Reasoning(?:\s*Index)?/i, /FRI/],
     ["wmi",  /Working\s*Memory(?:\s*Index)?/i, /WMI/],
     ["psi",  /Processing\s*Speed(?:\s*Index)?/i, /PSI/],
+    ["gai",  /General\s*Ability(?:\s*Index)?/i, /GAI/],
+    ["cpi",  /Cognitive\s*Proficiency(?:\s*Index)?/i, /CPI/],
+    ["nvi",  /Nonverbal(?:\s*Index)?/i, /NVI/],
+    ["vai",  /Vocabulary\s*Acquisition(?:\s*Index)?/i, /VAI/],
   ];
   for (const [key, namePat, abbrPat] of indexes) {
     const patterns = [
@@ -4019,6 +4067,11 @@ function parseWPPSIScores(txt) {
     ["ZL", /Zoo\s*Locations/i],
     ["BS", /Bug\s*Search/i],
     ["CA", /Cancellation/i],
+    ["SI", /Similarities/i],
+    ["VC", /(?<!Receptive\s+)Vocabulary/i],
+    ["CO", /(?<!Oral\s+Discourse\s+)Comprehension(?!\s+(?:and|&)\s+Fluency)/i],
+    ["AC", /Animal\s*Coding/i],
+    ["PN", /Picture\s*Naming/i],
   ];
   sc.subtests = {};
   for (const [abbr, namePat] of subtests) {
@@ -4083,6 +4136,7 @@ function extractWAISCogText(docs, firstName, pronouns) {
     if (sc.wmi) { wm.wmiScore = String(sc.wmi.score); wm.wmiPercentile = String(sc.wmi.pct); }
     if (sc.psi) { wm.psiScore = String(sc.psi.score); wm.psiPercentile = String(sc.psi.pct); }
     if (sc.gai) { wm.gaiScore = String(sc.gai.score); wm.gaiPercentile = String(sc.gai.pct); }
+    if (sc.cpi) { wm.cpiScore = String(sc.cpi.score); wm.cpiPercentile = String(sc.cpi.pct); }
     // Pass subtests through
     if (sc.subtests) {
       for (const [abbr, data] of Object.entries(sc.subtests)) {
@@ -4118,6 +4172,10 @@ function extractWPPSICogText(docs, firstName, pronouns) {
     if (sc.fri) { wm.friScore = String(sc.fri.score); wm.friPercentile = String(sc.fri.pct); }
     if (sc.wmi) { wm.wmiScore = String(sc.wmi.score); wm.wmiPercentile = String(sc.wmi.pct); }
     if (sc.psi) { wm.psiScore = String(sc.psi.score); wm.psiPercentile = String(sc.psi.pct); }
+    if (sc.gai) { wm.gaiScore = String(sc.gai.score); wm.gaiPercentile = String(sc.gai.pct); }
+    if (sc.cpi) { wm.cpiScore = String(sc.cpi.score); wm.cpiPercentile = String(sc.cpi.pct); }
+    if (sc.nvi) { wm.nviScore = String(sc.nvi.score); wm.nviPercentile = String(sc.nvi.pct); }
+    if (sc.vai) { wm.vaiScore = String(sc.vai.score); wm.vaiPercentile = String(sc.vai.pct); }
     // Pass subtests through
     if (sc.subtests) {
       for (const [abbr, data] of Object.entries(sc.subtests)) {
@@ -4214,6 +4272,12 @@ function buildMemoryText(sc, firstName, pr) {
     if (sc.NL) {
       t += ` The Number Letter subtest requires ${firstName} to listen to a random mix of numbers and letters presented verbally and repeat them back in the exact order they were given. This task assesses auditory attention, working memory, and the ability to hold and reproduce sequential auditory information, which is similar to what is required when following a series of spoken instructions in the classroom. ${firstName} obtained a scaled score of ${sc.NL.ss} (${ssPct("NL")} percentile), which falls within the ${ssRng("NL")} range.`;
     }
+    if (sc.SEM) {
+      t += ` The Sentence Memory subtest requires ${firstName} to listen to sentences of increasing length and complexity and repeat them back verbatim. This task assesses auditory memory and the ability to hold and reproduce meaningful verbal sequences, which is important for following verbal instructions and understanding spoken language. ${firstName} obtained a scaled score of ${sc.SEM.ss} (${ssPct("SEM")} percentile), which falls within the ${ssRng("SEM")} range.`;
+    }
+    if (sc.SR) {
+      t += ` The Sentence Recall subtest assesses the ability to recall sentences that were presented earlier in the assessment, requiring ${firstName} to retain meaningful verbal information over a brief delay. ${firstName} obtained a scaled score of ${sc.SR.ss} (${ssPct("SR")} percentile), which falls within the ${ssRng("SR")} range.`;
+    }
     parts.push(t);
   }
 
@@ -4247,6 +4311,8 @@ function buildMemoryText(sc, firstName, pr) {
   if (sc.VL) scoreSummaryLines.push(`Verbal Learning: Scaled Score ${sc.VL.ss} (${ssRng("VL")}, ${ssPct("VL")} percentile)`);
   if (sc.FW) scoreSummaryLines.push(`Finger Windows: Scaled Score ${sc.FW.ss} (${ssRng("FW")}, ${ssPct("FW")} percentile)`);
   if (sc.NL) scoreSummaryLines.push(`Number Letter: Scaled Score ${sc.NL.ss} (${ssRng("NL")}, ${ssPct("NL")} percentile)`);
+  if (sc.SEM) scoreSummaryLines.push(`Sentence Memory: Scaled Score ${sc.SEM.ss} (${ssRng("SEM")}, ${ssPct("SEM")} percentile)`);
+  if (sc.SR) scoreSummaryLines.push(`Sentence Recall: Scaled Score ${sc.SR.ss} (${ssRng("SR")}, ${ssPct("SR")} percentile)`);
   if (sc.DLD) scoreSummaryLines.push(`Design Learning Delayed: Scaled Score ${sc.DLD.ss} (${ssRng("DLD")}, ${ssPct("DLD")} percentile)`);
   if (sc.PMD) scoreSummaryLines.push(`Picture Memory Delayed: Scaled Score ${sc.PMD.ss} (${ssRng("PMD")}, ${ssPct("PMD")} percentile)`);
   if (sc.SMD) scoreSummaryLines.push(`Story Memory Delayed: Scaled Score ${sc.SMD.ss} (${ssRng("SMD")}, ${ssPct("SMD")} percentile)`);
@@ -4737,12 +4803,31 @@ function fillWAISCognitiveTemplate(waisManual, firstName, pronouns) {
   text = text.replace(/\[WAIS_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "processing efficiency and working memory demands");
 
   // ── Subtest replacements ──
-  const waisSubs = ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD"];
+  const waisSubs = ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD","CO","FW","LN","CA","PC"];
   for (const abbr of waisSubs) {
     const scaled = m[`sub_${abbr}_scaled`] || "___";
     const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
     text = text.replace(new RegExp(`\\[${abbr}_SCALED\\]`, "g"), scaled);
     text = text.replace(new RegExp(`\\[${abbr}_PERCENTILE\\]`, "g"), pct);
+  }
+
+  // ── Conditionally append supplemental subtests to each index section ──
+  const suppDefs = {
+    CO: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Comprehension, which measures practical reasoning, social judgment, and common sense knowledge" },
+    FW: { section: "PRI_STRENGTH_OR_WEAKER", desc: "Figure Weights, which measures quantitative and analogical reasoning using visual stimuli" },
+    PC: { section: "PRI_STRENGTH_OR_WEAKER", desc: "Picture Completion, which measures visual perception and attention to essential details" },
+    LN: { section: "WMI_STRENGTH_OR_WEAKER", desc: "Letter-Number Sequencing, which measures auditory working memory and mental sequencing ability" },
+    CA: { section: "PSI_STRENGTH_OR_WEAKER", desc: "Cancellation, which measures visual selective attention and processing speed under time pressure" },
+  };
+  for (const [abbr, info] of Object.entries(suppDefs)) {
+    if (m[`sub_${abbr}_scaled`] && m[`sub_${abbr}_scaled`] !== "___") {
+      const scaled = m[`sub_${abbr}_scaled`];
+      const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
+      const sentence = ` Additionally, ${firstName} scored ${scaled} on ${info.desc} (${pct} percentile).`;
+      // Insert before the "This pattern suggests" sentence in the relevant section
+      const marker = new RegExp(`(This pattern suggests that [^.]*?represents \\[${info.section}\\])`, "i");
+      text = text.replace(marker, sentence + " $1");
+    }
   }
 
   text = personalize(text, firstName, pronouns);
@@ -4794,12 +4879,30 @@ function fillWPPSICognitiveTemplate(wppsiManual, firstName, pronouns) {
   text = text.replace(/\[WPPSI_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "processing efficiency and sustained attention demands");
 
   // ── Subtest replacements ──
-  const wppsiSubs = ["RV","IN","BD","OA","MR","PC","PM","ZL","BS","CA"];
+  const wppsiSubs = ["RV","IN","BD","OA","MR","PC","PM","ZL","BS","CA","SI","VC","CO","AC","PN"];
   for (const abbr of wppsiSubs) {
     const scaled = m[`sub_${abbr}_scaled`] || "___";
     const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
     text = text.replace(new RegExp(`\\[${abbr}_SCALED\\]`, "g"), scaled);
     text = text.replace(new RegExp(`\\[${abbr}_PERCENTILE\\]`, "g"), pct);
+  }
+
+  // ── Conditionally append supplemental subtests to each index section ──
+  const suppDefs = {
+    SI: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Similarities, which measures verbal concept formation and abstract reasoning" },
+    VC: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Vocabulary, which measures word knowledge and verbal concept formation" },
+    CO: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Comprehension, which measures practical reasoning and social understanding" },
+    PN: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Picture Naming, which measures expressive vocabulary and word retrieval" },
+    AC: { section: "PSI_STRENGTH_OR_WEAKER", desc: "Animal Coding, which measures processing speed, associative learning, and graphomotor skills" },
+  };
+  for (const [abbr, info] of Object.entries(suppDefs)) {
+    if (m[`sub_${abbr}_scaled`] && m[`sub_${abbr}_scaled`] !== "___") {
+      const scaled = m[`sub_${abbr}_scaled`];
+      const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
+      const sentence = ` Additionally, ${firstName} scored ${scaled} on ${info.desc} (${pct} percentile).`;
+      const marker = new RegExp(`(This pattern suggests that [^.]*?represents \\[${info.section}\\])`, "i");
+      text = text.replace(marker, sentence + " $1");
+    }
   }
 
   text = personalize(text, firstName, pronouns);
@@ -8890,11 +8993,11 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
         // MANDATORY TABLES REMINDER — dynamic based on selected cognitive test
         const genCogTest = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
         if (genCogTest === "wais-iv") {
-          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WAIS-IV Subtest Score Summary (10 fixed rows: Similarities, Vocabulary, Information, Block Design, Matrix Reasoning, Visual Puzzles, Digit Span, Arithmetic, Symbol Search, Coding)\n2. Table 2. WAIS-IV Index Score Summary (6 fixed rows: VCI, PRI, WMI, PSI, FSIQ, GAI)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Oral Reading Fluency, Spelling, Sentence Composition, Essay Composition, Numerical Operations, Math Problem Solving)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows: Oral Language, Total Reading, Basic Reading, Reading Comprehension & Fluency, Written Expression, Mathematics, Total Achievement)\nNEVER modify structure. Use \u2014 for missing values.`);
+          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WAIS-IV Subtest Score Summary (up to 15 rows: Similarities, Vocabulary, Information, Comprehension, Block Design, Matrix Reasoning, Visual Puzzles, Figure Weights, Picture Completion, Digit Span, Arithmetic, Letter-Number Sequencing, Symbol Search, Coding, Cancellation — include only administered subtests)\n2. Table 2. WAIS-IV Index Score Summary (up to 7 rows: VCI, PRI, WMI, PSI, FSIQ, GAI, CPI — include only computed indexes)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Oral Reading Fluency, Spelling, Sentence Composition, Essay Composition, Numerical Operations, Math Problem Solving)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows: Oral Language, Total Reading, Basic Reading, Reading Comprehension & Fluency, Written Expression, Mathematics, Total Achievement)\nNEVER modify structure. Use \u2014 for missing values.`);
         } else if (genCogTest === "wppsi-iv") {
-          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WPPSI-IV Subtest Score Summary (10 fixed rows: Receptive Vocabulary, Information, Block Design, Object Assembly, Matrix Reasoning, Picture Concepts, Picture Memory, Zoo Locations, Bug Search, Cancellation)\n2. Table 2. WPPSI-IV Index Score Summary (6 fixed rows: VCI, VSI, FRI, WMI, PSI, FSIQ)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows)\nNEVER modify structure. Use \u2014 for missing values.`);
+          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WPPSI-IV Subtest Score Summary (up to 15 rows: Information, Similarities, Vocabulary, Comprehension, Receptive Vocabulary, Picture Naming, Block Design, Object Assembly, Matrix Reasoning, Picture Concepts, Picture Memory, Zoo Locations, Bug Search, Cancellation, Animal Coding — include only administered subtests)\n2. Table 2. WPPSI-IV Index Score Summary (up to 10 rows: VCI, VSI, FRI, WMI, PSI, FSIQ, GAI, CPI, NVI, VAI — include only computed indexes)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows)\nNEVER modify structure. Use \u2014 for missing values.`);
         } else {
-          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WISC-V Subtest Score Summary (9 fixed rows: Similarities, Vocabulary, Block Design, Matrix Reasoning, Visual Puzzles, Figure Weights, Digit Span, Coding, Symbol Search)\n2. Table 2. WISC-V Index Score Summary (6 fixed rows: VCI, VSI, FRI, WMI, PSI, FSIQ)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Oral Reading Fluency, Spelling, Sentence Composition, Essay Composition, Numerical Operations, Math Problem Solving)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows: Oral Language, Total Reading, Basic Reading, Reading Comprehension & Fluency, Written Expression, Mathematics, Total Achievement)\nNEVER modify structure. Use \u2014 for missing values.`);
+          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WISC-V Subtest Score Summary (up to 17 rows: Similarities, Vocabulary, Information, Comprehension, Block Design, Visual Puzzles, Matrix Reasoning, Figure Weights, Picture Span, Digit Span, Letter-Number Sequencing, Arithmetic, Coding, Symbol Search, Cancellation, Naming Speed Literacy, Naming Speed Quantity — include only administered subtests)\n2. Table 2. WISC-V Index Score Summary (up to 14 rows: VCI, VSI, FRI, WMI, PSI, FSIQ, GAI, CPI, NVI, QRI, AWMI, NSI, STI, SRI — include only computed indexes)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Oral Reading Fluency, Spelling, Sentence Composition, Essay Composition, Numerical Operations, Math Problem Solving)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows: Oral Language, Total Reading, Basic Reading, Reading Comprehension & Fluency, Written Expression, Mathematics, Total Achievement)\nNEVER modify structure. Use \u2014 for missing values.`);
         }
       }
 
