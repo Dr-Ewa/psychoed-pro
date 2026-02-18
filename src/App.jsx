@@ -2643,6 +2643,12 @@ const WISC_SUBTEST_ABBREV_MAP = {
   "Arithmetic": "AR", "Letter-Number Sequencing": "LN", "Cancellation": "CA",
   "Naming Speed Literacy": "NSL", "Naming Speed Quantity": "NSQ",
   "Immediate Symbol Translation": "IST", "Delayed Symbol Translation": "DST", "Recognition Symbol Translation": "RST",
+  // WPPSI-IV specific subtests
+  "Receptive Vocabulary": "RV", "Object Assembly": "OA", "Picture Concepts": "PC",
+  "Picture Memory": "PM", "Zoo Locations": "ZL", "Bug Search": "BS",
+  "Animal Coding": "AC", "Picture Naming": "PN",
+  // WAIS-IV specific subtests
+  "Picture Completion": "PC",
 };
 // Mapping: parseWIATScores keys → template placeholder keys
 const WIAT_KEY_MAP = {
@@ -5275,8 +5281,17 @@ function buildReportHtml(meta, secs, tools, usedToolsStr) {
   bodyHtml += `<tbody>${classTable.map(([c, r]) => `<tr><td style="padding:3pt 8pt;border:0.5pt solid #999">${c}</td><td style="padding:3pt 8pt;border:0.5pt solid #999">${r}</td></tr>`).join("\n")}</tbody></table>`;
 
   // APPENDIX - Tables (ALWAYS included — mandatory)
+  // Re-extract scores from section content for fallback
+  const exportScoreMap = (() => {
+    const pseudoDocs = [];
+    for (const secId of ["cognitive", "academic", "memory"]) {
+      const c = secs[secId]?.content?.replace(/[⟦⟧]/g, "")?.trim();
+      if (c && c.length > 100) pseudoDocs.push({ extractedText: c, name: "_" + secId + "_", _docxTables: null, _pdfPages: null });
+    }
+    return pseudoDocs.length > 0 ? extractAllScoresMap(pseudoDocs) : {};
+  })();
   const appTables = secs.appendix_tables?.content?.replace(/[⟦⟧]/g, "")
-    || buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", {}, cogTestType);
+    || buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", exportScoreMap, cogTestType);
   bodyHtml += `<br style="page-break-before:always"/>`;
   bodyHtml += boldHeading("Appendix - Tables");
   bodyHtml += `<p style="text-align:justify;line-height:1.5;margin:0;font-size:12pt">The following represents a summary of the scores obtained across various cognitive and academic domains. Percentiles can be used to provide a means of comparison with same-aged peers. A percentile refers to the percentage of individuals who fall below a given score.</p>`;
@@ -10734,8 +10749,16 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
                   {/* ─── APPENDIX: Score Tables (ALWAYS shown) ─── */}
                   {(() => {
                     const prevCogTest = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
+                    const previewScoreMap = (() => {
+                      const pseudoDocs = [];
+                      for (const secId of ["cognitive", "academic", "memory"]) {
+                        const c = secs[secId]?.content?.replace(/[⟦⟧]/g, "")?.trim();
+                        if (c && c.length > 100) pseudoDocs.push({ extractedText: c, name: "_" + secId + "_", _docxTables: null, _pdfPages: null });
+                      }
+                      return pseudoDocs.length > 0 ? extractAllScoresMap(pseudoDocs) : {};
+                    })();
                     const tableContent = secs.appendix_tables?.content?.replace(/[⟦⟧]/g, "")
-                      || buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", {}, prevCogTest);
+                      || buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", previewScoreMap, prevCogTest);
                     return (
                     <>
                       <div className="page-break-divider" style={{ margin: "32px 0", borderTop: "2px dashed #c7d2fe", position: "relative" }}>
