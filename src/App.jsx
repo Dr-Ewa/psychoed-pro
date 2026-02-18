@@ -2974,7 +2974,8 @@ function extractAllScoresMap(docs) {
       if (/WISC|WPPSI|WAIS|Wechsler/i.test(txt)) {
         try {
           const isWAIS = /WAIS/i.test(txt);
-          const prefix = isWAIS ? "WAIS" : "WISC";
+          const isWPPSI = /WPPSI/i.test(txt);
+          const prefix = isWAIS ? "WAIS" : isWPPSI ? "WPPSI" : "WISC";
           const result = deterministicExtract(txt, d._docxTables || null, d._pdfPages || null);
           const t = result.appendix_tables;
           let hasSubtests = false;
@@ -3016,6 +3017,33 @@ function extractAllScoresMap(docs) {
                 if (s.standardScore != null) map[`${prefix}.${abbr}.score`] = String(s.standardScore);
                 if (s.percentile != null) map[`${prefix}.${abbr}.percentile`] = String(s.percentile);
                 map[`${prefix}.${abbr}.qualitative`] = s.qualitative || (s.standardScore != null ? qualitativeLabel(s.standardScore) : "");
+              }
+            }
+          }
+          // ── FALLBACK: parseWAISScores / parseWPPSIScores for index-level extraction ──
+          if (!hasIndexes && isWAIS) {
+            const parsed = parseWAISScores(txt);
+            if (parsed) {
+              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["pri","PRI"],["wmi","WMI"],["psi","PSI"]];
+              for (const [k, abbr] of idxMap) {
+                if (parsed[k] && !map[`WAIS.${abbr}.score`]) {
+                  map[`WAIS.${abbr}.score`] = String(parsed[k].score);
+                  map[`WAIS.${abbr}.percentile`] = String(parsed[k].pct);
+                  map[`WAIS.${abbr}.qualitative`] = qualitativeLabel(parsed[k].score);
+                }
+              }
+            }
+          }
+          if (!hasIndexes && isWPPSI) {
+            const parsed = parseWPPSIScores(txt);
+            if (parsed) {
+              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["vsi","VSI"],["fri","FRI"],["wmi","WMI"],["psi","PSI"]];
+              for (const [k, abbr] of idxMap) {
+                if (parsed[k] && !map[`WPPSI.${abbr}.score`]) {
+                  map[`WPPSI.${abbr}.score`] = String(parsed[k].score);
+                  map[`WPPSI.${abbr}.percentile`] = String(parsed[k].pct);
+                  map[`WPPSI.${abbr}.qualitative`] = qualitativeLabel(parsed[k].score);
+                }
               }
             }
           }
@@ -4711,7 +4739,19 @@ async function aiGen(meta, tools, prompt, strat, ctx, docs, toneRules, maxTokens
 
 // EXPORT: DOCX (HTML-based Word document with Word headers/footers)
 function buildReportHtml(meta, secs, tools, usedToolsStr) {
-  const cogTestType = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
+  // Determine cognitive test type from age first, then tool selection
+  let cogTestType = "wisc-v";
+  if (meta.dob && meta.dateOfTesting) {
+    const totalMonths = calcAgeObj(meta.dob, meta.dateOfTesting)?.totalMonths;
+    if (totalMonths != null) {
+      if (totalMonths >= 203) cogTestType = "wais-iv";
+      else if (totalMonths < 83) cogTestType = "wppsi-iv";
+    }
+  }
+  if (cogTestType === "wisc-v") {
+    if (tools.find(t => t.id === "wais-iv" && t.used)) cogTestType = "wais-iv";
+    else if (tools.find(t => t.id === "wppsi-iv" && t.used)) cogTestType = "wppsi-iv";
+  }
   const escape = (t) => (t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const nl2p = (t) => escape(t).split(/\n\n+/).map((p) => `<p style="text-align:justify;line-height:1.5;margin:0 0 0 0;font-size:12pt">${p.replace(/\n/g, "<br/>")}</p>`).join("");
   const derivedFirstName = (meta.fullName || "").trim().split(/\s+/)[0] || "";
@@ -7727,12 +7767,19 @@ export default function App() {
 
       const hasAnyScores = Object.keys(scoreMap).length > 0;
       if (!hasAnyScores) return prev; // No scores found — leave existing content alone
-      const cogTestType = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
+      // Determine cognitive test type: age-based first, then tool selection, then auto-detect from scoreMap keys
+      let cogTestType = useWAISByAge ? "wais-iv" : useWPPSIByAge ? "wppsi-iv" : "wisc-v";
+      if (cogTestType === "wisc-v") {
+        if (tools.find(t => t.id === "wais-iv" && t.used)) cogTestType = "wais-iv";
+        else if (tools.find(t => t.id === "wppsi-iv" && t.used)) cogTestType = "wppsi-iv";
+        else if (Object.keys(scoreMap).some(k => k.startsWith("WAIS."))) cogTestType = "wais-iv";
+        else if (Object.keys(scoreMap).some(k => k.startsWith("WPPSI."))) cogTestType = "wppsi-iv";
+      }
       const html = buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", scoreMap, cogTestType);
       if (!html || html === (at.content || "")) return prev;
       return { ...prev, appendix_tables: { ...at, content: html } };
     });
-  }, [docs, derivedFirstName, tools, tableBlocksKey, waisScoresKey, cogContentKey, acadContentKey, memContentKey]);
+  }, [docs, derivedFirstName, tools, tableBlocksKey, waisScoresKey, cogContentKey, acadContentKey, memContentKey, useWAISByAge, useWPPSIByAge]);
 
     useEffect(() => {
     const id = "psychoed-print-styles";
@@ -8316,7 +8363,13 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
           const filledCount = Object.keys(scoreMap).length;
 
           // ── MANDATORY: Always build the 3 fixed tables (cognitive subtest, cognitive index, WIAT-III) ──
-          const cogTestType = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
+          let cogTestType = useWAISByAge ? "wais-iv" : useWPPSIByAge ? "wppsi-iv" : "wisc-v";
+          if (cogTestType === "wisc-v") {
+            if (tools.find(t => t.id === "wais-iv" && t.used)) cogTestType = "wais-iv";
+            else if (tools.find(t => t.id === "wppsi-iv" && t.used)) cogTestType = "wppsi-iv";
+            else if (Object.keys(scoreMap).some(k => k.startsWith("WAIS."))) cogTestType = "wais-iv";
+            else if (Object.keys(scoreMap).some(k => k.startsWith("WPPSI."))) cogTestType = "wppsi-iv";
+          }
           const mandatoryHtml = buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", scoreMap, cogTestType);
 
           uSec(sid, { content: mandatoryHtml });
@@ -8925,6 +8978,31 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
                   if (!scoreMap[k]) scoreMap[k] = val;
                 }
               }
+              // Inject WAIS/WPPSI manual scores (may have been auto-populated from PDF)
+              const waisM = secs.cognitive?.waisManual;
+              if (waisM) {
+                for (const [abbr, key] of [["FSIQ","fsiq"],["VCI","vci"],["PRI","pri"],["WMI","wmi"],["PSI","psi"]]) {
+                  if (waisM[key + "Score"] && !scoreMap[`WAIS.${abbr}.score`]) {
+                    scoreMap[`WAIS.${abbr}.score`] = waisM[key + "Score"];
+                    if (waisM[key + "Percentile"]) {
+                      scoreMap[`WAIS.${abbr}.percentile`] = waisM[key + "Percentile"];
+                      scoreMap[`WAIS.${abbr}.qualitative`] = percentileToDescriptor(waisM[key + "Percentile"]) || "";
+                    }
+                  }
+                }
+              }
+              const wppsiM = secs.cognitive?.wppsiManual;
+              if (wppsiM) {
+                for (const [abbr, key] of [["FSIQ","fsiq"],["VCI","vci"],["VSI","vsi"],["FRI","fri"],["WMI","wmi"],["PSI","psi"]]) {
+                  if (wppsiM[key + "Score"] && !scoreMap[`WPPSI.${abbr}.score`]) {
+                    scoreMap[`WPPSI.${abbr}.score`] = wppsiM[key + "Score"];
+                    if (wppsiM[key + "Percentile"]) {
+                      scoreMap[`WPPSI.${abbr}.percentile`] = wppsiM[key + "Percentile"];
+                      scoreMap[`WPPSI.${abbr}.qualitative`] = percentileToDescriptor(wppsiM[key + "Percentile"]) || "";
+                    }
+                  }
+                }
+              }
               const filledCount = Object.keys(scoreMap).length;
               const placeholderHtml = buildBlankPlaceholderTablesHTML(derivedFirstName || "[firstName]", blocks, scoreMap, filledCount > 0);
               if (placeholderHtml) {
@@ -9030,8 +9108,12 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
         }
         // Include appendix tables context — feed all section content with scores
         if (sid === "appendix_tables") {
-          const atCogTest2 = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : "wisc-v";
-          const atCogLabel2 = atCogTest2 === "wais-iv" ? "WAIS-IV" : "WISC-V";
+          let atCogTest2 = useWAISByAge ? "wais-iv" : useWPPSIByAge ? "wppsi-iv" : "wisc-v";
+          if (atCogTest2 === "wisc-v") {
+            if (tools.find(t => t.id === "wais-iv" && t.used)) atCogTest2 = "wais-iv";
+            else if (tools.find(t => t.id === "wppsi-iv" && t.used)) atCogTest2 = "wppsi-iv";
+          }
+          const atCogLabel2 = atCogTest2 === "wais-iv" ? "WAIS-IV" : atCogTest2 === "wppsi-iv" ? "WPPSI-IV" : "WISC-V";
           const scoreSectionMap2 = [
             { id: "cognitive", label: `COGNITIVE/INTELLECTUAL FUNCTIONING (${atCogLabel2})`, tableType: `${atCogLabel2} Subtest + Index tables` },
             { id: "memory", label: "MEMORY AND LEARNING (WRAML-3 / CMS)", tableType: "Memory Score Summary table" },
