@@ -1363,7 +1363,7 @@ const APPENDIX_BLOCKS = [
 // APPENDIX TABLES — BLOCKS
 // Only WISC-V and WIAT-III have corresponding appendix score tables
 const TOOLS_WITH_TABLES = new Set([
-  "wisc-v","wais-iv","wppsi-iv","wiat-iii","wiat-4","wraml-3","beery-6","basc-3-p","basc-3-t","basc-3-s",
+  "wisc-v","wais-iv","wppsi-iv","wiat-iii","wiat-4",
 ]);
 const TABLE_BLOCKS = [
   { id: "wisc-v",        label: "WISC-V",              cat: "Cognitive" },
@@ -1371,11 +1371,6 @@ const TABLE_BLOCKS = [
   { id: "wppsi-iv",      label: "WPPSI-IV",            cat: "Cognitive" },
   { id: "wiat-iii",      label: "WIAT-III",            cat: "Academic" },
   { id: "wiat-4",        label: "WIAT-4",              cat: "Academic" },
-  { id: "wraml-3",       label: "WRAML-3",             cat: "Memory" },
-  { id: "beery-6",       label: "Beery VMI-6",         cat: "Visual-Motor" },
-  { id: "basc-3-p",      label: "BASC-3 Parent",       cat: "Socio-Emotional" },
-  { id: "basc-3-t",      label: "BASC-3 Teacher",      cat: "Socio-Emotional" },
-  { id: "basc-3-s",      label: "BASC-3 Self-Report",  cat: "Socio-Emotional" },
 ];
 
 // BEHAVIOUR OBSERVATIONS — SENTENCE TEMPLATES (exact wording per item)
@@ -3803,6 +3798,121 @@ function parseWIATScores(txt) {
   // Normalize whitespace
   const t = txt.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
+  // ── SPECIAL: Parse "Subtest Component Score Summary" section ──
+  // In WIAT PDFs extracted by pdfminer/pdf.js, numbers appear one-per-line in COLUMN order:
+  //   Raw1, Raw2, ..., RawN, SS1, SS2, ..., SSN, PR1, PR2, ..., PRN, NCE1..., Stanine1...
+  // Then names appear after "Subtest Component" label.
+  // Group headers (Listening Comprehension, Sentence Composition, Essay Composition) have no data rows.
+  try {
+    // Find the actual section heading (not the reference on page 2 ending with ").")
+    const compHeadIdx = t.search(/Subtest Component Score Summary\s*\n\s*\n?\s*Raw\b/i);
+    const compNameIdx = compHeadIdx >= 0 ? t.indexOf("Subtest Component\n", compHeadIdx + 30) : -1;
+    if (compHeadIdx >= 0 && compNameIdx >= 0) {
+      // Get text between section heading and the "Subtest Component" name label
+      const dataZone = t.slice(compHeadIdx, compNameIdx);
+      // Skip everything until after the "Description" header line
+      const afterHeaders = dataZone.replace(/^[\s\S]*?Description\s*\n/i, "");
+      // Collect all standalone numbers and qualitative labels
+      const allNums = [];
+      const qualLabels = [];
+      for (const line of afterHeaders.split("\n")) {
+        const trimmed = line.trim();
+        if (/^\d+$/.test(trimmed)) allNums.push(parseInt(trimmed, 10));
+        else if (/^(Very |Extremely )?(Above |Below )?(Average|Superior|Low|High)/i.test(trimmed)) qualLabels.push(trimmed);
+      }
+      // 5 numeric columns: Raw, SS, PR, NCE, Stanine → N = total / 5
+      const nCols = 5;
+      const N = Math.floor(allNums.length / nCols);
+      if (N >= 2 && N <= 20) {
+        const ssCol = allNums.slice(N, N * 2);       // Standard Scores
+        const prCol = allNums.slice(N * 2, N * 3);   // Percentile Ranks
+
+        // Get component names after "Subtest Component\n"
+        const nameZone = t.slice(compNameIdx + "Subtest Component\n".length, compNameIdx + 600);
+        const nameLines = nameZone.split("\n").map(l => l.trim()).filter(l =>
+          /^[A-Z]/i.test(l) && !/^(Composite|Sum of|Standard|Percentile|Raw|Normal|Stanine|Qualitative|90%|Confidence|WIAT|ID:)/i.test(l)
+        );
+        // Filter out group headers — parent subtests that already appear in the main score table
+        const groupHeaders = new Set([
+          "Listening Comprehension", "Sentence Composition", "Essay Composition",
+          "Reading Comprehension", "Math Problem Solving", "Numerical Operations",
+          "Spelling", "Word Reading", "Pseudoword Decoding",
+        ]);
+        const componentNames = nameLines.filter(n => !groupHeaders.has(n));
+
+        const componentKeyMap = {
+          "Receptive Vocabulary": "RECEPTIVE_VOCABULARY",
+          "Oral Discourse Comprehension": "ORAL_DISCOURSE",
+          "Oral Discourse": "ORAL_DISCOURSE",
+        };
+        for (let i = 0; i < Math.min(N, componentNames.length); i++) {
+          const name = componentNames[i];
+          const key = componentKeyMap[name];
+          if (key && ssCol[i] >= STANDARD_SCORE_MIN && ssCol[i] <= STANDARD_SCORE_MAX) {
+            if (!scores[key]) scores[key] = { ss: ssCol[i], percentile: prCol[i] };
+          }
+        }
+      }
+    }
+  } catch (e) { /* component parsing failed — continue with regex patterns */ }
+
+  // ── SPECIAL: Parse "Composite Score Summary" positional section ──
+  // Numbers are also in column order: Sum1..SumN, SS1..SSN, CI-lo1..CI-loN, CI-hi1..CI-hiN, PR1..PRN, NCE1..NCEN, Stanine1..StanineN
+  try {
+    const compScoreMatch = t.match(/Composite\s+Score\s+Summary[\s\S]*?(?=Composite\s+Score\s+Profile|Differences\s+Between|$)/i);
+    if (compScoreMatch) {
+      const compSection = compScoreMatch[0];
+      // Find composite names after "Composite\n" label
+      const namePart = compSection.match(/\nComposite\s*\n([\s\S]*?)(?:Sum\s+of|Standard|$)/i);
+      const compositeNames = [];
+      if (namePart) {
+        for (const line of namePart[1].split("\n")) {
+          const trimmed = line.trim();
+          if (/^[A-Z]/i.test(trimmed) && !/^(Sum|Standard|Percentile|Raw|Normal|Stanine|Qualitative|90%|Confidence|Note|WIAT)/i.test(trimmed)) {
+            compositeNames.push(trimmed);
+          }
+        }
+      }
+      // Collect all numbers after column headers (skip to after "Stanine" or "Description")
+      const afterHeaders = compSection.replace(/^[\s\S]*?(?:Equiv\.\s*Stanine|Description)\s*\n/i, "");
+      const allNums = [];
+      for (const line of afterHeaders.split("\n")) {
+        const trimmed = line.trim();
+        if (/^\d+$/.test(trimmed)) allNums.push(parseInt(trimmed, 10));
+        // CI range "122-130" → two numbers
+        if (/^\d+\s*[-–—]\s*\d+$/.test(trimmed)) {
+          const parts = trimmed.split(/\s*[-–—]\s*/);
+          allNums.push(parseInt(parts[0], 10));
+          allNums.push(parseInt(parts[1], 10));
+        }
+      }
+      // 7 columns: Sum, SS, CI-lo, CI-hi, PR, NCE, Stanine → N = total / 7
+      const N = compositeNames.length || Math.floor(allNums.length / 7);
+      if (N >= 1 && N <= 10 && allNums.length >= N * 7) {
+        const compositeKeyMap = {
+          "Oral Language": "ORAL_LANGUAGE_COMPOSITE",
+          "Total Reading": "TOTAL_READING",
+          "Basic Reading": "BASIC_READING",
+          "Written Expression": "WRITTEN_EXPRESSION",
+          "Mathematics": "MATHEMATICS_COMPOSITE",
+          "Total Achievement": "TOTAL_ACHIEVEMENT",
+        };
+        // Column-based: SS starts at index N (after Sum column), PR at index N*4 (after Sum, SS, CI-lo, CI-hi)
+        const ssCol = allNums.slice(N, N * 2);
+        const prCol = allNums.slice(N * 4, N * 5);
+        for (let i = 0; i < Math.min(N, compositeNames.length); i++) {
+          const name = compositeNames[i];
+          const key = compositeKeyMap[name];
+          const ss = ssCol[i];
+          const pr = prCol[i];
+          if (key && ss >= STANDARD_SCORE_MIN && ss <= STANDARD_SCORE_MAX && pr <= PERCENTILE_MAX) {
+            if (!scores[key]) scores[key] = { ss, percentile: pr };
+          }
+        }
+      }
+    }
+  } catch (e) { /* composite positional parsing failed */ }
+
   // Helper: try multiple patterns for a subtest name, return {ss, percentile} or null
   function extractScore(name) {
     const esc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -3918,10 +4028,17 @@ function buildWIATText(scores, firstName, pronounKey) {
       text = text.replace(pctTag, String(data.percentile) + getSuffix(data.percentile));
     } else {
       unfilled++;
+      // Mark unfilled placeholders for paragraph removal
       text = text.replace(rangeTag, "⟦___⟧");
       text = text.replace(pctTag, "⟦___⟧");
     }
   }
+
+  // Remove entire paragraphs that still contain unfilled ⟦___⟧ placeholders
+  // Split on double newlines (paragraph breaks), keep only paragraphs with no blanks
+  const paragraphs = text.split(/\n\n/);
+  const filtered = paragraphs.filter(p => !p.includes("⟦___⟧"));
+  text = filtered.join("\n\n");
 
   return { text, unfilled };
 }
@@ -7472,7 +7589,7 @@ export default function App() {
           // Also try extracting from already-generated section content (cognitive, academic, memory)
           const pseudoDocs = [];
           const cogContent = secs.cognitive?.content?.trim();
-          if (cogContent && cogContent.length > 100 && /WISC|WPPSI|WAIS|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI/i.test(cogContent)) {
+          if (cogContent && cogContent.length > 100 && /WISC|WPPSI|WAIS|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI|PRI/i.test(cogContent)) {
             pseudoDocs.push({ extractedText: cogContent, name: "_cognitive_", _docxTables: null, _pdfPages: null });
           }
           const acadContent = secs.academic?.content?.trim();
@@ -7782,28 +7899,22 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
           // Clean markdown artifacts and duplicate section titles from all non-table sections
           content = cleanAIOutput(content, sid);
         }
-        // WAIS cognitive: extract structured score summary and strip it from display content
+        // WAIS cognitive: extract scores from AI output (multiple strategies)
         let waisExtractedScores = null;
-        if (sid === "cognitive" && /---\s*SCORE SUMMARY\s*---/.test(content)) {
-          const summaryMatch = content.match(/---\s*SCORE SUMMARY\s*---([\s\S]*?)---\s*END SCORE SUMMARY\s*---/);
-          if (summaryMatch) {
-            // Parse the score summary lines into a map
-            waisExtractedScores = {};
-            const lines = summaryMatch[1].trim().split("\n");
-            for (const line of lines) {
-              const m = line.match(/^([A-Z]{2,5})\s*=\s*(\d+)\s*,\s*PR\s*=\s*(\d+(?:\.\d+)?)/);
-              if (m) {
-                const abbr = m[1];
-                const score = parseInt(m[2], 10);
-                const pct = parseFloat(m[3]);
-                const isIndex = score >= STANDARD_SCORE_MIN;
-                const isScaled = score >= SCALED_SCORE_MIN && score <= SCALED_SCORE_MAX;
-                if (isIndex && !isScaled) {
-                  waisExtractedScores[`WAIS.${abbr}.score`] = String(score);
-                  waisExtractedScores[`WAIS.${abbr}.percentile`] = String(pct);
-                  waisExtractedScores[`WAIS.${abbr}.qualitative`] = qualitativeLabel(score);
-                } else if (isScaled) {
-                  // Could be either scaled or standard — check context
+        if (sid === "cognitive" && tools.some(t => t.id === "wais-iv" && t.used)) {
+          waisExtractedScores = {};
+
+          // Strategy 1: Parse structured SCORE SUMMARY block if present
+          if (/---\s*SCORE\s*SUMMARY\s*---/i.test(content)) {
+            const summaryMatch = content.match(/---\s*SCORE\s*SUMMARY\s*---([\s\S]*?)---\s*END\s*SCORE\s*SUMMARY\s*---/i);
+            if (summaryMatch) {
+              const lines = summaryMatch[1].trim().split("\n");
+              for (const line of lines) {
+                const m = line.match(/^([A-Z]{2,5})\s*=\s*(\d+)\s*,\s*PR\s*=\s*(\d+(?:\.\d+)?)/);
+                if (m) {
+                  const abbr = m[1];
+                  const score = parseInt(m[2], 10);
+                  const pct = parseFloat(m[3]);
                   const indexAbbrevs = ["FSIQ","VCI","PRI","WMI","PSI","GAI","NVI","CPI","VSI","FRI"];
                   if (indexAbbrevs.includes(abbr)) {
                     waisExtractedScores[`WAIS.${abbr}.score`] = String(score);
@@ -7815,9 +7926,57 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
                   }
                 }
               }
+              // Strip the score summary block from displayed content
+              content = content.replace(/\n*---\s*SCORE\s*SUMMARY\s*---[\s\S]*?---\s*END\s*SCORE\s*SUMMARY\s*---\s*/i, "").trim();
             }
-            // Strip the score summary block from displayed content
-            content = content.replace(/\n*---\s*SCORE SUMMARY\s*---[\s\S]*?---\s*END SCORE SUMMARY\s*---\s*/, "").trim();
+          }
+
+          // Strategy 2: Narrative extraction from AI text (always runs as fallback)
+          try {
+            const narrSubs = detExtractNarrativeSubtestScores(content);
+            for (const s of narrSubs) {
+              const abbr = WISC_SUBTEST_ABBREV_MAP[s.name];
+              if (!abbr || waisExtractedScores[`WAIS.${abbr}.scaled`]) continue;
+              if (s.scaledScore != null) waisExtractedScores[`WAIS.${abbr}.scaled`] = String(s.scaledScore);
+              if (s.percentile != null) waisExtractedScores[`WAIS.${abbr}.percentile`] = String(s.percentile);
+            }
+            const narrIdx = detExtractNarrativeIndexScores(content);
+            if (narrIdx) {
+              for (const s of narrIdx) {
+                if (!s.abbrev || waisExtractedScores[`WAIS.${s.abbrev}.score`]) continue;
+                if (s.standardScore != null) waisExtractedScores[`WAIS.${s.abbrev}.score`] = String(s.standardScore);
+                if (s.percentile != null) waisExtractedScores[`WAIS.${s.abbrev}.percentile`] = String(s.percentile);
+                waisExtractedScores[`WAIS.${s.abbrev}.qualitative`] = s.qualitative || qualitativeLabel(s.standardScore);
+              }
+            }
+          } catch (e) { /* narrative extraction failed — continue with what we have */ }
+
+          // Strategy 3: Inline abbreviation extraction (e.g., "VCI = 98, PR = 45")
+          try {
+            const inlIdx = detExtractIndexScores(content);
+            if (inlIdx) {
+              for (const s of inlIdx) {
+                if (!s.abbrev || waisExtractedScores[`WAIS.${s.abbrev}.score`]) continue;
+                if (s.standardScore != null) waisExtractedScores[`WAIS.${s.abbrev}.score`] = String(s.standardScore);
+                if (s.percentile != null) waisExtractedScores[`WAIS.${s.abbrev}.percentile`] = String(s.percentile);
+                waisExtractedScores[`WAIS.${s.abbrev}.qualitative`] = s.qualitative || qualitativeLabel(s.standardScore);
+              }
+            }
+            const inlSubs = detExtractInlineScores(content);
+            for (const s of inlSubs) {
+              const abbr = WISC_SUBTEST_ABBREV_MAP[s.name];
+              if (!abbr || waisExtractedScores[`WAIS.${abbr}.scaled`]) continue;
+              if (s.scaledScore != null) waisExtractedScores[`WAIS.${abbr}.scaled`] = String(s.scaledScore);
+              if (s.percentile != null) waisExtractedScores[`WAIS.${abbr}.percentile`] = String(s.percentile);
+            }
+          } catch (e) { /* inline extraction failed */ }
+
+          // If we got nothing, set to null so we don't store empty object
+          if (Object.keys(waisExtractedScores).length === 0) {
+            waisExtractedScores = null;
+            console.warn("[PsychoEd] WAIS score extraction found 0 scores in AI output");
+          } else {
+            console.log("[PsychoEd] WAIS scores extracted:", Object.keys(waisExtractedScores).length, "keys", waisExtractedScores);
           }
         }
         uSec(sid, { content, ...(waisExtractedScores ? { _waisScores: waisExtractedScores } : {}) });
@@ -7941,7 +8100,7 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
               // Also merge from already-generated section content
               const pseudoDocs = [];
               const cogContent = (localContent.cognitive || secs.cognitive?.content || "").trim();
-              if (cogContent && cogContent.length > 100 && /WISC|WPPSI|WAIS|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI/i.test(cogContent)) {
+              if (cogContent && cogContent.length > 100 && /WISC|WPPSI|WAIS|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI|PRI/i.test(cogContent)) {
                 pseudoDocs.push({ extractedText: cogContent, name: "_cognitive_", _docxTables: null, _pdfPages: null });
               }
               const acadContent = (localContent.academic || secs.academic?.content || "").trim();
