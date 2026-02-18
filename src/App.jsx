@@ -8551,9 +8551,11 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
             return;
           }
 
-          // ── WPPSI-IV (age < 6y11m): Try PDF extraction first, then manual entry ──
-          if (useWPPSIByAge) {
-            const wppsiDocs = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
+          // ── WPPSI-IV (age < 6y11m OR WPPSI detected in uploaded docs): Try PDF extraction first, then manual entry ──
+          const wppsiDocsDetected = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
+          const isWPPSI = useWPPSIByAge || wppsiDocsDetected.length > 0;
+          if (isWPPSI) {
+            const wppsiDocs = wppsiDocsDetected.length > 0 ? wppsiDocsDetected : docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
             const pdfResult = extractWPPSICogText(wppsiDocs.length > 0 ? wppsiDocs : allTextDocs);
             let wm, scoreSummary;
             if (pdfResult) {
@@ -8595,7 +8597,7 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
 
           // ── WISC-V / default: Deterministic extraction from Q-interactive PDF ──
           const isWAISSelected = tools.some(t => t.id === "wais-iv" && t.used);
-          if (!isWAISSelected) {
+          if (!isWAISSelected && !isWPPSI) {
             let extracted = extractCognitiveText(selDocs(sid));
             if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
             if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
@@ -9234,9 +9236,11 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
               }
             }
 
-            // Try WPPSI PDF extraction (age < 6y11m)
-            if (useWPPSIByAge) {
-              const wppsiDocs = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
+            // Try WPPSI PDF extraction (age < 6y11m OR WPPSI detected in uploaded docs)
+            const wppsiDocsDetectedBatch = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
+            const isWPPSIBatch = useWPPSIByAge || wppsiDocsDetectedBatch.length > 0;
+            if (isWPPSIBatch) {
+              const wppsiDocs = wppsiDocsDetectedBatch.length > 0 ? wppsiDocsDetectedBatch : allTextDocs;
               const pdfResult = extractWPPSICogText(wppsiDocs.length > 0 ? wppsiDocs : allTextDocs);
               let wm = pdfResult ? pdfResult.wm : secs.cognitive?.wppsiManual || {};
               if (pdfResult) uSec(sid, { wppsiManual: { ...secs.cognitive?.wppsiManual, ...wm } });
@@ -9249,10 +9253,10 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
               }
             }
 
-            // WISC-V: existing deterministic extraction + AI impact
-            let extracted = extractCognitiveText(selDocs(sid));
-            if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
-            if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
+            // WISC-V: existing deterministic extraction + AI impact (skip if WPPSI detected)
+            let extracted = isWPPSIBatch ? null : extractCognitiveText(selDocs(sid));
+            if (!isWPPSIBatch && !extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
+            if (!isWPPSIBatch && !extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
             if (extracted) {
               let content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
               // Try WISC score extraction for AI impact
