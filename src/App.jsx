@@ -417,7 +417,12 @@ function reidentifyText(text, meta) {
   const last = parts[parts.length - 1] || "";
   // Replace tokens back with real values
   if (fullName) result = result.replace(/\[STUDENT\]/g, fullName);
-  if (first) result = result.replace(/\[FIRST_NAME\]/g, first);
+  if (first) {
+    result = result.replace(/\[FIRST_NAME\]/g, first);
+    result = result.replace(/\[firstName\]/g, first);
+    result = result.replace(/\[first_name\]/gi, first);
+    result = result.replace(/\[first name\]/gi, first);
+  }
   if (last && last !== first) result = result.replace(/\[LAST_NAME\]/g, last);
   if (meta.dob) result = result.replace(/\[DOB\]/g, formatDate(meta.dob));
   if (meta.school) result = result.replace(/\[SCHOOL\]/g, meta.school);
@@ -430,6 +435,15 @@ function reidentifyText(text, meta) {
   result = result.replace(/\[reflexive\]/gi, pr.reflexive);
   // Also catch any leftover gendered placeholder patterns from templates
   result = applyPronouns(result, meta.pronouns);
+  // Safety: clean up any remaining AI-generated template placeholders
+  // Remove bracketed template instructions like [specific range...], [exact percentile], etc.
+  result = result.replace(/\[specific\s+range[^\]]*\]/gi, "___");
+  result = result.replace(/\[exact\s+percentile[^\]]*\]/gi, "___");
+  result = result.replace(/\[insert\s+[^\]]*\]/gi, "___");
+  result = result.replace(/\[score[^\]]*\]/gi, "___");
+  result = result.replace(/\[classification[^\]]*\]/gi, "___");
+  result = result.replace(/\[percentile[^\]]*\]/gi, "___");
+  result = result.replace(/\[range[^\]]*\]/gi, "___");
   return result;
 }
 
@@ -905,7 +919,7 @@ Start with the standard testing setting: 'Testing was conducted at the psycholog
 Then weave the selected observations into natural paragraphs covering: appearance and demeanour, engagement and cooperation, attention and concentration, motor skills and handwriting, and a validity conclusion.
 Use [firstName] and correct pronouns throughout. Do not add observations that were not selected. Do not diagnose. Describe only observable behaviour. Use professional, cautious language. Output only the section content.`,
   cognitive: `Extract the interpretive text from the uploaded WISC-V (or WPPSI/WAIS) report document and output it as the Cognitive/Intellectual Functioning section.
-Steps: 1. Find the section starting with "ABOUT WISC-V CDN SCORES" or similar. 2. Copy all interpretive text verbatim. 3. Stop before the SUMMARY section. 4. Remove page headers/footers and copyright lines. 5. Replace the child's name with [firstName]. 6. Replace pronouns.
+Steps: 1. Find the section starting with "ABOUT WISC-V CDN SCORES" or similar. 2. Copy all interpretive text verbatim. 3. Stop before the SUMMARY section. 4. Remove page headers/footers and copyright lines. 5. Replace the child's name with [FIRST_NAME]. 6. Replace pronouns.
 If no uploaded cognitive report text is found, write the section from provided scores using professional school psychologist tone.
 
 WAIS (Ages 17+) SPECIFIC INSTRUCTIONS:
@@ -917,10 +931,12 @@ Requirements for WAIS sections:
 - Include the General Ability Index (GAI) if available.
 - Compare index scores and note any statistically significant discrepancies.
 - Be SPECIFIC and OBJECTIVE: state only what the scores show. Do not speculate, infer, or add clinical impressions beyond what the data supports.
-- Do NOT guess any scores. If a score is not present in the uploaded data, state it was not administered or is not available.
+- Do NOT use placeholders like [range], [percentile], [score], [classification]. You MUST write the actual numeric values and classification labels.
+- If EXTRACTED SCORES are provided in the context, use those EXACT values. Do not guess or invent scores.
 - Do NOT add information that is not in the source documents. Do NOT omit any scores that are present.
 - Use exact score values as they appear in the source. Do not round, estimate, or approximate.
 - Use professional school psychologist tone with cautious, evidence-based phrasing.
+- Use [FIRST_NAME] for the student's name throughout.
 
 CRITICAL — STRUCTURED SCORE SUMMARY: After the narrative section, you MUST include a clearly labeled score summary block in this EXACT format (one line per score). This is used for automatic table generation:
 --- SCORE SUMMARY ---
@@ -944,11 +960,11 @@ CD = [scaled], PR = [percentile]
 Include ONLY scores that are present in the source data. Omit any line where the score is not available.
 
 IMPORTANT — ANCILLARY INDEX ANALYSIS: After the five primary index scores, always include ancillary indexes in the WISC-V PDF report style. Include these paragraphs:
-1. Intro paragraph: "In addition to the index scores described above, [firstName] was administered subtests contributing to several ancillary index scores. Ancillary index scores do not replace the FSIQ and primary index scores, but are meant to provide additional information about [firstName]'s cognitive profile."
+1. Intro paragraph: "In addition to the index scores described above, [FIRST_NAME] was administered subtests contributing to several ancillary index scores. Ancillary index scores do not replace the FSIQ and primary index scores, but are meant to provide additional information about [FIRST_NAME]'s cognitive profile."
 2. Nonverbal Index (NVI): Describe it as derived from six subtests not requiring verbal responses, drawn from Visual Spatial, Fluid Reasoning, Working Memory, and Processing Speed domains. State it can estimate overall nonverbal cognitive ability.
 3. General Ability Index (GAI): Describe as an estimate of general intelligence less impacted by working memory and processing speed. State it consists of subtests from verbal comprehension, visual spatial, and fluid reasoning. Note whether GAI and FSIQ are significantly different. Explain the GAI provides a clearer estimate of reasoning potential.
-4. Cognitive Proficiency Index (CPI): Describe as drawn from working memory and processing speed domains. Explain low CPI may occur due to visual/auditory processing deficits, inattention, distractibility, visuomotor difficulties, limited working memory, or generally low cognitive ability. State CPI is most informative together with GAI. If GAI > CPI, state that higher-order abilities may be a strength compared to processing efficiency. Describe real-world impact: "Relative weaknesses in mental control and speed of visual scanning may sometimes create challenges as [firstName] engages in more complex cognitive processes, such as learning new material or applying logical thinking skills."
-Use provided scores only. Apply [firstName] and pronouns throughout.`,
+4. Cognitive Proficiency Index (CPI): Describe as drawn from working memory and processing speed domains. Explain low CPI may occur due to visual/auditory processing deficits, inattention, distractibility, visuomotor difficulties, limited working memory, or generally low cognitive ability. State CPI is most informative together with GAI. If GAI > CPI, state that higher-order abilities may be a strength compared to processing efficiency. Describe real-world impact: "Relative weaknesses in mental control and speed of visual scanning may sometimes create challenges as [FIRST_NAME] engages in more complex cognitive processes, such as learning new material or applying logical thinking skills."
+Use provided scores only. Apply [FIRST_NAME] and pronouns throughout.`,
   memory: `WRAML 3 Memory and Learning Section Auto Population and Summary Generation.
 LOCKED TEMPLATE PROTECTION: Only replace placeholders. Do NOT rewrite, rephrase, shorten, expand, or modify existing sentences.
 Step 1: Extract scores from WRAML3 Score Report PDF for each subtest and index.
@@ -3095,7 +3111,7 @@ function buildBlankPlaceholderTablesHTML(firstName, tableBlockIds, scores, dataO
     const composites = cogName === "WPPSI-IV"
       ? [["Verbal Comprehension Index","VCI"],["Visual Spatial Index","VSI"],["Fluid Reasoning Index","FRI"],["Working Memory Index","WMI"],["Processing Speed Index","PSI"],["Full Scale IQ","FSIQ"]]
       : cogName === "WAIS-IV"
-        ? [["Verbal Comprehension Index","VCI"],["Perceptual Reasoning Index","PRI"],["Working Memory Index","WMI"],["Processing Speed Index","PSI"],["Full Scale IQ","FSIQ"]]
+        ? [["Verbal Comprehension Index","VCI"],["Perceptual Reasoning Index","PRI"],["Working Memory Index","WMI"],["Processing Speed Index","PSI"],["Full Scale IQ","FSIQ"],["General Ability Index","GAI"]]
         : [["Verbal Comprehension Index","VCI"],["Visual Spatial Index","VSI"],["Fluid Reasoning Index","FRI"],["Working Memory Index","WMI"],["Processing Speed Index","PSI"],["Full Scale IQ","FSIQ"]];
     const compTbl = buildTable(`${cogName} Composite Score Summary — ${nm}`,
       `<th ${th}>Composite</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Qualitative Description</th>`,
@@ -3798,95 +3814,6 @@ function parseWIATScores(txt) {
   // Normalize whitespace
   const t = txt.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
-  // ── SPECIAL: Parse "Subtest Score Summary" main table (positional) ──
-  // In WIAT PDFs extracted by pdfminer/pdf.js, names and numbers are on separate lines in column order:
-  //   Subtest\n\nListening Comprehension\n\nReading Comprehension\n...\n\nRaw\nScore\n\nStandard\nScore\n...
-  //   -\n261\n45\n...(raw scores)...\n84\n82\n75\n...(standard scores)...\n75-93\n73-91\n...(CIs)...\n14\n12\n5\n...(PRs)
-  try {
-    const mainHeadIdx = t.search(/Subtest\s+Score\s+Summary\s*\n/i);
-    if (mainHeadIdx >= 0) {
-      // Find the boundary: ends at footnotes "- Indicates" or "Subtest Component" or chart section
-      const sectionEnd = t.search(/- Indicates a subtest|Subtest Score Profile|Subtest Component Score/i);
-      const mainSection = sectionEnd > mainHeadIdx ? t.slice(mainHeadIdx, sectionEnd) : t.slice(mainHeadIdx, mainHeadIdx + 3000);
-
-      // Extract subtest names (between "Subtest\n" and "Raw\nScore")
-      const nameStart = mainSection.search(/\nSubtest\s*\n/i);
-      const rawStart = mainSection.search(/\nRaw\s*\nScore/i);
-      if (nameStart >= 0 && rawStart > nameStart) {
-        const nameZone = mainSection.slice(nameStart, rawStart);
-        const subtestNames = nameZone.split("\n").map(l => l.trim()).filter(l =>
-          /^[A-Z]/i.test(l) && !/^(Subtest|Raw|Standard|Score|90%|Confidence|Percentile|Normal|Curve|Grade|Age|Growth|Equiv)/i.test(l)
-        );
-
-        // Collect all data tokens after column headers end (after "Growth\nScore")
-        const dataStart = mainSection.search(/Growth\s*\nScore/i);
-        if (dataStart >= 0) {
-          const dataZone = mainSection.slice(dataStart + 12); // skip "Growth\nScore"
-          const tokens = []; // numbers and dashes
-          for (const line of dataZone.split("\n")) {
-            const trimmed = line.trim();
-            if (/^-$/.test(trimmed)) tokens.push("-");
-            else if (/^\d+$/.test(trimmed)) tokens.push(parseInt(trimmed, 10));
-            else if (/^\d+\s*[-–—]\s*\d+$/.test(trimmed)) {
-              // CI range like "75-93"
-              tokens.push(trimmed); // keep as string for CI column
-            }
-            // Skip everything else (>12.9, >19:11, etc.)
-            else if (/^>\d/.test(trimmed)) tokens.push(trimmed);
-            else if (/^\d+:\d+/.test(trimmed)) tokens.push(trimmed); // age equiv like "11:2"
-            else if (/^\d+\.\d+$/.test(trimmed)) tokens.push(parseFloat(trimmed)); // grade equiv like "7.4"
-          }
-
-          const N = subtestNames.length;
-          // Columns: Raw(N), SS(N), CI(N), PR(N), NCE(N), Stanine(N), GradeEquiv(N), AgeEquiv(N), GrowthScore(N)
-          // Total tokens = N * 9
-          // Find SS and PR columns by counting through raw scores first
-          // Raw scores may be "-" or numbers, so count N tokens for raw
-          if (N >= 3 && tokens.length >= N * 4) {
-            // Extract just the numeric columns: skip raw (N tokens), then SS is next N, skip CI (N tokens), then PR is next N
-            const rawCol = tokens.slice(0, N);
-            // SS column: next N values after raw (should all be 2-3 digit numbers)
-            const ssStartIdx = N;
-            const ssCol = [];
-            for (let i = ssStartIdx; i < ssStartIdx + N && i < tokens.length; i++) {
-              ssCol.push(typeof tokens[i] === "number" ? tokens[i] : null);
-            }
-            // CI column: next N values (ranges as strings)
-            const ciStartIdx = ssStartIdx + N;
-            // PR column: next N values after CI
-            const prStartIdx = ciStartIdx + N;
-            const prCol = [];
-            for (let i = prStartIdx; i < prStartIdx + N && i < tokens.length; i++) {
-              prCol.push(typeof tokens[i] === "number" ? tokens[i] : null);
-            }
-
-            const subtestKeyMap = {
-              "Listening Comprehension": "LISTENING_COMPREHENSION",
-              "Reading Comprehension": "READING_COMPREHENSION",
-              "Math Problem Solving": "MATH_PROBLEM_SOLVING",
-              "Sentence Composition": "SENTENCE_COMPOSITION",
-              "Word Reading": "WORD_READING",
-              "Essay Composition": "ESSAY_COMPOSITION",
-              "Pseudoword Decoding": "PSEUDOWORD_DECODING",
-              "Numerical Operations": "NUMERICAL_OPERATIONS",
-              "Spelling": "SPELLING",
-            };
-
-            for (let i = 0; i < N; i++) {
-              const name = subtestNames[i];
-              const key = subtestKeyMap[name];
-              const ss = ssCol[i];
-              const pr = prCol[i];
-              if (key && ss != null && ss >= STANDARD_SCORE_MIN && ss <= STANDARD_SCORE_MAX && pr != null) {
-                if (!scores[key]) scores[key] = { ss, percentile: pr };
-              }
-            }
-          }
-        }
-      }
-    }
-  } catch (e) { /* main subtest positional parsing failed */ }
-
   // ── SPECIAL: Parse "Subtest Component Score Summary" section ──
   // In WIAT PDFs extracted by pdfminer/pdf.js, numbers appear one-per-line in COLUMN order:
   //   Raw1, Raw2, ..., RawN, SS1, SS2, ..., SSN, PR1, PR2, ..., PRN, NCE1..., Stanine1...
@@ -4002,6 +3929,63 @@ function parseWIATScores(txt) {
     }
   } catch (e) { /* composite positional parsing failed */ }
 
+  // ── SPECIAL: Parse main "Subtest Score Summary" positional section ──
+  // In WIAT PDFs, the main subtest table has numbers in column order similar to component/composite tables
+  try {
+    // Find heading: "Subtest Score Summary" but NOT "Subtest Component Score Summary"
+    const mainHeadMatch = t.match(/(?:^|\n)\s*(?:Subtest\s+Score\s+Summary)\s*\n/i);
+    if (mainHeadMatch && !/Component/i.test(mainHeadMatch[0])) {
+      const mainHeadIdx = t.indexOf(mainHeadMatch[0]);
+      // Look for "Subtest\n" label after the header to find names
+      const nameSearchZone = t.slice(mainHeadIdx, mainHeadIdx + 3000);
+      const subtestLabelIdx = nameSearchZone.search(/\nSubtest\s*\n/i);
+      if (subtestLabelIdx >= 0) {
+        const absNameIdx = mainHeadIdx + subtestLabelIdx;
+        // Extract numbers between header and name label
+        const dataZone = t.slice(mainHeadIdx, absNameIdx);
+        const afterHeaders = dataZone.replace(/^[\s\S]*?(?:Description|Stanine)\s*\n/i, "");
+        const allNums = [];
+        for (const line of afterHeaders.split("\n")) {
+          const trimmed = line.trim();
+          if (/^\d+$/.test(trimmed)) allNums.push(parseInt(trimmed, 10));
+        }
+        // Extract subtest names after "Subtest\n"
+        const afterLabel = t.slice(absNameIdx + subtestLabelIdx + "Subtest\n".length + 1, absNameIdx + subtestLabelIdx + 600);
+        const nameLines = afterLabel.split("\n").map(l => l.trim()).filter(l =>
+          /^[A-Z]/i.test(l) && !/^(Composite|Sum of|Standard|Percentile|Raw|Normal|Stanine|Qualitative|90%|Confidence|WIAT|ID:|Subtest)/i.test(l)
+        );
+        // 5 numeric columns: Raw, SS, PR, NCE, Stanine
+        const nCols = 5;
+        const N = Math.floor(allNums.length / nCols);
+        if (N >= 3 && N <= 20 && nameLines.length >= N) {
+          const ssCol = allNums.slice(N, N * 2);
+          const prCol = allNums.slice(N * 2, N * 3);
+          const mainSubtestKeyMap = {
+            "Listening Comprehension": "LISTENING_COMPREHENSION",
+            "Word Reading": "WORD_READING",
+            "Pseudoword Decoding": "PSEUDOWORD_DECODING",
+            "Reading Comprehension": "READING_COMPREHENSION",
+            "Oral Reading Fluency": "ORAL_READING_FLUENCY",
+            "Spelling": "SPELLING",
+            "Sentence Composition": "SENTENCE_COMPOSITION",
+            "Essay Composition": "ESSAY_COMPOSITION",
+            "Math Problem Solving": "MATH_PROBLEM_SOLVING",
+            "Numerical Operations": "NUMERICAL_OPERATIONS",
+          };
+          for (let i = 0; i < Math.min(N, nameLines.length); i++) {
+            const name = nameLines[i];
+            const key = mainSubtestKeyMap[name];
+            const ss = ssCol[i];
+            const pr = prCol[i];
+            if (key && ss >= STANDARD_SCORE_MIN && ss <= STANDARD_SCORE_MAX && pr <= PERCENTILE_MAX) {
+              if (!scores[key]) scores[key] = { ss, percentile: pr };
+            }
+          }
+        }
+      }
+    }
+  } catch (e) { /* main subtest positional parsing failed */ }
+
   // Helper: try multiple patterns for a subtest name, return {ss, percentile} or null
   function extractScore(name) {
     const esc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -4050,10 +4034,10 @@ function parseWIATScores(txt) {
     NUMERICAL_OPERATIONS: "Numerical Operations",
     RECEPTIVE_VOCABULARY: "Receptive Vocabulary",
     ORAL_DISCOURSE: "Oral Discourse Comprehension",
+    ORAL_READING_FLUENCY: "Oral Reading Fluency",
   };
 
   for (const [key, name] of Object.entries(subtestMap)) {
-    if (scores[key]) continue; // Already found by positional parser
     const result = extractScore(name);
     if (result) scores[key] = result;
   }
@@ -4076,7 +4060,6 @@ function parseWIATScores(txt) {
   };
 
   for (const [key, names] of Object.entries(compositeMap)) {
-    if (scores[key]) continue; // Already found by positional parser
     for (const name of names) {
       const result = extractScore(name);
       if (result) { scores[key] = result; break; }
@@ -7844,6 +7827,57 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
       if (sid === "academic") {
         const templateText = personalize(WIAT_TEMPLATE, derivedFirstName || "[firstName]", meta.pronouns);
         ctxParts.push("=== WIAT TEMPLATE TO FILL ===\nUse this EXACT template structure. Replace EVERY [PLACEHOLDER_RANGE] with the classification (e.g., Average, Low Average) and EVERY [PLACEHOLDER_PERCENTILE] with the actual percentile (e.g., 45th, 2nd). If a score is not found, use [score not available].\n\n" + templateText);
+        
+        // Extract and inject structured WIAT scores so AI has exact values
+        const acadDocs = docs.filter(d => d.extractedText && /WIAT/i.test(d.extractedText));
+        if (acadDocs.length > 0) {
+          for (const d of acadDocs) {
+            const sc = parseWIATScores(d.extractedText || "");
+            const filled = Object.entries(sc).filter(([, v]) => v && v.ss != null);
+            if (filled.length > 0) {
+              const lines = ["=== WIAT-III EXTRACTED SCORES (use these EXACT values) ==="];
+              for (const [key, data] of filled) {
+                const range = ssToRange(data.ss);
+                lines.push(`  ${key}: Standard Score = ${data.ss}, Percentile = ${data.percentile}, Classification = ${range}`);
+              }
+              lines.push("\nCRITICAL: Use these EXACT scores to fill the template. Do NOT use placeholders.");
+              ctxParts.push(lines.join("\n"));
+            }
+          }
+        }
+      }
+
+      // ── WAIS COGNITIVE: Extract structured scores from docs and inject as context ──
+      if (sid === "cognitive" && tools.some(t => t.id === "wais-iv" && t.used)) {
+        const allDocsForScores = docs.filter(d => d.extractedText && d.extractedText.length > 50);
+        const waisScoreMap = extractAllScoresMap(allDocsForScores);
+        const waisKeys = Object.entries(waisScoreMap).filter(([k]) => k.startsWith("WAIS."));
+        if (waisKeys.length > 0) {
+          const lines = ["=== WAIS-IV EXTRACTED SCORES (use these EXACT values) ==="];
+          const indexMap = { FSIQ: "Full Scale IQ", VCI: "Verbal Comprehension Index", PRI: "Perceptual Reasoning Index", WMI: "Working Memory Index", PSI: "Processing Speed Index", GAI: "General Ability Index" };
+          const subtestMap = { SI: "Similarities", VC: "Vocabulary", IN: "Information", BD: "Block Design", MR: "Matrix Reasoning", VP: "Visual Puzzles", DS: "Digit Span", AR: "Arithmetic", SS: "Symbol Search", CD: "Coding" };
+          lines.push("\nINDEX SCORES:");
+          for (const [abbr, full] of Object.entries(indexMap)) {
+            const score = waisScoreMap[`WAIS.${abbr}.score`];
+            const pct = waisScoreMap[`WAIS.${abbr}.percentile`];
+            const qual = waisScoreMap[`WAIS.${abbr}.qualitative`];
+            if (score) lines.push(`  ${full} (${abbr}): Standard Score = ${score}, Percentile = ${pct || "N/A"}, Classification = ${qual || qualitativeLabel(parseInt(score))}`);
+          }
+          lines.push("\nSUBTEST SCORES:");
+          for (const [abbr, full] of Object.entries(subtestMap)) {
+            const scaled = waisScoreMap[`WAIS.${abbr}.scaled`];
+            const pct = waisScoreMap[`WAIS.${abbr}.percentile`];
+            if (scaled) lines.push(`  ${full} (${abbr}): Scaled Score = ${scaled}, Percentile = ${pct || "N/A"}`);
+          }
+          lines.push("\nCRITICAL: Use these EXACT scores in your narrative. Do NOT use placeholders like [range] or [percentile]. Write the actual values.");
+          ctxParts.push(lines.join("\n"));
+        }
+        // Also extract raw text from WAIS docs for additional context
+        const waisDocs = docs.filter(d => d.extractedText && /WAIS/i.test(d.extractedText));
+        if (waisDocs.length > 0) {
+          const rawText = waisDocs[0].extractedText.slice(0, 6000);
+          ctxParts.push("=== RAW WAIS-IV DOCUMENT TEXT (for score verification) ===\n" + rawText);
+        }
       }
 
       // Include socio-emotional inputs for the social_emotional section
