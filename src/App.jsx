@@ -845,19 +845,19 @@ At the present moment, [firstName] obtained a Full Scale IQ score of [FSIQ_SCORE
 
 Verbal Comprehension
 
-The Verbal Comprehension Index (VCI) measures the ability to reason with verbal information, form and apply verbal concepts, and draw upon acquired knowledge and language skills. This domain is central to many aspects of everyday functioning, including understanding spoken and written language, expressing ideas clearly, following verbal instructions, and engaging in classroom discussions or workplace communication. Strong verbal comprehension supports the ability to learn from reading, understand complex instructions, and communicate ideas effectively. Individuals who perform well in this area tend to benefit from language based instruction and can often explain their reasoning with ease. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This suggests that [firstName]'s ability to reason using language, understand verbal concepts, and apply acquired knowledge is [VCI_DESCRIPTOR] relative to same age peers. This pattern suggests that verbal reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding and explaining ideas using language.
+The Verbal Comprehension Index (VCI) measures the ability to reason with verbal information, form and apply verbal concepts, and draw upon acquired knowledge and language skills. This domain is central to many aspects of everyday functioning, including understanding spoken and written language, expressing ideas clearly, following verbal instructions, and engaging in classroom discussions or workplace communication. Strong verbal comprehension supports the ability to learn from reading, understand complex instructions, and communicate ideas effectively. Individuals who perform well in this area tend to benefit from language based instruction and can often explain their reasoning with ease. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This suggests that [firstName]'s ability to reason using language, understand verbal concepts, and apply acquired knowledge is [VCI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [SI_SCALED] on Similarities ([SI_PERCENTILE] percentile), which measures verbal reasoning and concept formation; [VC_SCALED] on Vocabulary ([VC_PERCENTILE] percentile), which measures word knowledge and verbal expression; and [IN_SCALED] on Information ([IN_PERCENTILE] percentile), which measures breadth of general factual knowledge. This pattern suggests that verbal reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding and explaining ideas using language.
 
 Perceptual Reasoning
 
-The Perceptual Reasoning Index (PRI) measures the ability to reason with nonverbal, visually presented information, including analysing visual patterns, solving novel problems without relying on language, and understanding spatial relationships. This domain is important for tasks that require figuring things out without verbal instruction, such as interpreting charts and graphs, understanding mechanical or spatial concepts, assembling objects, navigating unfamiliar environments, and solving problems that have not been encountered before. Strong perceptual reasoning supports the ability to think flexibly, recognize patterns, and approach novel situations with effective problem solving strategies. [firstName] obtained a PRI score of [PRI_SCORE] ([PRI_PERCENTILE] percentile), which falls within the [PRI_DESCRIPTOR] range. This suggests that [firstName]'s ability to analyse visual information, identify patterns, and reason through novel nonverbal problems is [PRI_DESCRIPTOR] relative to same age peers. This pattern suggests that visual reasoning represents [PRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require solving novel problems using visual information.
+The Perceptual Reasoning Index (PRI) measures the ability to reason with nonverbal, visually presented information, including analysing visual patterns, solving novel problems without relying on language, and understanding spatial relationships. This domain is important for tasks that require figuring things out without verbal instruction, such as interpreting charts and graphs, understanding mechanical or spatial concepts, assembling objects, navigating unfamiliar environments, and solving problems that have not been encountered before. Strong perceptual reasoning supports the ability to think flexibly, recognize patterns, and approach novel situations with effective problem solving strategies. [firstName] obtained a PRI score of [PRI_SCORE] ([PRI_PERCENTILE] percentile), which falls within the [PRI_DESCRIPTOR] range. This suggests that [firstName]'s ability to analyse visual information, identify patterns, and reason through novel nonverbal problems is [PRI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [BD_SCALED] on Block Design ([BD_PERCENTILE] percentile), which measures spatial analysis and construction; [MR_SCALED] on Matrix Reasoning ([MR_PERCENTILE] percentile), which measures nonverbal abstract reasoning; and [VP_SCALED] on Visual Puzzles ([VP_PERCENTILE] percentile), which measures the ability to analyse and synthesize visual information. This pattern suggests that visual reasoning represents [PRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require solving novel problems using visual information.
 
 Working Memory
 
-The Working Memory Index (WMI) measures the ability to hold information in mind temporarily, manipulate it mentally, and use it to complete a task. Working memory is essential for a wide range of academic and daily activities, including following multi step instructions, performing mental arithmetic, taking notes while listening, reading comprehension, and keeping track of information during conversations or complex tasks. Weaknesses in working memory can lead to difficulty following through on instructions, losing track of what one was doing, and needing information to be repeated. Even when an individual understands the material, limited working memory can make it difficult to manage the demands of tasks that require holding several pieces of information in mind at once. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This suggests that [firstName]'s ability to hold information in mind, mentally manipulate it, and use it to complete a task is [WMI_DESCRIPTOR] relative to same age peers. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require following multi step instructions or mentally manipulating information.
+The Working Memory Index (WMI) measures the ability to hold information in mind temporarily, manipulate it mentally, and use it to complete a task. Working memory is essential for a wide range of academic and daily activities, including following multi step instructions, performing mental arithmetic, taking notes while listening, reading comprehension, and keeping track of information during conversations or complex tasks. Weaknesses in working memory can lead to difficulty following through on instructions, losing track of what one was doing, and needing information to be repeated. Even when an individual understands the material, limited working memory can make it difficult to manage the demands of tasks that require holding several pieces of information in mind at once. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This suggests that [firstName]'s ability to hold information in mind, mentally manipulate it, and use it to complete a task is [WMI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [DS_SCALED] on Digit Span ([DS_PERCENTILE] percentile), which measures auditory short-term memory and mental manipulation of number sequences; and [AR_SCALED] on Arithmetic ([AR_PERCENTILE] percentile), which measures mental computation and quantitative reasoning under timed conditions. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require following multi step instructions or mentally manipulating information.
 
 Processing Speed
 
-The Processing Speed Index (PSI) measures the speed and accuracy with which an individual can scan, identify, and respond to simple visual information under timed conditions. Processing speed is not a measure of how quickly someone thinks in general, but rather how efficiently they can perform routine cognitive tasks that require sustained visual attention and consistent output. This domain is relevant to many academic and vocational activities, including completing timed tests, copying information, scanning text for specific details, and keeping pace with the flow of classroom instruction or workplace demands. Slower processing speed can mean that an individual requires more time to complete routine tasks, even when they fully understand the material. This can sometimes be mistaken for a lack of understanding or motivation, when in reality the individual simply needs more time to demonstrate what they know. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This suggests that [firstName]'s speed and accuracy when performing routine visual cognitive tasks is [PSI_DESCRIPTOR] relative to same age peers. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick visual attention and consistent pace.
+The Processing Speed Index (PSI) measures the speed and accuracy with which an individual can scan, identify, and respond to simple visual information under timed conditions. Processing speed is not a measure of how quickly someone thinks in general, but rather how efficiently they can perform routine cognitive tasks that require sustained visual attention and consistent output. This domain is relevant to many academic and vocational activities, including completing timed tests, copying information, scanning text for specific details, and keeping pace with the flow of classroom instruction or workplace demands. Slower processing speed can mean that an individual requires more time to complete routine tasks, even when they fully understand the material. This can sometimes be mistaken for a lack of understanding or motivation, when in reality the individual simply needs more time to demonstrate what they know. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This suggests that [firstName]'s speed and accuracy when performing routine visual cognitive tasks is [PSI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [SS_SCALED] on Symbol Search ([SS_PERCENTILE] percentile), which measures visual scanning speed and decision making; and [CD_SCALED] on Coding ([CD_PERCENTILE] percentile), which measures speed of transcribing simple visual information using a key. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick visual attention and consistent pace.
 
 Cognitive Profile Summary
 
@@ -872,23 +872,23 @@ At the present moment, [firstName] obtained a Full Scale IQ score of [FSIQ_SCORE
 
 Verbal Comprehension
 
-The Verbal Comprehension Index (VCI) measures early verbal reasoning and understanding of language based concepts. This domain reflects how well a young child can understand words, express ideas, and use language to reason about the world. Verbal comprehension is foundational for early literacy development, following verbal instructions from caregivers and teachers, participating in group learning activities, and building the vocabulary and language skills that support reading readiness. Children who perform well in this area tend to learn effectively from spoken explanations, can express their needs and ideas with relative ease, and are typically well prepared for the language demands of formal schooling. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This suggests that [firstName]'s ability to understand verbal concepts, use language to reason, and express ideas is [VCI_DESCRIPTOR] relative to same age peers. This pattern suggests that language based reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding words and explaining ideas.
+The Verbal Comprehension Index (VCI) measures early verbal reasoning and understanding of language based concepts. This domain reflects how well a young child can understand words, express ideas, and use language to reason about the world. Verbal comprehension is foundational for early literacy development, following verbal instructions from caregivers and teachers, participating in group learning activities, and building the vocabulary and language skills that support reading readiness. Children who perform well in this area tend to learn effectively from spoken explanations, can express their needs and ideas with relative ease, and are typically well prepared for the language demands of formal schooling. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This suggests that [firstName]'s ability to understand verbal concepts, use language to reason, and express ideas is [VCI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [RV_SCALED] on Receptive Vocabulary ([RV_PERCENTILE] percentile), which measures listening vocabulary and word knowledge; and [IN_SCALED] on Information ([IN_PERCENTILE] percentile), which measures breadth of general factual knowledge acquired from the environment. This pattern suggests that language based reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding words and explaining ideas.
 
 Visual Spatial
 
-The Visual Spatial Index (VSI) measures the ability to understand and organize visual information, including perceiving spatial relationships, analysing visual details, and mentally constructing designs or patterns. Visual spatial skills support a wide range of early learning activities, including recognizing shapes and letters, understanding the layout of a page, assembling puzzles, navigating physical spaces, and developing early mathematical concepts such as size, position, and quantity. Children who perform well in this area tend to notice visual details, enjoy building and constructing activities, and can often learn effectively from pictures, diagrams, and demonstrations. [firstName] obtained a VSI score of [VSI_SCORE] ([VSI_PERCENTILE] percentile), which falls within the [VSI_DESCRIPTOR] range. This suggests that [firstName]'s ability to perceive, analyse, and organize visual spatial information is [VSI_DESCRIPTOR] relative to same age peers. This pattern suggests that visual spatial skills represent [VSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require noticing details and working with shapes and patterns.
+The Visual Spatial Index (VSI) measures the ability to understand and organize visual information, including perceiving spatial relationships, analysing visual details, and mentally constructing designs or patterns. Visual spatial skills support a wide range of early learning activities, including recognizing shapes and letters, understanding the layout of a page, assembling puzzles, navigating physical spaces, and developing early mathematical concepts such as size, position, and quantity. Children who perform well in this area tend to notice visual details, enjoy building and constructing activities, and can often learn effectively from pictures, diagrams, and demonstrations. [firstName] obtained a VSI score of [VSI_SCORE] ([VSI_PERCENTILE] percentile), which falls within the [VSI_DESCRIPTOR] range. This suggests that [firstName]'s ability to perceive, analyse, and organize visual spatial information is [VSI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [BD_SCALED] on Block Design ([BD_PERCENTILE] percentile), which measures spatial analysis and construction using blocks; and [OA_SCALED] on Object Assembly ([OA_PERCENTILE] percentile), which measures the ability to assemble puzzle pieces into a meaningful whole. This pattern suggests that visual spatial skills represent [VSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require noticing details and working with shapes and patterns.
 
 Fluid Reasoning
 
-The Fluid Reasoning Index (FRI) measures early problem solving ability when working with new information that has not been previously learned. Fluid reasoning reflects the capacity to identify patterns, understand relationships between concepts, and figure out rules or solutions without relying on previously acquired knowledge. This domain is important because it provides information about how well a young child can approach unfamiliar problems and think flexibly, which supports learning across many different areas. Children who perform well in fluid reasoning tend to pick up on new concepts quickly, notice how things are connected, and can often figure out what comes next in a pattern or sequence. [firstName] obtained a FRI score of [FRI_SCORE] ([FRI_PERCENTILE] percentile), which falls within the [FRI_DESCRIPTOR] range. This suggests that [firstName]'s ability to reason through new problems, identify patterns, and understand relationships between concepts is [FRI_DESCRIPTOR] relative to same age peers. This pattern suggests that early reasoning represents [FRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require finding rules or relationships.
+The Fluid Reasoning Index (FRI) measures early problem solving ability when working with new information that has not been previously learned. Fluid reasoning reflects the capacity to identify patterns, understand relationships between concepts, and figure out rules or solutions without relying on previously acquired knowledge. This domain is important because it provides information about how well a young child can approach unfamiliar problems and think flexibly, which supports learning across many different areas. Children who perform well in fluid reasoning tend to pick up on new concepts quickly, notice how things are connected, and can often figure out what comes next in a pattern or sequence. [firstName] obtained a FRI score of [FRI_SCORE] ([FRI_PERCENTILE] percentile), which falls within the [FRI_DESCRIPTOR] range. This suggests that [firstName]'s ability to reason through new problems, identify patterns, and understand relationships between concepts is [FRI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [MR_SCALED] on Matrix Reasoning ([MR_PERCENTILE] percentile), which measures nonverbal abstract reasoning and pattern recognition; and [PC_SCALED] on Picture Concepts ([PC_PERCENTILE] percentile), which measures the ability to identify relationships among visual objects and form categories. This pattern suggests that early reasoning represents [FRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require finding rules or relationships.
 
 Working Memory
 
-The Working Memory Index (WMI) measures the ability to hold information in mind temporarily and use it to complete a task. In early childhood, working memory supports the ability to follow multi step directions, remember what a teacher just said while carrying out an instruction, keep track of a sequence of activities, and begin to manage simple mental tasks such as counting or sorting. Weaknesses in working memory at this age can look like difficulty following directions that involve more than one step, frequently forgetting what was just said, or losing track of what they were doing in the middle of an activity. Even when a young child understands what is being asked, limited working memory can make it difficult to hold all the pieces of a task in mind long enough to complete it. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This suggests that [firstName]'s ability to hold information in mind and use it to complete a task is [WMI_DESCRIPTOR] relative to same age peers. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require listening and remembering instructions.
+The Working Memory Index (WMI) measures the ability to hold information in mind temporarily and use it to complete a task. In early childhood, working memory supports the ability to follow multi step directions, remember what a teacher just said while carrying out an instruction, keep track of a sequence of activities, and begin to manage simple mental tasks such as counting or sorting. Weaknesses in working memory at this age can look like difficulty following directions that involve more than one step, frequently forgetting what was just said, or losing track of what they were doing in the middle of an activity. Even when a young child understands what is being asked, limited working memory can make it difficult to hold all the pieces of a task in mind long enough to complete it. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This suggests that [firstName]'s ability to hold information in mind and use it to complete a task is [WMI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [PM_SCALED] on Picture Memory ([PM_PERCENTILE] percentile), which measures visual working memory by requiring recall of images after a brief exposure; and [ZL_SCALED] on Zoo Locations ([ZL_PERCENTILE] percentile), which measures spatial working memory by requiring recall of where animals were placed on a grid. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require listening and remembering instructions.
 
 Processing Speed
 
-The Processing Speed Index (PSI) measures the speed and accuracy with which a young child can notice and respond to simple visual information under structured conditions. Processing speed is not a measure of how quickly a child thinks in general, but rather how efficiently they can perform simple, routine visual tasks that require sustained attention and consistent output. In early childhood, this domain is relevant to activities such as scanning a page for a specific picture, completing simple matching tasks, and keeping pace with structured group activities. Slower processing speed can mean that a young child needs more time to complete routine tasks, even when they understand the activity. This can sometimes be mistaken for a lack of interest or understanding when the child simply requires additional time to demonstrate their abilities. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This suggests that [firstName]'s speed and accuracy when performing simple visual tasks is [PSI_DESCRIPTOR] relative to same age peers. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick and steady responding.
+The Processing Speed Index (PSI) measures the speed and accuracy with which a young child can notice and respond to simple visual information under structured conditions. Processing speed is not a measure of how quickly a child thinks in general, but rather how efficiently they can perform simple, routine visual tasks that require sustained attention and consistent output. In early childhood, this domain is relevant to activities such as scanning a page for a specific picture, completing simple matching tasks, and keeping pace with structured group activities. Slower processing speed can mean that a young child needs more time to complete routine tasks, even when they understand the activity. This can sometimes be mistaken for a lack of interest or understanding when the child simply requires additional time to demonstrate their abilities. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This suggests that [firstName]'s speed and accuracy when performing simple visual tasks is [PSI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [BS_SCALED] on Bug Search ([BS_PERCENTILE] percentile), which measures visual scanning speed and matching; and [CA_SCALED] on Cancellation ([CA_PERCENTILE] percentile), which measures speed of identifying and marking target images among distractors. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick and steady responding.
 
 Cognitive Profile Summary
 
@@ -896,15 +896,27 @@ Overall, [firstName] demonstrates cognitive functioning within the [FSIQ_DESCRIP
 
 const WIAT_TEMPLATE = `Academic Testing
 
-Academic skills are tested in a highly structured and one on one testing environment that is not typical of the regular classroom. Moreover, academic skills are tested in isolation of other demands. This means that how students coordinate their individual skills for complex tasks is not determined by academic testing alone but is better accounted for by psychological examination in the areas that precede this section. [firstName]'s academic strengths and weaknesses were assessed using the Wechsler Individual Achievement Test Third Edition Canadian, an individually administered instrument that measures the achievement of students and uses Canadian norms.
+Academic skills are tested in a highly structured and one on one testing environment that is not typical of the regular classroom. Moreover, academic skills are tested in isolation of other demands. This means that how students coordinate their individual skills for complex tasks is not determined by academic testing alone but is better accounted for by psychological examination in the areas that precede this section. [firstName]'s academic strengths and weaknesses were assessed using the Wechsler Individual Achievement Test Third Edition Canadian, an individually administered instrument that measures the achievement of students and uses Canadian norms. Standard scores have a mean of 100 and a standard deviation of 15. Percentile ranks indicate how performance compares to same age peers.
 
-To assess [firstName]'s oral language skills, one subtest was administered. [firstName]'s performance in Listening Comprehension was in the [LISTENING_COMPREHENSION_RANGE] range (at around the [LISTENING_COMPREHENSION_PERCENTILE] percentile). This subtest measures a student's ability to understand spoken language and receptive language. Receptive Vocabulary, which measures listening vocabulary, fell within the [RECEPTIVE_VOCABULARY_RANGE] range (at around the [RECEPTIVE_VOCABULARY_PERCENTILE] percentile). Oral Discourse Comprehension, which measures the ability to understand spoken passages, fell within the [ORAL_DISCOURSE_RANGE] range (at around the [ORAL_DISCOURSE_PERCENTILE] percentile). Overall, [firstName]'s Oral Language Composite, which provides a broad measure of oral language skills, fell in the [ORAL_LANGUAGE_COMPOSITE_RANGE] range (at around the [ORAL_LANGUAGE_COMPOSITE_PERCENTILE] percentile).
+Oral Language
 
-In the area of reading, the Word Reading subtest measures word recognition accuracy. [firstName] scored in the [WORD_READING_RANGE] range (at around the [WORD_READING_PERCENTILE] percentile). The Pseudoword Decoding subtest, which measures the ability to decode unfamiliar words, fell in the [PSEUDOWORD_DECODING_RANGE] range (at around the [PSEUDOWORD_DECODING_PERCENTILE] percentile). Reading Comprehension, which measures the ability to understand written passages, fell in the [READING_COMPREHENSION_RANGE] range (at around the [READING_COMPREHENSION_PERCENTILE] percentile). The Basic Reading Composite, which measures fundamental reading skills including word recognition and decoding, fell in the [BASIC_READING_RANGE] range (at around the [BASIC_READING_PERCENTILE] percentile). The Total Reading Composite, which provides an overall measure of reading ability combining word reading accuracy, decoding, and reading comprehension, fell in the [TOTAL_READING_RANGE] range (at around the [TOTAL_READING_PERCENTILE] percentile).
+To assess [firstName]'s oral language skills, the Listening Comprehension subtest was administered. [firstName] obtained a standard score of [LISTENING_COMPREHENSION_SS] in Listening Comprehension, which falls in the [LISTENING_COMPREHENSION_RANGE] range ([LISTENING_COMPREHENSION_PERCENTILE] percentile). This subtest measures a student's ability to understand spoken language and receptive language. Within this domain, Receptive Vocabulary, which measures listening vocabulary, yielded a standard score of [RECEPTIVE_VOCABULARY_SS] falling within the [RECEPTIVE_VOCABULARY_RANGE] range ([RECEPTIVE_VOCABULARY_PERCENTILE] percentile). Oral Discourse Comprehension, which measures the ability to understand spoken passages, yielded a standard score of [ORAL_DISCOURSE_SS] falling within the [ORAL_DISCOURSE_RANGE] range ([ORAL_DISCOURSE_PERCENTILE] percentile). Overall, [firstName]'s Oral Language Composite, which provides a broad measure of oral language skills, yielded a standard score of [ORAL_LANGUAGE_COMPOSITE_SS] falling in the [ORAL_LANGUAGE_COMPOSITE_RANGE] range ([ORAL_LANGUAGE_COMPOSITE_PERCENTILE] percentile).
 
-In the area of written expression, Spelling, which measures the ability to spell dictated words, fell in the [SPELLING_RANGE] range (at around the [SPELLING_PERCENTILE] percentile). Sentence Composition, which measures the ability to write grammatically correct sentences, fell in the [SENTENCE_COMPOSITION_RANGE] range (at around the [SENTENCE_COMPOSITION_PERCENTILE] percentile). Essay Composition, which measures written expression and organization, fell in the [ESSAY_COMPOSITION_RANGE] range (at around the [ESSAY_COMPOSITION_PERCENTILE] percentile). The Written Expression Composite, which provides an overall measure of written language skills, fell in the [WRITTEN_EXPRESSION_RANGE] range (at around the [WRITTEN_EXPRESSION_PERCENTILE] percentile).
+Reading
 
-In the area of mathematics, Math Problem Solving, which measures mathematical reasoning and applied math skills, fell in the [MATH_PROBLEM_SOLVING_RANGE] range (at around the [MATH_PROBLEM_SOLVING_PERCENTILE] percentile). Numerical Operations, which measures the ability to solve written math calculation problems, fell in the [NUMERICAL_OPERATIONS_RANGE] range (at around the [NUMERICAL_OPERATIONS_PERCENTILE] percentile). The Mathematics Composite, which provides an overall measure of mathematical ability, fell in the [MATHEMATICS_COMPOSITE_RANGE] range (at around the [MATHEMATICS_COMPOSITE_PERCENTILE] percentile).`;
+In the area of reading, the Word Reading subtest measures word recognition accuracy. [firstName] obtained a standard score of [WORD_READING_SS], which falls in the [WORD_READING_RANGE] range ([WORD_READING_PERCENTILE] percentile). The Pseudoword Decoding subtest, which measures the ability to decode unfamiliar words using phonetic strategies, yielded a standard score of [PSEUDOWORD_DECODING_SS] falling in the [PSEUDOWORD_DECODING_RANGE] range ([PSEUDOWORD_DECODING_PERCENTILE] percentile). Reading Comprehension, which measures the ability to understand and draw meaning from written passages, yielded a standard score of [READING_COMPREHENSION_SS] falling in the [READING_COMPREHENSION_RANGE] range ([READING_COMPREHENSION_PERCENTILE] percentile). Oral Reading Fluency, which measures the speed and accuracy of contextual reading aloud, yielded a standard score of [ORAL_READING_FLUENCY_SS] falling in the [ORAL_READING_FLUENCY_RANGE] range ([ORAL_READING_FLUENCY_PERCENTILE] percentile). The Basic Reading Composite, which measures fundamental reading skills including word recognition and decoding, yielded a standard score of [BASIC_READING_SS] falling in the [BASIC_READING_RANGE] range ([BASIC_READING_PERCENTILE] percentile). The Reading Comprehension and Fluency Composite, which combines reading comprehension and oral reading fluency, yielded a standard score of [READING_COMPREHENSION_FLUENCY_SS] falling in the [READING_COMPREHENSION_FLUENCY_RANGE] range ([READING_COMPREHENSION_FLUENCY_PERCENTILE] percentile). The Total Reading Composite, which provides an overall measure of reading ability combining word reading accuracy, decoding, comprehension, and fluency, yielded a standard score of [TOTAL_READING_SS] falling in the [TOTAL_READING_RANGE] range ([TOTAL_READING_PERCENTILE] percentile).
+
+Written Expression
+
+In the area of written expression, Spelling, which measures the ability to spell dictated words, yielded a standard score of [SPELLING_SS] falling in the [SPELLING_RANGE] range ([SPELLING_PERCENTILE] percentile). Sentence Composition, which measures the ability to write grammatically correct and meaningful sentences, yielded a standard score of [SENTENCE_COMPOSITION_SS] falling in the [SENTENCE_COMPOSITION_RANGE] range ([SENTENCE_COMPOSITION_PERCENTILE] percentile). Essay Composition, which measures written expression, organization, and the development of ideas in extended writing, yielded a standard score of [ESSAY_COMPOSITION_SS] falling in the [ESSAY_COMPOSITION_RANGE] range ([ESSAY_COMPOSITION_PERCENTILE] percentile). The Written Expression Composite, which provides an overall measure of written language skills, yielded a standard score of [WRITTEN_EXPRESSION_SS] falling in the [WRITTEN_EXPRESSION_RANGE] range ([WRITTEN_EXPRESSION_PERCENTILE] percentile).
+
+Mathematics
+
+In the area of mathematics, Math Problem Solving, which measures mathematical reasoning and applied math skills, yielded a standard score of [MATH_PROBLEM_SOLVING_SS] falling in the [MATH_PROBLEM_SOLVING_RANGE] range ([MATH_PROBLEM_SOLVING_PERCENTILE] percentile). Numerical Operations, which measures the ability to solve written math calculation problems, yielded a standard score of [NUMERICAL_OPERATIONS_SS] falling in the [NUMERICAL_OPERATIONS_RANGE] range ([NUMERICAL_OPERATIONS_PERCENTILE] percentile). The Mathematics Composite, which provides an overall measure of mathematical ability, yielded a standard score of [MATHEMATICS_COMPOSITE_SS] falling in the [MATHEMATICS_COMPOSITE_RANGE] range ([MATHEMATICS_COMPOSITE_PERCENTILE] percentile).
+
+Overall Academic Functioning
+
+[firstName]'s Total Achievement Composite, which provides the broadest measure of overall academic functioning across oral language, reading, written expression, and mathematics, yielded a standard score of [TOTAL_ACHIEVEMENT_SS] falling in the [TOTAL_ACHIEVEMENT_RANGE] range ([TOTAL_ACHIEVEMENT_PERCENTILE] percentile).`;
 
 const SEC_PROMPTS = {
   referral: `Write the REASONS FOR REFERRAL section. Always generate output. Never ask for missing information.
@@ -1003,7 +1015,7 @@ Classification language: Within Expected/Average = "age appropriate functioning"
 Apply MODIFIER focus (STANDARD/EMOTIONAL/ADHD/AUTISM/OTHER) to interpretation emphasis.
 End with Summary of Socio Emotional Functioning (150-250 words). Use [firstName] and pronouns. Output report text only.`,
   adaptive: "Write the DEVELOPMENT AND ADAPTIVE FUNCTIONING section. Interpret ABAS or Vineland results: GAC, Conceptual, Social, Practical domains with percentiles. Include both parent and teacher forms if available.",
-  academic: `WIAT-III Academic Testing Section — Auto-fill template with scores, ranges, and percentiles.
+  academic: `WIAT-III Academic Testing Section — Auto-fill template with standard scores, ranges, and percentiles.
 
 You MUST use the following LOCKED TEMPLATE structure. Fill in EVERY placeholder with actual scores from the uploaded WIAT-III Score Report.
 
@@ -1019,20 +1031,21 @@ CLASSIFICATION RULES — Convert Standard Score (SS) to range label:
 For EACH subtest and composite, you MUST:
 1. Find the Standard Score (SS) in the WIAT-III data
 2. Find the Percentile Rank in the WIAT-III data
-3. Replace [SUBTEST_RANGE] with the classification label from the table above (e.g., "Average", "Low Average")
-4. Replace [SUBTEST_PERCENTILE] with the actual percentile followed by ordinal suffix (e.g., "45th", "2nd", "91st")
+3. Replace [SUBTEST_SS] with the actual standard score number (e.g., "102", "85")
+4. Replace [SUBTEST_RANGE] with the classification label from the table above (e.g., "Average", "Low Average")
+5. Replace [SUBTEST_PERCENTILE] with the actual percentile followed by ordinal suffix (e.g., "45th", "2nd", "91st")
 
-SUBTESTS to fill: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Spelling, Sentence Composition, Essay Composition, Math Problem Solving, Numerical Operations.
-COMPOSITES to fill: Oral Language Composite, Total Reading Composite, Basic Reading Composite, Written Expression Composite, Mathematics Composite.
+SUBTESTS to fill: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Oral Reading Fluency, Spelling, Sentence Composition, Essay Composition, Math Problem Solving, Numerical Operations.
+COMPOSITES to fill: Oral Language Composite, Total Reading Composite, Basic Reading Composite, Reading Comprehension and Fluency Composite, Written Expression Composite, Mathematics Composite, Total Achievement.
 
 CRITICAL RULES:
 - Do NOT guess any scores. Use ONLY values explicitly present in the uploaded data.
 - If a score is NOT found in the data, use [score not available] as the placeholder — do NOT leave the template placeholder or make up a value.
 - Do NOT add, remove, or rephrase any template sentences. Only replace the placeholders.
 - Copy percentile values EXACTLY as they appear. Do not round or estimate.
-- Every subtest MUST have both a RANGE and a PERCENTILE filled in if the data is available.
+- Every subtest MUST have a SS, RANGE, and PERCENTILE filled in if the data is available.
 
-After filling the template, add an Academic Summary (150-250 words) covering: overall academic functioning, oral language, reading (including Total Reading and Basic Reading composites), writing (including Written Expression composite), mathematics (including Mathematics composite), strengths and weaknesses.
+After filling the template, add an Academic Summary (150-250 words) covering: overall academic functioning (Total Achievement), oral language, reading (including Total Reading, Basic Reading, and Reading Comprehension and Fluency composites), writing (including Written Expression composite), mathematics (including Mathematics composite), strengths and weaknesses.
 Use cautious phrasing. Avoid diagnosis. Use [firstName] and pronouns. Output report text only.`,
   summary: `Write the Summary, Formulation & Diagnosis section. This integrates ALL findings and leads to a diagnostic conclusion.
 Structure:
@@ -1141,45 +1154,48 @@ HTML STYLING — use inline styles on every element:
 - Odd rows: add background:#fff
 - Index/Composite rows: add style="font-weight:bold;background:#f0f0fa"
 
-TABLES TO BUILD — exactly 3 tables, in this exact order:
+TABLES TO BUILD — tables in this exact order:
 
-Table 1. WISC-V Subtest Score Summary
+Table 1. Cognitive Subtest Score Summary (test-specific: WISC-V, WAIS-IV, or WPPSI-IV)
 Columns: Subtest | Scaled Score | Percentile Rank | Classification
-Rows (exactly these 9 in this order):
-  Similarities
-  Vocabulary
-  Block Design
-  Matrix Reasoning
-  Visual Puzzles
-  Figure Weights
-  Digit Span
-  Coding
-  Symbol Search
 
-Table 2. WISC-V Index Score Summary
+Table 2. Cognitive Index Score Summary (test-specific: WISC-V, WAIS-IV, or WPPSI-IV)
 Columns: Index | Standard Score | Percentile Rank | Classification
-Rows (exactly these 6 in this order, bold all rows):
-  Verbal Comprehension Index (VCI)
-  Visual Spatial Index (VSI)
-  Fluid Reasoning Index (FRI)
-  Working Memory Index (WMI)
-  Processing Speed Index (PSI)
-  Full Scale IQ (FSIQ)
 
 Table 3. WIAT-III Subtest Score Summary
 Columns: Subtest | Standard Score | Percentile Rank | Classification
-Rows (exactly these 9 in this order):
+Rows (exactly these 12 in this order):
+  Listening Comprehension
+  Receptive Vocabulary
+  Oral Discourse Comprehension
   Word Reading
   Pseudoword Decoding
   Reading Comprehension
+  Oral Reading Fluency
   Spelling
-  Numerical Operations
-  Math Problem Solving
   Sentence Composition
   Essay Composition
-  Oral Reading Fluency
+  Numerical Operations
+  Math Problem Solving
 
-FINAL RULE: Output ONLY the 3 HTML tables above. No other tables. No explanatory text. Replace — placeholders ONLY when a matching value is explicitly found in the provided document excerpts.`,
+Table 4. WIAT-III Composite Score Summary
+Columns: Composite | Standard Score | Percentile Rank | Classification
+Rows:
+  Oral Language Composite
+  Total Reading
+  Basic Reading
+  Reading Comprehension & Fluency
+  Written Expression
+  Mathematics
+  Total Achievement
+
+Table 5. WRAML-3 Subtest Score Summary (only if WRAML data present)
+Columns: Subtest | Scaled Score | Percentile Rank | Classification
+
+Table 6. WRAML-3 Index Score Summary (only if WRAML data present)
+Columns: Index | Standard Score | Percentile Rank | Classification
+
+FINAL RULE: Output ONLY the HTML tables above. No other tables. No explanatory text. Replace — placeholders ONLY when a matching value is explicitly found in the provided document excerpts.`,
 };
 
 const QUICK_WORDING = {
@@ -3020,16 +3036,24 @@ function extractAllScoresMap(docs) {
               }
             }
           }
-          // ── FALLBACK: parseWAISScores / parseWPPSIScores for index-level extraction ──
+          // ── FALLBACK: parseWAISScores / parseWPPSIScores for index + subtest extraction ──
           if (!hasIndexes && isWAIS) {
             const parsed = parseWAISScores(txt);
             if (parsed) {
-              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["pri","PRI"],["wmi","WMI"],["psi","PSI"]];
+              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["pri","PRI"],["wmi","WMI"],["psi","PSI"],["gai","GAI"]];
               for (const [k, abbr] of idxMap) {
                 if (parsed[k] && !map[`WAIS.${abbr}.score`]) {
                   map[`WAIS.${abbr}.score`] = String(parsed[k].score);
                   map[`WAIS.${abbr}.percentile`] = String(parsed[k].pct);
                   map[`WAIS.${abbr}.qualitative`] = qualitativeLabel(parsed[k].score);
+                }
+              }
+              if (parsed.subtests) {
+                for (const [abbr, data] of Object.entries(parsed.subtests)) {
+                  if (!map[`WAIS.${abbr}.scaled`]) {
+                    map[`WAIS.${abbr}.scaled`] = String(data.scaled);
+                    map[`WAIS.${abbr}.percentile`] = String(data.pct);
+                  }
                 }
               }
             }
@@ -3043,6 +3067,37 @@ function extractAllScoresMap(docs) {
                   map[`WPPSI.${abbr}.score`] = String(parsed[k].score);
                   map[`WPPSI.${abbr}.percentile`] = String(parsed[k].pct);
                   map[`WPPSI.${abbr}.qualitative`] = qualitativeLabel(parsed[k].score);
+                }
+              }
+              if (parsed.subtests) {
+                for (const [abbr, data] of Object.entries(parsed.subtests)) {
+                  if (!map[`WPPSI.${abbr}.scaled`]) {
+                    map[`WPPSI.${abbr}.scaled`] = String(data.scaled);
+                    map[`WPPSI.${abbr}.percentile`] = String(data.pct);
+                  }
+                }
+              }
+            }
+          }
+          // Also try subtest extraction even when deterministicExtract got indexes
+          if (isWAIS && !map[`WAIS.SI.scaled`]) {
+            const parsed = parseWAISScores(txt);
+            if (parsed?.subtests) {
+              for (const [abbr, data] of Object.entries(parsed.subtests)) {
+                if (!map[`WAIS.${abbr}.scaled`]) {
+                  map[`WAIS.${abbr}.scaled`] = String(data.scaled);
+                  map[`WAIS.${abbr}.percentile`] = String(data.pct);
+                }
+              }
+            }
+          }
+          if (isWPPSI && !map[`WPPSI.RV.scaled`]) {
+            const parsed = parseWPPSIScores(txt);
+            if (parsed?.subtests) {
+              for (const [abbr, data] of Object.entries(parsed.subtests)) {
+                if (!map[`WPPSI.${abbr}.scaled`]) {
+                  map[`WPPSI.${abbr}.scaled`] = String(data.scaled);
+                  map[`WPPSI.${abbr}.percentile`] = String(data.pct);
                 }
               }
             }
@@ -3648,15 +3703,18 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
 
   // ── TABLE 3: WIAT-III Subtest Score Summary (always shown) ──
   const wiatSubtests = [
+    ["Listening Comprehension", "ListeningComprehension"],
+    ["Receptive Vocabulary", "ReceptiveVocabulary"],
+    ["Oral Discourse Comprehension", "OralDiscourseComprehension"],
     ["Word Reading", "WordReading"],
     ["Pseudoword Decoding", "PseudowordDecoding"],
     ["Reading Comprehension", "ReadingComprehension"],
+    ["Oral Reading Fluency", "OralReadingFluency"],
     ["Spelling", "Spelling"],
-    ["Numerical Operations", "NumericalOperations"],
-    ["Math Problem Solving", "MathProblemSolving"],
     ["Sentence Composition", "SentenceComposition"],
     ["Essay Composition", "EssayComposition"],
-    ["Oral Reading Fluency", "OralReadingFluency"],
+    ["Numerical Operations", "NumericalOperations"],
+    ["Math Problem Solving", "MathProblemSolving"],
   ];
   let t3 = `<table ${tbl}>\n<caption ${cap}>Table 3. WIAT-III Subtest Score Summary</caption>\n`;
   t3 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
@@ -3669,6 +3727,78 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
   });
   t3 += `</tbody></table>`;
   parts.push(t3);
+
+  // ── TABLE 4: WIAT-III Composite Score Summary (always shown) ──
+  const wiatComposites = [
+    ["Oral Language Composite", "OralLanguageComposite"],
+    ["Total Reading", "TotalReading"],
+    ["Basic Reading", "BasicReading"],
+    ["Reading Comprehension & Fluency", "ReadingComprehensionFluency"],
+    ["Written Expression", "WrittenExpression"],
+    ["Mathematics", "Mathematics"],
+    ["Total Achievement", "TotalAchievement"],
+  ];
+  let t4 = `<table ${tbl}>\n<caption ${cap}>Table 4. WIAT-III Composite Score Summary</caption>\n`;
+  t4 += `<thead><tr><th ${th}>Composite</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
+  wiatComposites.forEach(([name, key], i) => {
+    const scoreKey = `WIAT.${key}.score`;
+    const pctKey = `WIAT.${key}.percentile`;
+    const qualKey = `WIAT.${key}.qualitative`;
+    const classification = sc[qualKey] || classifyStandard(scoreKey);
+    t4 += `<tr ${compBg(i)}>${tdBold(name)}${tdBold(v(scoreKey), true)}${tdBold(v(pctKey), true)}${tdBold(classification, true)}</tr>\n`;
+  });
+  t4 += `</tbody></table>`;
+  parts.push(t4);
+
+  // ── TABLE 5: WRAML-3 Subtest Score Summary (shown if WRAML scores exist) ──
+  const hasWraml = Object.keys(sc).some(k => k.startsWith("WRAML."));
+  if (hasWraml) {
+    const wramlSubtests = [
+      ["Story Memory", "SM"],
+      ["Verbal Learning", "VL"],
+      ["Design Learning", "DL"],
+      ["Picture Memory", "PM"],
+      ["Finger Windows", "FW"],
+      ["Number Letter", "NL"],
+      ["Story Memory Delayed", "SMD"],
+      ["Verbal Learning Delayed", "VLD"],
+      ["Design Learning Delayed", "DLD"],
+      ["Picture Memory Delayed", "PMD"],
+    ];
+    let t5 = `<table ${tbl}>\n<caption ${cap}>Table 5. WRAML-3 Subtest Score Summary</caption>\n`;
+    t5 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
+    wramlSubtests.forEach(([name, key], i) => {
+      const scoreKey = `WRAML.${key}.score`;
+      const pctKey = `WRAML.${key}.percentile`;
+      const qualKey = `WRAML.${key}.qualitative`;
+      const classification = sc[qualKey] || "___";
+      t5 += `<tr ${rowBg(i)}>${td(name)}${td(v(scoreKey), true)}${td(v(pctKey), true)}${td(classification, true)}</tr>\n`;
+    });
+    t5 += `</tbody></table>`;
+    parts.push(t5);
+
+    // ── TABLE 6: WRAML-3 Index Score Summary ──
+    const wramlIndexes = [
+      ["General Immediate Memory (GIM)", "GIM"],
+      ["Verbal Immediate Memory (VBM)", "VBM"],
+      ["Visual Immediate Memory (VIM)", "VIM"],
+      ["Attention/Concentration (AC)", "AC"],
+      ["General Delayed Memory (GD)", "GD"],
+      ["Verbal Delayed Memory (VBD)", "VBD"],
+      ["Visual Delayed Memory (VD)", "VD"],
+    ];
+    let t6 = `<table ${tbl}>\n<caption ${cap}>Table 6. WRAML-3 Index Score Summary</caption>\n`;
+    t6 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
+    wramlIndexes.forEach(([name, key], i) => {
+      const scoreKey = `WRAML.${key}.score`;
+      const pctKey = `WRAML.${key}.percentile`;
+      const qualKey = `WRAML.${key}.qualitative`;
+      const classification = sc[qualKey] || "___";
+      t6 += `<tr ${compBg(i)}>${tdBold(name)}${tdBold(v(scoreKey), true)}${tdBold(v(pctKey), true)}${tdBold(classification, true)}</tr>\n`;
+    });
+    t6 += `</tbody></table>`;
+    parts.push(t6);
+  }
 
   return parts.join("\n");
 }
@@ -3787,14 +3917,12 @@ function parseWAISScores(txt) {
     ["pri",  /Perceptual\s*Reasoning(?:\s*Index)?/i, /PRI/],
     ["wmi",  /Working\s*Memory(?:\s*Index)?/i, /WMI/],
     ["psi",  /Processing\s*Speed(?:\s*Index)?/i, /PSI/],
+    ["gai",  /General\s*Ability(?:\s*Index)?/i, /GAI/],
   ];
   for (const [key, namePat, abbrPat] of indexes) {
-    // Try: "IndexName  score  percentile" or "IndexName  score  percentile  CI"
-    // Also try: "ABBR  score  percentile"
     const patterns = [
       new RegExp(namePat.source + "\\s+(?:Index\\s+)?(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", namePat.flags),
       new RegExp(abbrPat.source + "\\s+(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", abbrPat.flags),
-      // Table format: "ABBR  sumScaled  compositeScore  percentile  CI"
       new RegExp(abbrPat.source + "\\s+\\d+\\s+(\\d{2,3})\\s+(\\d{1,3})\\s+\\d+", abbrPat.flags),
     ];
     for (const p of patterns) {
@@ -3809,8 +3937,41 @@ function parseWAISScores(txt) {
       }
     }
   }
+  // ── Subtest extraction (scaled scores 1-19, percentiles 0-99) ──
+  const subtests = [
+    ["SI", /Similarities/i],
+    ["VC", /Vocabulary/i],
+    ["IN", /Information/i],
+    ["BD", /Block\s*Design/i],
+    ["MR", /Matrix\s*Reasoning/i],
+    ["VP", /Visual\s*Puzzles/i],
+    ["DS", /Digit\s*Span/i],
+    ["AR", /Arithmetic/i],
+    ["SS", /Symbol\s*Search/i],
+    ["CD", /Coding/i],
+  ];
+  sc.subtests = {};
+  for (const [abbr, namePat] of subtests) {
+    // Try: "SubtestName  scaledScore  percentile"
+    const patterns = [
+      new RegExp(namePat.source + "\\s+(\\d{1,2})\\s+(\\d{1,3})", namePat.flags),
+      // Table: "SubtestName  rawScore  scaledScore  percentile"
+      new RegExp(namePat.source + "\\s+\\d+\\s+(\\d{1,2})\\s+(\\d{1,3})", namePat.flags),
+    ];
+    for (const p of patterns) {
+      const m = txt.match(p);
+      if (m) {
+        const scaled = +m[1];
+        const pct = +m[2];
+        if (scaled >= 1 && scaled <= 19 && pct >= 0 && pct <= 99) {
+          sc.subtests[abbr] = { scaled, pct };
+          break;
+        }
+      }
+    }
+  }
   // Need at least FSIQ + 2 indexes to be valid
-  const keys = Object.keys(sc);
+  const keys = Object.keys(sc).filter(k => k !== "subtests");
   if (!sc.fsiq || keys.length < 3) return null;
   return sc;
 }
@@ -3846,7 +4007,38 @@ function parseWPPSIScores(txt) {
       }
     }
   }
-  const keys = Object.keys(sc);
+  // ── Subtest extraction (scaled scores 1-19, percentiles 0-99) ──
+  const subtests = [
+    ["RV", /Receptive\s*Vocabulary/i],
+    ["IN", /Information/i],
+    ["BD", /Block\s*Design/i],
+    ["OA", /Object\s*Assembly/i],
+    ["MR", /Matrix\s*Reasoning/i],
+    ["PC", /Picture\s*Concepts/i],
+    ["PM", /Picture\s*Memory/i],
+    ["ZL", /Zoo\s*Locations/i],
+    ["BS", /Bug\s*Search/i],
+    ["CA", /Cancellation/i],
+  ];
+  sc.subtests = {};
+  for (const [abbr, namePat] of subtests) {
+    const patterns = [
+      new RegExp(namePat.source + "\\s+(\\d{1,2})\\s+(\\d{1,3})", namePat.flags),
+      new RegExp(namePat.source + "\\s+\\d+\\s+(\\d{1,2})\\s+(\\d{1,3})", namePat.flags),
+    ];
+    for (const p of patterns) {
+      const m = txt.match(p);
+      if (m) {
+        const scaled = +m[1];
+        const pct = +m[2];
+        if (scaled >= 1 && scaled <= 19 && pct >= 0 && pct <= 99) {
+          sc.subtests[abbr] = { scaled, pct };
+          break;
+        }
+      }
+    }
+  }
+  const keys = Object.keys(sc).filter(k => k !== "subtests");
   if (!sc.fsiq || keys.length < 3) return null;
   return sc;
 }
@@ -3890,6 +4082,14 @@ function extractWAISCogText(docs, firstName, pronouns) {
     if (sc.pri) { wm.priScore = String(sc.pri.score); wm.priPercentile = String(sc.pri.pct); }
     if (sc.wmi) { wm.wmiScore = String(sc.wmi.score); wm.wmiPercentile = String(sc.wmi.pct); }
     if (sc.psi) { wm.psiScore = String(sc.psi.score); wm.psiPercentile = String(sc.psi.pct); }
+    if (sc.gai) { wm.gaiScore = String(sc.gai.score); wm.gaiPercentile = String(sc.gai.pct); }
+    // Pass subtests through
+    if (sc.subtests) {
+      for (const [abbr, data] of Object.entries(sc.subtests)) {
+        wm[`sub_${abbr}_scaled`] = String(data.scaled);
+        wm[`sub_${abbr}_pct`] = String(data.pct);
+      }
+    }
     // Auto-derive strengths/weaknesses
     const sw = deriveStrengthsWeaknesses(sc, [
       ["vci", "verbal reasoning"], ["pri", "visual reasoning"],
@@ -3918,6 +4118,13 @@ function extractWPPSICogText(docs, firstName, pronouns) {
     if (sc.fri) { wm.friScore = String(sc.fri.score); wm.friPercentile = String(sc.fri.pct); }
     if (sc.wmi) { wm.wmiScore = String(sc.wmi.score); wm.wmiPercentile = String(sc.wmi.pct); }
     if (sc.psi) { wm.psiScore = String(sc.psi.score); wm.psiPercentile = String(sc.psi.pct); }
+    // Pass subtests through
+    if (sc.subtests) {
+      for (const [abbr, data] of Object.entries(sc.subtests)) {
+        wm[`sub_${abbr}_scaled`] = String(data.scaled);
+        wm[`sub_${abbr}_pct`] = String(data.pct);
+      }
+    }
     const sw = deriveStrengthsWeaknesses(sc, [
       ["vci", "language based reasoning"], ["vsi", "visual spatial skills"],
       ["fri", "fluid reasoning"], ["wmi", "working memory"], ["psi", "processing efficiency"],
@@ -4343,7 +4550,7 @@ function parseWIATScores(txt) {
 function buildWIATText(scores, firstName, pronounKey) {
   let text = personalize(WIAT_TEMPLATE, firstName, pronounKey);
 
-  // Replace score placeholders
+  // Replace score placeholders — now includes [KEY_SS], [KEY_RANGE], [KEY_PERCENTILE]
   const replacements = {
     LISTENING_COMPREHENSION: scores.LISTENING_COMPREHENSION,
     RECEPTIVE_VOCABULARY: scores.RECEPTIVE_VOCABULARY,
@@ -4351,6 +4558,7 @@ function buildWIATText(scores, firstName, pronounKey) {
     WORD_READING: scores.WORD_READING,
     PSEUDOWORD_DECODING: scores.PSEUDOWORD_DECODING,
     READING_COMPREHENSION: scores.READING_COMPREHENSION,
+    ORAL_READING_FLUENCY: scores.ORAL_READING_FLUENCY,
     SPELLING: scores.SPELLING,
     SENTENCE_COMPOSITION: scores.SENTENCE_COMPOSITION,
     ESSAY_COMPOSITION: scores.ESSAY_COMPOSITION,
@@ -4359,21 +4567,26 @@ function buildWIATText(scores, firstName, pronounKey) {
     ORAL_LANGUAGE_COMPOSITE: scores.ORAL_LANGUAGE_COMPOSITE,
     TOTAL_READING: scores.TOTAL_READING,
     BASIC_READING: scores.BASIC_READING,
+    READING_COMPREHENSION_FLUENCY: scores.READING_COMPREHENSION_FLUENCY,
     WRITTEN_EXPRESSION: scores.WRITTEN_EXPRESSION,
     MATHEMATICS_COMPOSITE: scores.MATHEMATICS_COMPOSITE,
+    TOTAL_ACHIEVEMENT: scores.TOTAL_ACHIEVEMENT,
   };
 
   let unfilled = 0;
   for (const [key, data] of Object.entries(replacements)) {
+    const ssTag = `[${key}_SS]`;
     const rangeTag = `[${key}_RANGE]`;
     const pctTag = `[${key}_PERCENTILE]`;
     if (data && data.ss != null) {
       const range = ssToRange(data.ss);
+      text = text.replace(ssTag, String(data.ss));
       text = text.replace(rangeTag, range);
       text = text.replace(pctTag, String(data.percentile) + getSuffix(data.percentile));
     } else {
       unfilled++;
-      // Mark unfilled placeholders for paragraph removal
+      // Mark unfilled placeholders for sentence removal
+      text = text.replace(ssTag, "⟦___⟧");
       text = text.replace(rangeTag, "⟦___⟧");
       text = text.replace(pctTag, "⟦___⟧");
     }
@@ -4523,6 +4736,15 @@ function fillWAISCognitiveTemplate(waisManual, firstName, pronouns) {
   text = text.replace(/\[WAIS_STRENGTHS\]/g, m.strengths?.trim() || "verbal reasoning and visual reasoning");
   text = text.replace(/\[WAIS_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "processing efficiency and working memory demands");
 
+  // ── Subtest replacements ──
+  const waisSubs = ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD"];
+  for (const abbr of waisSubs) {
+    const scaled = m[`sub_${abbr}_scaled`] || "___";
+    const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
+    text = text.replace(new RegExp(`\\[${abbr}_SCALED\\]`, "g"), scaled);
+    text = text.replace(new RegExp(`\\[${abbr}_PERCENTILE\\]`, "g"), pct);
+  }
+
   text = personalize(text, firstName, pronouns);
   text = capitalizeSentences(text);
   return text;
@@ -4570,6 +4792,15 @@ function fillWPPSICognitiveTemplate(wppsiManual, firstName, pronouns) {
 
   text = text.replace(/\[WPPSI_STRENGTHS\]/g, m.strengths?.trim() || "language based reasoning and visual spatial skills");
   text = text.replace(/\[WPPSI_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "processing efficiency and sustained attention demands");
+
+  // ── Subtest replacements ──
+  const wppsiSubs = ["RV","IN","BD","OA","MR","PC","PM","ZL","BS","CA"];
+  for (const abbr of wppsiSubs) {
+    const scaled = m[`sub_${abbr}_scaled`] || "___";
+    const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
+    text = text.replace(new RegExp(`\\[${abbr}_SCALED\\]`, "g"), scaled);
+    text = text.replace(new RegExp(`\\[${abbr}_PERCENTILE\\]`, "g"), pct);
+  }
 
   text = personalize(text, firstName, pronouns);
   text = capitalizeSentences(text);
@@ -7737,7 +7968,7 @@ export default function App() {
       const waisManual = prev.cognitive?.waisManual;
       if (waisManual) {
         const wm = waisManual;
-        const waisIdx = [["FSIQ","fsiq"],["VCI","vci"],["PRI","pri"],["WMI","wmi"],["PSI","psi"]];
+        const waisIdx = [["FSIQ","fsiq"],["VCI","vci"],["PRI","pri"],["WMI","wmi"],["PSI","psi"],["GAI","gai"]];
         for (const [abbr, key] of waisIdx) {
           if (wm[key + "Score"]) {
             scoreMap[`WAIS.${abbr}.score`] = wm[key + "Score"];
@@ -7745,6 +7976,13 @@ export default function App() {
               scoreMap[`WAIS.${abbr}.percentile`] = wm[key + "Percentile"];
               scoreMap[`WAIS.${abbr}.qualitative`] = percentileToDescriptor(wm[key + "Percentile"]) || "";
             }
+          }
+        }
+        // Inject WAIS subtests
+        for (const abbr of ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD"]) {
+          if (wm[`sub_${abbr}_scaled`] && !scoreMap[`WAIS.${abbr}.scaled`]) {
+            scoreMap[`WAIS.${abbr}.scaled`] = wm[`sub_${abbr}_scaled`];
+            if (wm[`sub_${abbr}_pct`]) scoreMap[`WAIS.${abbr}.percentile`] = wm[`sub_${abbr}_pct`];
           }
         }
       }
@@ -7761,6 +7999,13 @@ export default function App() {
               scoreMap[`WPPSI.${abbr}.percentile`] = wm[key + "Percentile"];
               scoreMap[`WPPSI.${abbr}.qualitative`] = percentileToDescriptor(wm[key + "Percentile"]) || "";
             }
+          }
+        }
+        // Inject WPPSI subtests
+        for (const abbr of ["RV","IN","BD","OA","MR","PC","PM","ZL","BS","CA"]) {
+          if (wm[`sub_${abbr}_scaled`] && !scoreMap[`WPPSI.${abbr}.scaled`]) {
+            scoreMap[`WPPSI.${abbr}.scaled`] = wm[`sub_${abbr}_scaled`];
+            if (wm[`sub_${abbr}_pct`]) scoreMap[`WPPSI.${abbr}.percentile`] = wm[`sub_${abbr}_pct`];
           }
         }
       }
@@ -8502,7 +8747,7 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
       // Include WIAT template for academic section so AI knows exact structure to fill
       if (sid === "academic") {
         const templateText = personalize(WIAT_TEMPLATE, derivedFirstName || "[firstName]", meta.pronouns);
-        ctxParts.push("=== WIAT TEMPLATE TO FILL ===\nUse this EXACT template structure. Replace EVERY [PLACEHOLDER_RANGE] with the classification (e.g., Average, Low Average) and EVERY [PLACEHOLDER_PERCENTILE] with the actual percentile (e.g., 45th, 2nd). If a score is not found, use [score not available].\n\n" + templateText);
+        ctxParts.push("=== WIAT TEMPLATE TO FILL ===\nUse this EXACT template structure. Replace EVERY [PLACEHOLDER_SS] with the standard score number (e.g., 102, 85), EVERY [PLACEHOLDER_RANGE] with the classification (e.g., Average, Low Average), and EVERY [PLACEHOLDER_PERCENTILE] with the actual percentile (e.g., 45th, 2nd). If a score is not found, use [score not available].\n\n" + templateText);
         
         // Extract and inject structured WIAT scores so AI has exact values
         const acadDocs = docs.filter(d => d.extractedText && /WIAT/i.test(d.extractedText));
@@ -8643,11 +8888,13 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
         const cogScoreTable = extractCognitiveScoreTable(allDocsWithText);
         if (cogScoreTable) ctxParts.push(cogScoreTable);
         // MANDATORY TABLES REMINDER — dynamic based on selected cognitive test
-        const genCogTest = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : "wisc-v";
+        const genCogTest = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
         if (genCogTest === "wais-iv") {
-          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce EXACTLY 3 tables in this order:\n1. Table 1. WAIS-IV Subtest Score Summary (10 fixed rows: Similarities, Vocabulary, Information, Block Design, Matrix Reasoning, Visual Puzzles, Digit Span, Arithmetic, Symbol Search, Coding)\n2. Table 2. WAIS-IV Index Score Summary (6 fixed rows: VCI, PRI, WMI, PSI, FSIQ, GAI)\n3. Table 3. WIAT-III Subtest Score Summary (9 fixed rows: Word Reading, Pseudoword Decoding, Reading Comprehension, Spelling, Numerical Operations, Math Problem Solving, Sentence Composition, Essay Composition, Oral Reading Fluency)\nNEVER add additional tables. NEVER modify structure. Use \u2014 for missing values.`);
+          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WAIS-IV Subtest Score Summary (10 fixed rows: Similarities, Vocabulary, Information, Block Design, Matrix Reasoning, Visual Puzzles, Digit Span, Arithmetic, Symbol Search, Coding)\n2. Table 2. WAIS-IV Index Score Summary (6 fixed rows: VCI, PRI, WMI, PSI, FSIQ, GAI)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Oral Reading Fluency, Spelling, Sentence Composition, Essay Composition, Numerical Operations, Math Problem Solving)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows: Oral Language, Total Reading, Basic Reading, Reading Comprehension & Fluency, Written Expression, Mathematics, Total Achievement)\nNEVER modify structure. Use \u2014 for missing values.`);
+        } else if (genCogTest === "wppsi-iv") {
+          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WPPSI-IV Subtest Score Summary (10 fixed rows: Receptive Vocabulary, Information, Block Design, Object Assembly, Matrix Reasoning, Picture Concepts, Picture Memory, Zoo Locations, Bug Search, Cancellation)\n2. Table 2. WPPSI-IV Index Score Summary (6 fixed rows: VCI, VSI, FRI, WMI, PSI, FSIQ)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows)\nNEVER modify structure. Use \u2014 for missing values.`);
         } else {
-          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce EXACTLY 3 tables in this order:\n1. Table 1. WISC-V Subtest Score Summary (9 fixed rows: Similarities, Vocabulary, Block Design, Matrix Reasoning, Visual Puzzles, Figure Weights, Digit Span, Coding, Symbol Search)\n2. Table 2. WISC-V Index Score Summary (6 fixed rows: VCI, VSI, FRI, WMI, PSI, FSIQ)\n3. Table 3. WIAT-III Subtest Score Summary (9 fixed rows: Word Reading, Pseudoword Decoding, Reading Comprehension, Spelling, Numerical Operations, Math Problem Solving, Sentence Composition, Essay Composition, Oral Reading Fluency)\nNEVER add additional tables. NEVER modify structure. Use \u2014 for missing values.`);
+          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WISC-V Subtest Score Summary (9 fixed rows: Similarities, Vocabulary, Block Design, Matrix Reasoning, Visual Puzzles, Figure Weights, Digit Span, Coding, Symbol Search)\n2. Table 2. WISC-V Index Score Summary (6 fixed rows: VCI, VSI, FRI, WMI, PSI, FSIQ)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Oral Reading Fluency, Spelling, Sentence Composition, Essay Composition, Numerical Operations, Math Problem Solving)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows: Oral Language, Total Reading, Basic Reading, Reading Comprehension & Fluency, Written Expression, Mathematics, Total Achievement)\nNEVER modify structure. Use \u2014 for missing values.`);
         }
       }
 
@@ -8981,13 +9228,20 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
               // Inject WAIS/WPPSI manual scores (may have been auto-populated from PDF)
               const waisM = secs.cognitive?.waisManual;
               if (waisM) {
-                for (const [abbr, key] of [["FSIQ","fsiq"],["VCI","vci"],["PRI","pri"],["WMI","wmi"],["PSI","psi"]]) {
+                for (const [abbr, key] of [["FSIQ","fsiq"],["VCI","vci"],["PRI","pri"],["WMI","wmi"],["PSI","psi"],["GAI","gai"]]) {
                   if (waisM[key + "Score"] && !scoreMap[`WAIS.${abbr}.score`]) {
                     scoreMap[`WAIS.${abbr}.score`] = waisM[key + "Score"];
                     if (waisM[key + "Percentile"]) {
                       scoreMap[`WAIS.${abbr}.percentile`] = waisM[key + "Percentile"];
                       scoreMap[`WAIS.${abbr}.qualitative`] = percentileToDescriptor(waisM[key + "Percentile"]) || "";
                     }
+                  }
+                }
+                // Inject WAIS subtests
+                for (const abbr of ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD"]) {
+                  if (waisM[`sub_${abbr}_scaled`] && !scoreMap[`WAIS.${abbr}.scaled`]) {
+                    scoreMap[`WAIS.${abbr}.scaled`] = waisM[`sub_${abbr}_scaled`];
+                    if (waisM[`sub_${abbr}_pct`]) scoreMap[`WAIS.${abbr}.percentile`] = waisM[`sub_${abbr}_pct`];
                   }
                 }
               }
@@ -9000,6 +9254,13 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
                       scoreMap[`WPPSI.${abbr}.percentile`] = wppsiM[key + "Percentile"];
                       scoreMap[`WPPSI.${abbr}.qualitative`] = percentileToDescriptor(wppsiM[key + "Percentile"]) || "";
                     }
+                  }
+                }
+                // Inject WPPSI subtests
+                for (const abbr of ["RV","IN","BD","OA","MR","PC","PM","ZL","BS","CA"]) {
+                  if (wppsiM[`sub_${abbr}_scaled`] && !scoreMap[`WPPSI.${abbr}.scaled`]) {
+                    scoreMap[`WPPSI.${abbr}.scaled`] = wppsiM[`sub_${abbr}_scaled`];
+                    if (wppsiM[`sub_${abbr}_pct`]) scoreMap[`WPPSI.${abbr}.percentile`] = wppsiM[`sub_${abbr}_pct`];
                   }
                 }
               }
