@@ -3565,23 +3565,26 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
 
   if (isWAIS) {
     // ── TABLE 1: WAIS-IV Subtest Score Summary ──
-    const waisSubtests = [
+    const waisCoreSubtests = [
       ["Similarities", "SI"],
       ["Vocabulary", "VC"],
       ["Information", "IN"],
-      ["Comprehension", "CO"],
       ["Block Design", "BD"],
       ["Matrix Reasoning", "MR"],
       ["Visual Puzzles", "VP"],
-      ["Figure Weights", "FW"],
-      ["Picture Completion", "PC"],
       ["Digit Span", "DS"],
       ["Arithmetic", "AR"],
-      ["Letter-Number Sequencing", "LN"],
       ["Symbol Search", "SS"],
       ["Coding", "CD"],
+    ];
+    const waisSupplementalSubtests = [
+      ["Comprehension", "CO"],
+      ["Figure Weights", "FW"],
+      ["Picture Completion", "PC"],
+      ["Letter-Number Sequencing", "LN"],
       ["Cancellation", "CA"],
     ].filter(([, abbr]) => sc[`WAIS.${abbr}.scaled`]);
+    const waisSubtests = [...waisCoreSubtests, ...waisSupplementalSubtests];
     let t1 = `<table ${tbl}>\n<caption ${cap}>Table 1. WAIS-IV Subtest Score Summary</caption>\n`;
     t1 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     waisSubtests.forEach(([name, abbr], i) => {
@@ -4803,31 +4806,12 @@ function fillWAISCognitiveTemplate(waisManual, firstName, pronouns) {
   text = text.replace(/\[WAIS_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "processing efficiency and working memory demands");
 
   // ── Subtest replacements ──
-  const waisSubs = ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD","CO","FW","LN","CA","PC"];
+  const waisSubs = ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD"];
   for (const abbr of waisSubs) {
     const scaled = m[`sub_${abbr}_scaled`] || "___";
     const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
     text = text.replace(new RegExp(`\\[${abbr}_SCALED\\]`, "g"), scaled);
     text = text.replace(new RegExp(`\\[${abbr}_PERCENTILE\\]`, "g"), pct);
-  }
-
-  // ── Conditionally append supplemental subtests to each index section ──
-  const suppDefs = {
-    CO: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Comprehension, which measures practical reasoning, social judgment, and common sense knowledge" },
-    FW: { section: "PRI_STRENGTH_OR_WEAKER", desc: "Figure Weights, which measures quantitative and analogical reasoning using visual stimuli" },
-    PC: { section: "PRI_STRENGTH_OR_WEAKER", desc: "Picture Completion, which measures visual perception and attention to essential details" },
-    LN: { section: "WMI_STRENGTH_OR_WEAKER", desc: "Letter-Number Sequencing, which measures auditory working memory and mental sequencing ability" },
-    CA: { section: "PSI_STRENGTH_OR_WEAKER", desc: "Cancellation, which measures visual selective attention and processing speed under time pressure" },
-  };
-  for (const [abbr, info] of Object.entries(suppDefs)) {
-    if (m[`sub_${abbr}_scaled`] && m[`sub_${abbr}_scaled`] !== "___") {
-      const scaled = m[`sub_${abbr}_scaled`];
-      const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
-      const sentence = ` Additionally, ${firstName} scored ${scaled} on ${info.desc} (${pct} percentile).`;
-      // Insert before the "This pattern suggests" sentence in the relevant section
-      const marker = new RegExp(`(This pattern suggests that [^.]*?represents \\[${info.section}\\])`, "i");
-      text = text.replace(marker, sentence + " $1");
-    }
   }
 
   text = personalize(text, firstName, pronouns);
