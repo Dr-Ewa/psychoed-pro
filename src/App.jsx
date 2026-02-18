@@ -3598,15 +3598,18 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
     parts.push(t1);
 
     // ── TABLE 2: WAIS-IV Index Score Summary ──
-    const waisIndexes = [
+    const waisCoreIndexes = [
       ["Verbal Comprehension Index (VCI)", "VCI"],
       ["Perceptual Reasoning Index (PRI)", "PRI"],
       ["Working Memory Index (WMI)", "WMI"],
       ["Processing Speed Index (PSI)", "PSI"],
       ["Full Scale IQ (FSIQ)", "FSIQ"],
+    ];
+    const waisSupplementalIndexes = [
       ["General Ability Index (GAI)", "GAI"],
       ["Cognitive Proficiency Index (CPI)", "CPI"],
     ].filter(([, abbr]) => sc[`WAIS.${abbr}.score`]);
+    const waisIndexes = [...waisCoreIndexes, ...waisSupplementalIndexes];
     let t2 = `<table ${tbl}>\n<caption ${cap}>Table 2. WAIS-IV Index Score Summary</caption>\n`;
     t2 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     waisIndexes.forEach(([name, abbr], i) => {
@@ -3621,13 +3624,9 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
 
   } else if (isWPPSI) {
     // ── TABLE 1: WPPSI-IV Subtest Score Summary ──
-    const wppsiSubtests = [
-      ["Information", "IN"],
-      ["Similarities", "SI"],
-      ["Vocabulary", "VC"],
-      ["Comprehension", "CO"],
+    const wppsiCoreSubtests = [
       ["Receptive Vocabulary", "RV"],
-      ["Picture Naming", "PN"],
+      ["Information", "IN"],
       ["Block Design", "BD"],
       ["Object Assembly", "OA"],
       ["Matrix Reasoning", "MR"],
@@ -3636,8 +3635,15 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
       ["Zoo Locations", "ZL"],
       ["Bug Search", "BS"],
       ["Cancellation", "CA"],
+    ];
+    const wppsiSupplementalSubtests = [
+      ["Similarities", "SI"],
+      ["Vocabulary", "VC"],
+      ["Comprehension", "CO"],
+      ["Picture Naming", "PN"],
       ["Animal Coding", "AC"],
     ].filter(([, abbr]) => sc[`WPPSI.${abbr}.scaled`]);
+    const wppsiSubtests = [...wppsiCoreSubtests, ...wppsiSupplementalSubtests];
     let t1 = `<table ${tbl}>\n<caption ${cap}>Table 1. WPPSI-IV Subtest Score Summary</caption>\n`;
     t1 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wppsiSubtests.forEach(([name, abbr], i) => {
@@ -3651,18 +3657,21 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
     parts.push(t1);
 
     // ── TABLE 2: WPPSI-IV Index Score Summary ──
-    const wppsiIndexes = [
+    const wppsiCoreIndexes = [
       ["Verbal Comprehension Index (VCI)", "VCI"],
       ["Visual Spatial Index (VSI)", "VSI"],
       ["Fluid Reasoning Index (FRI)", "FRI"],
       ["Working Memory Index (WMI)", "WMI"],
       ["Processing Speed Index (PSI)", "PSI"],
       ["Full Scale IQ (FSIQ)", "FSIQ"],
+    ];
+    const wppsiSupplementalIndexes = [
       ["General Ability Index (GAI)", "GAI"],
       ["Cognitive Proficiency Index (CPI)", "CPI"],
       ["Nonverbal Index (NVI)", "NVI"],
       ["Vocabulary Acquisition Index (VAI)", "VAI"],
     ].filter(([, abbr]) => sc[`WPPSI.${abbr}.score`]);
+    const wppsiIndexes = [...wppsiCoreIndexes, ...wppsiSupplementalIndexes];
     let t2 = `<table ${tbl}>\n<caption ${cap}>Table 2. WPPSI-IV Index Score Summary</caption>\n`;
     t2 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wppsiIndexes.forEach(([name, abbr], i) => {
@@ -3676,25 +3685,28 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
     parts.push(t2);
 
   } else {
-    const wiscSubtests = [
+    const wiscCoreSubtests = [
       ["Similarities", "SI"],
       ["Vocabulary", "VC"],
-      ["Information", "IN"],
-      ["Comprehension", "CO"],
       ["Block Design", "BD"],
       ["Visual Puzzles", "VP"],
       ["Matrix Reasoning", "MR"],
       ["Figure Weights", "FW"],
-      ["Picture Span", "PS"],
       ["Digit Span", "DS"],
-      ["Letter-Number Sequencing", "LN"],
-      ["Arithmetic", "AR"],
+      ["Picture Span", "PS"],
       ["Coding", "CD"],
       ["Symbol Search", "SS"],
+    ];
+    const wiscSupplementalSubtests = [
+      ["Information", "IN"],
+      ["Comprehension", "CO"],
+      ["Arithmetic", "AR"],
+      ["Letter-Number Sequencing", "LN"],
       ["Cancellation", "CA"],
       ["Naming Speed Literacy", "NSL"],
       ["Naming Speed Quantity", "NSQ"],
     ].filter(([, abbr]) => sc[`WISC.${abbr}.scaled`]);
+    const wiscSubtests = [...wiscCoreSubtests, ...wiscSupplementalSubtests];
     let t1 = `<table ${tbl}>\n<caption ${cap}>Table 1. WISC-V Subtest Score Summary</caption>\n`;
     t1 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wiscSubtests.forEach(([name, abbr], i) => {
@@ -3708,13 +3720,15 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
     parts.push(t1);
 
     // ── TABLE 2: WISC-V Index Score Summary ──
-    const wiscIndexes = [
+    const wiscCoreIndexes = [
       ["Verbal Comprehension Index (VCI)", "VCI"],
       ["Visual Spatial Index (VSI)", "VSI"],
       ["Fluid Reasoning Index (FRI)", "FRI"],
       ["Working Memory Index (WMI)", "WMI"],
       ["Processing Speed Index (PSI)", "PSI"],
       ["Full Scale IQ (FSIQ)", "FSIQ"],
+    ];
+    const wiscAncillaryIndexes = [
       ["General Ability Index (GAI)", "GAI"],
       ["Cognitive Proficiency Index (CPI)", "CPI"],
       ["Nonverbal Index (NVI)", "NVI"],
@@ -3724,6 +3738,7 @@ function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
       ["Symbol Translation Index (STI)", "STI"],
       ["Storage and Retrieval Index (SRI)", "SRI"],
     ].filter(([, abbr]) => sc[`WISC.${abbr}.score`]);
+    const wiscIndexes = [...wiscCoreIndexes, ...wiscAncillaryIndexes];
     let t2 = `<table ${tbl}>\n<caption ${cap}>Table 2. WISC-V Index Score Summary</caption>\n`;
     t2 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
     wiscIndexes.forEach(([name, abbr], i) => {
@@ -4863,30 +4878,12 @@ function fillWPPSICognitiveTemplate(wppsiManual, firstName, pronouns) {
   text = text.replace(/\[WPPSI_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "processing efficiency and sustained attention demands");
 
   // ── Subtest replacements ──
-  const wppsiSubs = ["RV","IN","BD","OA","MR","PC","PM","ZL","BS","CA","SI","VC","CO","AC","PN"];
+  const wppsiSubs = ["RV","IN","BD","OA","MR","PC","PM","ZL","BS","CA"];
   for (const abbr of wppsiSubs) {
     const scaled = m[`sub_${abbr}_scaled`] || "___";
     const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
     text = text.replace(new RegExp(`\\[${abbr}_SCALED\\]`, "g"), scaled);
     text = text.replace(new RegExp(`\\[${abbr}_PERCENTILE\\]`, "g"), pct);
-  }
-
-  // ── Conditionally append supplemental subtests to each index section ──
-  const suppDefs = {
-    SI: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Similarities, which measures verbal concept formation and abstract reasoning" },
-    VC: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Vocabulary, which measures word knowledge and verbal concept formation" },
-    CO: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Comprehension, which measures practical reasoning and social understanding" },
-    PN: { section: "VCI_STRENGTH_OR_WEAKER", desc: "Picture Naming, which measures expressive vocabulary and word retrieval" },
-    AC: { section: "PSI_STRENGTH_OR_WEAKER", desc: "Animal Coding, which measures processing speed, associative learning, and graphomotor skills" },
-  };
-  for (const [abbr, info] of Object.entries(suppDefs)) {
-    if (m[`sub_${abbr}_scaled`] && m[`sub_${abbr}_scaled`] !== "___") {
-      const scaled = m[`sub_${abbr}_scaled`];
-      const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
-      const sentence = ` Additionally, ${firstName} scored ${scaled} on ${info.desc} (${pct} percentile).`;
-      const marker = new RegExp(`(This pattern suggests that [^.]*?represents \\[${info.section}\\])`, "i");
-      text = text.replace(marker, sentence + " $1");
-    }
   }
 
   text = personalize(text, firstName, pronouns);
