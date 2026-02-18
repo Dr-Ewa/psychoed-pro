@@ -1363,11 +1363,19 @@ const APPENDIX_BLOCKS = [
 // APPENDIX TABLES — BLOCKS
 // Only WISC-V and WIAT-III have corresponding appendix score tables
 const TOOLS_WITH_TABLES = new Set([
-  "wisc-v","wiat-iii",
+  "wisc-v","wais-iv","wppsi-iv","wiat-iii","wiat-4","wraml-3","beery-6","basc-3-p","basc-3-t","basc-3-s",
 ]);
 const TABLE_BLOCKS = [
   { id: "wisc-v",        label: "WISC-V",              cat: "Cognitive" },
+  { id: "wais-iv",       label: "WAIS-IV",             cat: "Cognitive" },
+  { id: "wppsi-iv",      label: "WPPSI-IV",            cat: "Cognitive" },
   { id: "wiat-iii",      label: "WIAT-III",            cat: "Academic" },
+  { id: "wiat-4",        label: "WIAT-4",              cat: "Academic" },
+  { id: "wraml-3",       label: "WRAML-3",             cat: "Memory" },
+  { id: "beery-6",       label: "Beery VMI-6",         cat: "Visual-Motor" },
+  { id: "basc-3-p",      label: "BASC-3 Parent",       cat: "Socio-Emotional" },
+  { id: "basc-3-t",      label: "BASC-3 Teacher",      cat: "Socio-Emotional" },
+  { id: "basc-3-s",      label: "BASC-3 Self-Report",  cat: "Socio-Emotional" },
 ];
 
 // BEHAVIOUR OBSERVATIONS — SENTENCE TEMPLATES (exact wording per item)
@@ -7047,14 +7055,50 @@ export default function App() {
   // Stable key for tableBlocks to use as dependency (avoids object reference issues)
   const tableBlocksKey = (secs.appendix_tables?.tableBlocks || []).join(",");
 
-  // Auto-fill appendix tables from uploaded PDFs.
+  // Auto-fill appendix tables from uploaded PDFs and generated section content.
   // Always builds the 3 mandatory tables; fills scores when available.
+  // Track cognitive _waisScores to know when to re-run
+  const waisScoresKey = JSON.stringify(secs.cognitive?._waisScores || null);
+  const cogContentKey = (secs.cognitive?.content || "").length;
+  const acadContentKey = (secs.academic?.content || "").length;
+  const memContentKey = (secs.memory?.content || "").length;
+
   useEffect(() => {
     setSecs((prev) => {
       const at = prev.appendix_tables;
       if (!at || at.status === SS.APPROVED) return prev;
       // Extract scores from all uploaded docs
       const scoreMap = extractAllScoresMap(docs);
+
+      // Also extract from generated section content
+      const pseudoDocs = [];
+      const cogContent = prev.cognitive?.content?.replace(/[⟦⟧]/g, "")?.trim();
+      if (cogContent && cogContent.length > 100 && /WISC|WPPSI|WAIS|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI|PRI/i.test(cogContent)) {
+        pseudoDocs.push({ extractedText: cogContent, name: "_cognitive_", _docxTables: null, _pdfPages: null });
+      }
+      const acadContent = prev.academic?.content?.replace(/[⟦⟧]/g, "")?.trim();
+      if (acadContent && acadContent.length > 100 && /WIAT/i.test(acadContent)) {
+        pseudoDocs.push({ extractedText: acadContent, name: "_academic_", _docxTables: null, _pdfPages: null });
+      }
+      const memContent = prev.memory?.content?.replace(/[⟦⟧]/g, "")?.trim();
+      if (memContent && memContent.length > 100 && /WRAML/i.test(memContent)) {
+        pseudoDocs.push({ extractedText: memContent, name: "_memory_", _docxTables: null, _pdfPages: null });
+      }
+      if (pseudoDocs.length > 0) {
+        const sectionScores = extractAllScoresMap(pseudoDocs);
+        for (const [k, val] of Object.entries(sectionScores)) {
+          if (!scoreMap[k]) scoreMap[k] = val;
+        }
+      }
+
+      // Merge stored WAIS scores from AI-generated cognitive section
+      const waisScores = prev.cognitive?._waisScores;
+      if (waisScores) {
+        for (const [k, val] of Object.entries(waisScores)) {
+          if (!scoreMap[k]) scoreMap[k] = val;
+        }
+      }
+
       const hasAnyScores = Object.keys(scoreMap).length > 0;
       if (!hasAnyScores) return prev; // No scores found — leave existing content alone
       const cogTestType = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
@@ -7062,7 +7106,7 @@ export default function App() {
       if (!html || html === (at.content || "")) return prev;
       return { ...prev, appendix_tables: { ...at, content: html } };
     });
-  }, [docs, derivedFirstName, tools, tableBlocksKey]);
+  }, [docs, derivedFirstName, tools, tableBlocksKey, waisScoresKey, cogContentKey, acadContentKey, memContentKey]);
 
     useEffect(() => {
     const id = "psychoed-print-styles";
