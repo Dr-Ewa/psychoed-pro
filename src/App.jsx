@@ -8551,53 +8551,9 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
             return;
           }
 
-          // ── WPPSI-IV (age < 6y11m OR WPPSI detected in uploaded docs): Try PDF extraction first, then manual entry ──
-          const wppsiDocsDetected = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
-          const isWPPSI = useWPPSIByAge || wppsiDocsDetected.length > 0;
-          if (isWPPSI) {
-            const wppsiDocs = wppsiDocsDetected.length > 0 ? wppsiDocsDetected : docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
-            const pdfResult = extractWPPSICogText(wppsiDocs.length > 0 ? wppsiDocs : allTextDocs);
-            let wm, scoreSummary;
-            if (pdfResult) {
-              wm = pdfResult.wm;
-              scoreSummary = buildCogScoreSummary("WPPSI-IV", pdfResult.scores, [
-                ["fsiq", "Full Scale IQ"], ["vci", "Verbal Comprehension"], ["vsi", "Visual Spatial"],
-                ["fri", "Fluid Reasoning"], ["wmi", "Working Memory"], ["psi", "Processing Speed"],
-              ]);
-              uSec(sid, { wppsiManual: { ...secs.cognitive?.wppsiManual, ...wm } });
-            } else {
-              wm = secs.cognitive?.wppsiManual || {};
-              const missing = [];
-              if (!wm.fsiqScore?.trim()) missing.push("FSIQ Score");
-              if (!wm.fsiqPercentile?.trim()) missing.push("FSIQ Percentile");
-              if (!wm.vciScore?.trim()) missing.push("VCI Score");
-              if (!wm.vciPercentile?.trim()) missing.push("VCI Percentile");
-              if (!wm.vsiScore?.trim()) missing.push("VSI Score");
-              if (!wm.vsiPercentile?.trim()) missing.push("VSI Percentile");
-              if (!wm.friScore?.trim()) missing.push("FRI Score");
-              if (!wm.friPercentile?.trim()) missing.push("FRI Percentile");
-              if (!wm.wmiScore?.trim()) missing.push("WMI Score");
-              if (!wm.wmiPercentile?.trim()) missing.push("WMI Percentile");
-              if (!wm.psiScore?.trim()) missing.push("PSI Score");
-              if (!wm.psiPercentile?.trim()) missing.push("PSI Percentile");
-              if (missing.length > 0) {
-                showToast("No WPPSI-IV scores found in PDFs. Missing manual fields: " + missing.join(", "), "error");
-                setGenning(false);
-                return;
-              }
-              scoreSummary = `Test: WPPSI-IV\nFull Scale IQ: ${wm.fsiqScore} (${wm.fsiqPercentile}th percentile)\nVerbal Comprehension: ${wm.vciScore} (${wm.vciPercentile}th percentile)\nVisual Spatial: ${wm.vsiScore} (${wm.vsiPercentile}th percentile)\nFluid Reasoning: ${wm.friScore} (${wm.friPercentile}th percentile)\nWorking Memory: ${wm.wmiScore} (${wm.wmiPercentile}th percentile)\nProcessing Speed: ${wm.psiScore} (${wm.psiPercentile}th percentile)`;
-            }
-            let content = fillWPPSICognitiveTemplate(wm, derivedFirstName || "[firstName]", meta.pronouns);
-            content = await generateCogImpactSummary(content, "WPPSI-IV", scoreSummary);
-            uSec(sid, { content });
-            showToast(pdfResult ? "WPPSI-IV cognitive section auto-populated from PDF + AI academic impact." : "WPPSI-IV cognitive section generated from manual scores + AI academic impact.", "success");
-            setGenning(false);
-            return;
-          }
-
-          // ── WISC-V / default: Deterministic extraction from Q-interactive PDF ──
+          // ── WISC-V / WPPSI-IV / default: Deterministic extraction from Q-interactive PDF ──
           const isWAISSelected = tools.some(t => t.id === "wais-iv" && t.used);
-          if (!isWAISSelected && !isWPPSI) {
+          if (!isWAISSelected) {
             let extracted = extractCognitiveText(selDocs(sid));
             if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
             if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
@@ -9236,27 +9192,10 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
               }
             }
 
-            // Try WPPSI PDF extraction (age < 6y11m OR WPPSI detected in uploaded docs)
-            const wppsiDocsDetectedBatch = docs.filter(d => d.extractedText && d.extractedText.length > 100 && /WPPSI|Wechsler\s*Preschool/i.test(d.extractedText));
-            const isWPPSIBatch = useWPPSIByAge || wppsiDocsDetectedBatch.length > 0;
-            if (isWPPSIBatch) {
-              const wppsiDocs = wppsiDocsDetectedBatch.length > 0 ? wppsiDocsDetectedBatch : allTextDocs;
-              const pdfResult = extractWPPSICogText(wppsiDocs.length > 0 ? wppsiDocs : allTextDocs);
-              let wm = pdfResult ? pdfResult.wm : secs.cognitive?.wppsiManual || {};
-              if (pdfResult) uSec(sid, { wppsiManual: { ...secs.cognitive?.wppsiManual, ...wm } });
-              const hasScores = wm.fsiqScore?.trim() && wm.vciScore?.trim();
-              if (hasScores) {
-                let content = fillWPPSICognitiveTemplate(wm, derivedFirstName || "[firstName]", meta.pronouns);
-                const scoreSummary = pdfResult ? buildCogScoreSummary("WPPSI-IV", pdfResult.scores, [["fsiq","Full Scale IQ"],["vci","Verbal Comprehension"],["vsi","Visual Spatial"],["fri","Fluid Reasoning"],["wmi","Working Memory"],["psi","Processing Speed"]]) : `Test: WPPSI-IV\nFSIQ: ${wm.fsiqScore}\nVCI: ${wm.vciScore}\nVSI: ${wm.vsiScore}\nFRI: ${wm.friScore}\nWMI: ${wm.wmiScore}\nPSI: ${wm.psiScore}`;
-                content = await genCogImpact(content, "WPPSI-IV", scoreSummary);
-                uSec(sid, { content }); localContent[sid] = content; succeeded++; continue;
-              }
-            }
-
-            // WISC-V: existing deterministic extraction + AI impact (skip if WPPSI detected)
-            let extracted = isWPPSIBatch ? null : extractCognitiveText(selDocs(sid));
-            if (!isWPPSIBatch && !extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
-            if (!isWPPSIBatch && !extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
+            // WISC-V / WPPSI-IV: deterministic extraction + AI impact
+            let extracted = extractCognitiveText(selDocs(sid));
+            if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
+            if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
             if (extracted) {
               let content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
               // Try WISC score extraction for AI impact
