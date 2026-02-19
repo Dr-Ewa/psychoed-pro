@@ -8669,9 +8669,15 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
           };
 
           // ── WISC-V / WPPSI-IV / WAIS-IV: verbatim extraction from Q-interactive PDF ──
+          // Also treat pasted Assessment Notes text as a pseudo-doc for extraction
+          const ctxText = s.ctx?.trim() || "";
+          const ctxPseudoDocs = (ctxText.length > 200 && /WISC|WPPSI|WAIS|Wechsler/i.test(ctxText))
+            ? [{ extractedText: ctxText, _docxTables: null, _pdfPages: null }]
+            : [];
           let extracted = extractCognitiveText(selDocs(sid));
           if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
           if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
+          if (!extracted && ctxPseudoDocs.length > 0) extracted = extractCognitiveText(ctxPseudoDocs);
           if (extracted) {
             const formatted = formatCognitiveExtract(sanitizeTone(extracted));
             const content = derivedFirstName ? capitalizeSentences(personalize(formatted, derivedFirstName, meta.pronouns)) : formatted;
@@ -8685,6 +8691,30 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
             showToast("Could not locate cognitive section anchors — full document text inserted for manual editing.", "warn");
             setGenning(false);
             return;
+          }
+          // ── WAIS-IV manual score entry → fill template directly (no AI needed) ──
+          if (useWAISByAge || tools.some(t => t.id === "wais-iv" && t.used)) {
+            const wm = secs.cognitive?.waisManual || {};
+            const hasScores = ["fsiq","vci","pri","wmi","psi"].some(k => wm[k + "Score"]);
+            if (hasScores) {
+              const content = fillWAISCognitiveTemplate(wm, derivedFirstName, meta.pronouns);
+              uSec(sid, { content });
+              showToast("WAIS-IV cognitive section generated from entered scores", "success");
+              setGenning(false);
+              return;
+            }
+          }
+          // ── WPPSI-IV manual score entry → fill template directly (no AI needed) ──
+          if (useWPPSIByAge || tools.some(t => t.id === "wppsi-iv" && t.used)) {
+            const wm = secs.cognitive?.wppsiManual || {};
+            const hasScores = ["fsiq","vci","vsi","fri","wmi","psi"].some(k => wm[k + "Score"]);
+            if (hasScores) {
+              const content = fillWPPSICognitiveTemplate(wm, derivedFirstName, meta.pronouns);
+              uSec(sid, { content });
+              showToast("WPPSI-IV cognitive section generated from entered scores", "success");
+              setGenning(false);
+              return;
+            }
           }
           // No extraction succeeded — fall through to AI generation below
         }
