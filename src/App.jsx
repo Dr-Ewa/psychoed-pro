@@ -5,7 +5,7 @@ import {
   CheckCircle, UserCheck, Clipboard, Calendar, Quote,
   MousePointer2, Upload, X, File, Image, FolderOpen,
   AlertTriangle, Check, Eye, EyeOff, Key, Download, Loader2, ChevronDown, RefreshCw, Pencil,
-  Save, Trash2
+  Save, Trash2, ClipboardCopy, Zap
 } from "lucide-react";
 
 // CDN LIBRARY LOADER + API CONFIG
@@ -6750,22 +6750,42 @@ const SecEd = memo(function SecEd({
           )}
         </div>
 
-        {/* Generate / Regenerate button */}
-        <button
-          onClick={() => onGenerate(sid)}
-          disabled={genning || locked}
-          className={`w-full py-2.5 ${s?.content?.trim() ? "bg-amber-500 hover:bg-amber-400" : "bg-indigo-600 hover:bg-indigo-500"} text-white rounded-xl font-extrabold uppercase flex items-center justify-center gap-2 disabled:opacity-40 shadow-lg`}
-          style={{ fontSize: 10, letterSpacing: "0.08em" }}
-        >
-          {genning ? (
-            <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : s?.content?.trim() ? (
-            <RefreshCw size={14} />
-          ) : (
-            <Sparkles size={14} />
-          )}
-          {genning ? "Generating..." : s?.content?.trim() ? "Regenerate Section" : "Generate Section"}
-        </button>
+        {/* Insert / Go / Generate button — label, colour, icon adapt to section type */}
+        {(() => {
+          // "Insert" sections: deterministic copy-from-PDF, no AI writing
+          // cognitive covers WISC-V, WAIS-IV, WPPSI-IV; memory covers WRAML narrative extraction
+          const isInsert = sid === "cognitive" || sid === "memory";
+          // "Go" sections: template-based score-placeholder filling (no AI prose)
+          const isGo = sid === "appendix_tables";
+          const hasContent = !!s?.content?.trim();
+
+          let label, icon, colorClass;
+          if (genning) {
+            label   = isInsert ? "Inserting..." : isGo ? "Building..." : "Generating...";
+            icon    = <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />;
+            colorClass = isInsert ? "bg-teal-600" : isGo ? "bg-violet-600" : "bg-indigo-600";
+          } else if (hasContent) {
+            if (isInsert)     { label = "Re-Insert";        icon = <ClipboardCopy size={14} />; colorClass = "bg-teal-500 hover:bg-teal-400"; }
+            else if (isGo)    { label = "Rebuild Tables";   icon = <Zap size={14} />;            colorClass = "bg-violet-500 hover:bg-violet-400"; }
+            else              { label = "Regenerate Section"; icon = <RefreshCw size={14} />;    colorClass = "bg-amber-500 hover:bg-amber-400"; }
+          } else {
+            if (isInsert)     { label = "Insert from PDF";  icon = <ClipboardCopy size={14} />; colorClass = "bg-teal-600 hover:bg-teal-500"; }
+            else if (isGo)    { label = "Go";               icon = <Zap size={14} />;            colorClass = "bg-violet-600 hover:bg-violet-500"; }
+            else              { label = "Generate Section"; icon = <Sparkles size={14} />;       colorClass = "bg-indigo-600 hover:bg-indigo-500"; }
+          }
+
+          return (
+            <button
+              onClick={() => onGenerate(sid)}
+              disabled={genning || locked}
+              className={`w-full py-2.5 ${colorClass} text-white rounded-xl font-extrabold uppercase flex items-center justify-center gap-2 disabled:opacity-40 shadow-lg`}
+              style={{ fontSize: 10, letterSpacing: "0.08em" }}
+            >
+              {icon}
+              {label}
+            </button>
+          );
+        })()}
       </div>
 
       {/* Quick Wording / BehObs Menu + Editor */}
@@ -6929,7 +6949,7 @@ const SecEd = memo(function SecEd({
                       <input placeholder="e.g., processing speed and working memory" value={wm.weakerAreas || ""} onChange={(e) => setWM("weakerAreas", e.target.value)} disabled={locked} className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-indigo-300 focus:outline-none" />
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400" style={{ fontSize: 7 }}>Enter all index scores and percentile ranks, then click Generate to fill the WAIS-IV template.</p>
+                  <p className="text-xs text-gray-400" style={{ fontSize: 7 }}>Enter all index scores and percentile ranks, then click Insert from PDF to fill the WAIS-IV template.</p>
                 </div>
               );
             })()}
@@ -6969,7 +6989,7 @@ const SecEd = memo(function SecEd({
                       <input placeholder="e.g., processing speed and working memory" value={wm.weakerAreas || ""} onChange={(e) => setWM("weakerAreas", e.target.value)} disabled={locked} className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-indigo-300 focus:outline-none" />
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400" style={{ fontSize: 7 }}>Enter all index scores and percentile ranks, then click Generate to fill the WPPSI-IV template.</p>
+                  <p className="text-xs text-gray-400" style={{ fontSize: 7 }}>Enter all index scores and percentile ranks, then click Insert from PDF to fill the WPPSI-IV template.</p>
                 </div>
               );
             })()}
@@ -7210,7 +7230,7 @@ const SecEd = memo(function SecEd({
                   <div className="flex flex-col items-center justify-center py-12 text-center">
                     <FileText size={28} className="text-gray-300 mb-3" />
                     <p className="text-sm font-bold text-gray-400">No score tables yet</p>
-                    <p className="text-xs text-gray-400 mt-1 max-w-xs">Upload score report PDFs and click <span className="font-semibold text-indigo-500">Generate</span>, or tables will auto-populate when scores are detected.</p>
+                    <p className="text-xs text-gray-400 mt-1 max-w-xs">Upload score report PDFs and click <span className="font-semibold text-violet-500">Go</span>, or tables will auto-populate when scores are detected.</p>
                   </div>
                 )}
               </div>
