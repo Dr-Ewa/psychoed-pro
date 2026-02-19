@@ -2476,37 +2476,12 @@ function detDetectPDFTables(pageLines) {
     if (Math.abs(curr.line.items.length - prev.line.items.length) <= 1 && curr.idx - prev.idx <= 2) {
       group.push(curr);
     } else {
-      if (group.length >= 2) {
-        const rows = group.map((g) => g.line.items.map((it) => it.text.trim()));
-        const accepted = _acceptTableGroup(rows);
-        if (accepted) tables.push(rows);
-      }
+      if (group.length >= 2) tables.push(group.map((g) => g.line.items.map((it) => it.text.trim())));
       group = [curr];
     }
   }
-  if (group.length >= 2) {
-    const rows = group.map((g) => g.line.items.map((it) => it.text.trim()));
-    const accepted = _acceptTableGroup(rows);
-    if (accepted) tables.push(rows);
-  }
+  if (group.length >= 2) tables.push(group.map((g) => g.line.items.map((it) => it.text.trim())));
   return tables; // Each table = array of rows, each row = array of cell strings
-}
-
-// Header-gate helper: accept a group of rows as a table only if it looks like a score table.
-function _acceptTableGroup(rows) {
-  const allText = rows.slice(0, 3).map(r => r.join(" ").toLowerCase()).join(" ");
-  const isSubtestHeader = /subtest|scaled/.test(allText);
-  const isIndexHeader = /standard|percentile|composite|index/.test(allText);
-  if (!isSubtestHeader && !isIndexHeader) return false;
-  // Validate that at least 2 data rows have plausible score values
-  let scoreRows = 0;
-  for (let r = 1; r < rows.length; r++) {
-    const nums = rows[r].map(c => parseInt(c)).filter(n => !isNaN(n));
-    const hasScaled = nums.some(n => n >= 1 && n <= 19);
-    const hasStandard = nums.some(n => n >= 40 && n <= 160);
-    if (hasScaled || hasStandard) scoreRows++;
-  }
-  return scoreRows >= 2;
 }
 
 // ── DOCX TABLE EXTRACTOR ──
@@ -2789,9 +2764,8 @@ function detParseIndexRows(rows) {
 
 // ── HTML TABLE BUILDER (deterministic, no AI) ──
 
-function detBuildScoreTablesHTML(tables, firstName, instrument) {
+function detBuildScoreTablesHTML(tables, firstName) {
   const nm = firstName || "[firstName]";
-  const instrName = instrument === "wppsi-iv" ? "WPPSI-IV" : instrument === "wais-iv" ? "WAIS-IV" : "WISC-V";
   const parts = [];
   const th = 'style="border:1px solid #666;padding:6px 10px;background:#e8e8e8;font-weight:bold;text-align:left;font-family:Times New Roman,serif;font-size:11pt"';
   const td = 'style="border:0.5pt solid #666;padding:3px 10px;font-family:Times New Roman,serif;font-size:11pt"';
@@ -2799,7 +2773,7 @@ function detBuildScoreTablesHTML(tables, firstName, instrument) {
   const tbl = 'style="border-collapse:collapse;width:100%;margin:12px 0 24px 0;font-family:Times New Roman,serif"';
 
   if (tables.subtests && tables.subtests.length > 0) {
-    let h = `<p style="font-weight:bold;font-family:Times New Roman,serif;font-size:12pt;margin:16px 0 4px 0">${instrName} Subtest Score Summary — ${nm}</p>\n`;
+    let h = `<p style="font-weight:bold;font-family:Times New Roman,serif;font-size:12pt;margin:16px 0 4px 0">WISC-V Subtest Score Summary — ${nm}</p>\n`;
     h += `<table ${tbl}>\n<tr><th ${th}>Subtest</th><th ${th}>Scaled Score</th><th ${th}>Percentile Rank</th><th ${th}>Qualitative Description</th></tr>\n`;
     tables.subtests.forEach((s, i) => {
       const st = i % 2 === 1 ? ta : td;
@@ -2809,7 +2783,7 @@ function detBuildScoreTablesHTML(tables, firstName, instrument) {
     parts.push(h);
   }
   if (tables.composites && tables.composites.length > 0) {
-    let h = `<p style="font-weight:bold;font-family:Times New Roman,serif;font-size:12pt;margin:16px 0 4px 0">${instrName} Composite Score Summary — ${nm}</p>\n`;
+    let h = `<p style="font-weight:bold;font-family:Times New Roman,serif;font-size:12pt;margin:16px 0 4px 0">WISC-V Composite Score Summary — ${nm}</p>\n`;
     h += `<table ${tbl}>\n<tr><th ${th}>Composite</th><th ${th}>Standard Score</th><th ${th}>Percentile Rank</th><th ${th}>Confidence Interval (95%)</th><th ${th}>Qualitative Description</th></tr>\n`;
     tables.composites.forEach((s, i) => {
       const st = i % 2 === 1 ? ta : td;
@@ -2819,8 +2793,7 @@ function detBuildScoreTablesHTML(tables, firstName, instrument) {
     parts.push(h);
   }
   if (tables.indexes && tables.indexes.length > 0) {
-    const idxCaption = instrName === "WAIS-IV" ? `${instrName} Index Score Summary — ${nm}` : `${instrName} Ancillary Index Score Summary — ${nm}`;
-    let h = `<p style="font-weight:bold;font-family:Times New Roman,serif;font-size:12pt;margin:16px 0 4px 0">${idxCaption}</p>\n`;
+    let h = `<p style="font-weight:bold;font-family:Times New Roman,serif;font-size:12pt;margin:16px 0 4px 0">WISC-V Ancillary Index Score Summary — ${nm}</p>\n`;
     h += `<table ${tbl}>\n<tr><th ${th}>Index</th><th ${th}>Standard Score</th><th ${th}>Percentile Rank</th><th ${th}>Confidence Interval (95%)</th><th ${th}>Qualitative Description</th></tr>\n`;
     tables.indexes.forEach((s, i) => {
       const st = i % 2 === 1 ? ta : td;
@@ -2849,8 +2822,7 @@ const WISC_SUBTEST_ABBREV_MAP = {
   // WAIS-IV specific subtests
   "Picture Completion": "PC",
 };
-
-// ── WPPSI-IV subtest abbreviation map ──
+// Instrument-specific subtest abbreviation maps
 const WPPSI_SUBTEST_ABBREV_MAP = {
   "Information": "IN", "Similarities": "SI", "Vocabulary": "VC", "Comprehension": "CO",
   "Receptive Vocabulary": "RV", "Picture Naming": "PN",
@@ -2858,21 +2830,16 @@ const WPPSI_SUBTEST_ABBREV_MAP = {
   "Matrix Reasoning": "MR", "Picture Concepts": "PC",
   "Picture Memory": "PM", "Zoo Locations": "ZL",
   "Bug Search": "BS", "Cancellation": "CA", "Animal Coding": "AC",
-  // common PDF label variants
-  "Block Design ": "BD", "Object Assembly ": "OA",
-  "Matrix Reasoning ": "MR", "Picture Concepts ": "PC",
-  "Bug Search ": "BS",
 };
 
-// ── WAIS-IV subtest abbreviation map ──
 const WAIS_SUBTEST_ABBREV_MAP = {
   "Similarities": "SI", "Vocabulary": "VC", "Information": "IN", "Comprehension": "CO",
-  "Block Design": "BD", "Matrix Reasoning": "MR", "Visual Puzzles": "VP", "Figure Weights": "FW", "Picture Completion": "PCm",
+  "Block Design": "BD", "Matrix Reasoning": "MR", "Visual Puzzles": "VP",
+  "Figure Weights": "FW", "Picture Completion": "PC",
   "Digit Span": "DS", "Arithmetic": "AR", "Letter-Number Sequencing": "LN",
   "Symbol Search": "SS", "Coding": "CD", "Cancellation": "CA",
-  // common PDF label variants
-  "Block Design ": "BD", "Matrix Reasoning ": "MR",
 };
+
 // Mapping: parseWIATScores keys → template placeholder keys
 const WIAT_KEY_MAP = {
   WORD_READING: "WordReading", PSEUDOWORD_DECODING: "PseudowordDecoding",
@@ -2924,9 +2891,8 @@ function buildTemplatePlaceholderMap(wiscTables, wiatScores) {
   return map;
 }
 
-function buildTemplateTablesHTML(wiscTables, wiatScores, firstName, instrument) {
+function buildTemplateTablesHTML(wiscTables, wiatScores, firstName) {
   const nm = firstName || "[firstName]";
-  const instrName = instrument === "wppsi-iv" ? "WPPSI-IV" : instrument === "wais-iv" ? "WAIS-IV" : "WISC-V";
   const placeholders = buildTemplatePlaceholderMap(wiscTables, wiatScores);
   const parts = [];
 
@@ -2955,7 +2921,7 @@ function buildTemplateTablesHTML(wiscTables, wiatScores, firstName, instrument) 
   ];
   const wiscSubRows = wiscSubtestDefs.filter(([, abbr]) => hasFill(`WISC.${abbr}.scaled`));
   if (wiscSubRows.length > 0) {
-    let h = `<table ${tbl}>\n<caption ${cap}>${instrName} Subtest Score Summary — ${nm}</caption>\n`;
+    let h = `<table ${tbl}>\n<caption ${cap}>WISC-V Subtest Score Summary — ${nm}</caption>\n`;
     h += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th></tr></thead>\n<tbody>\n`;
     wiscSubRows.forEach(([name, abbr], i) => {
       h += `<tr ${rowBg(i)}>${td(name)}${td(fill(`WISC.${abbr}.scaled`), true)}${td(fill(`WISC.${abbr}.percentile`), true)}</tr>\n`;
@@ -2972,7 +2938,7 @@ function buildTemplateTablesHTML(wiscTables, wiatScores, firstName, instrument) 
   ];
   const wiscCompRows = wiscCompDefs.filter(([, abbr]) => hasFill(`WISC.${abbr}.score`));
   if (wiscCompRows.length > 0) {
-    let h = `<table ${tbl}>\n<caption ${cap}>${instrName} Composite Score Summary — ${nm}</caption>\n`;
+    let h = `<table ${tbl}>\n<caption ${cap}>WISC-V Composite Score Summary — ${nm}</caption>\n`;
     h += `<thead><tr><th ${th}>Composite</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Qualitative Description</th></tr></thead>\n<tbody>\n`;
     wiscCompRows.forEach(([name, abbr], i) => {
       h += `<tr style="font-weight:bold;background:${i % 2 === 0 ? '#f0f0fa' : '#e8e8f0'}">${tdBold(`${name} (${abbr})`)}${tdBold(fill(`WISC.${abbr}.score`), true)}${tdBold(fill(`WISC.${abbr}.percentile`), true)}${tdBold(fill(`WISC.${abbr}.qualitative`), true)}</tr>\n`;
@@ -2988,7 +2954,7 @@ function buildTemplateTablesHTML(wiscTables, wiatScores, firstName, instrument) 
   ];
   const wiscIdxRows = wiscIdxDefs.filter(([, abbr]) => hasFill(`WISC.${abbr}.score`));
   if (wiscIdxRows.length > 0) {
-    let h = `<table ${tbl}>\n<caption ${cap}>${instrName} Ancillary Index Score Summary — ${nm}</caption>\n`;
+    let h = `<table ${tbl}>\n<caption ${cap}>WISC-V Index Score Summary — ${nm}</caption>\n`;
     h += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Qualitative Description</th></tr></thead>\n<tbody>\n`;
     wiscIdxRows.forEach(([name, abbr], i) => {
       h += `<tr style="font-weight:bold;background:${i % 2 === 0 ? '#f0f0fa' : '#e8e8f0'}">${tdBold(`${name} (${abbr})`)}${tdBold(fill(`WISC.${abbr}.score`), true)}${tdBold(fill(`WISC.${abbr}.percentile`), true)}${tdBold(fill(`WISC.${abbr}.qualitative`), true)}</tr>\n`;
@@ -3166,7 +3132,6 @@ function buildAppendixTablesFromDocs(docs, firstName) {
   if (!docs || docs.length === 0) return null;
   let wiscTables = null;
   let wiatScores = null;
-  let detectedInstrument = "wisc-v"; // default
   try {
     for (const d of docs) {
       const txt = d.extractedText || "";
@@ -3174,9 +3139,6 @@ function buildAppendixTablesFromDocs(docs, firstName) {
 
       // ── WISC extraction ──
       if (!wiscTables && /WISC|WPPSI|WAIS|Wechsler/i.test(txt)) {
-        if (/WPPSI/i.test(txt)) detectedInstrument = "wppsi-iv";
-        else if (/WAIS/i.test(txt)) detectedInstrument = "wais-iv";
-        else detectedInstrument = "wisc-v";
         const result = deterministicExtract(txt, d._docxTables || null, d._pdfPages || null);
         const t = result.appendix_tables;
         if (t.subtests || t.composites || t.indexes) {
@@ -3196,13 +3158,13 @@ function buildAppendixTablesFromDocs(docs, firstName) {
 
     // Build tables using the template system (covers both WISC + WIAT)
     if (wiscTables || wiatScores) {
-      const templateHtml = buildTemplateTablesHTML(wiscTables, wiatScores, firstName, detectedInstrument);
+      const templateHtml = buildTemplateTablesHTML(wiscTables, wiatScores, firstName);
       if (templateHtml) return templateHtml;
     }
 
     // Legacy fallback: WISC-only tables from old builder
     if (wiscTables) {
-      const html = detBuildScoreTablesHTML(wiscTables, firstName, detectedInstrument);
+      const html = detBuildScoreTablesHTML(wiscTables, firstName);
       if (html) return html;
     }
   } catch (e) { /* extraction failed */ }
@@ -3217,8 +3179,6 @@ function buildAppendixTablesFromDocs(docs, firstName) {
 function extractAllScoresMap(docs) {
   if (!docs || docs.length === 0) return {};
   const map = {};
-  const _debug = typeof window !== "undefined" && window.__DEBUG_EXTRACT__;
-  const _debugInfo = { instrument: null, prefix: null, subtestCount: 0, indexCount: 0, unmapped: [] };
   try {
     for (const d of docs) {
       const txt = d.extractedText || "";
@@ -3230,18 +3190,16 @@ function extractAllScoresMap(docs) {
           const isWAIS = /WAIS/i.test(txt);
           const isWPPSI = /WPPSI/i.test(txt);
           const prefix = isWAIS ? "WAIS" : isWPPSI ? "WPPSI" : "WISC";
-          if (_debug) { _debugInfo.instrument = isWAIS ? "wais-iv" : isWPPSI ? "wppsi-iv" : "wisc-v"; _debugInfo.prefix = prefix; }
           const result = deterministicExtract(txt, d._docxTables || null, d._pdfPages || null);
           const t = result.appendix_tables;
           let hasSubtests = false;
           let hasIndexes = false;
           if (t.subtests) {
-            const abbrevMap = isWAIS ? WAIS_SUBTEST_ABBREV_MAP : isWPPSI ? WPPSI_SUBTEST_ABBREV_MAP : WISC_SUBTEST_ABBREV_MAP;
+            const _subtestMap = isWAIS ? WAIS_SUBTEST_ABBREV_MAP : isWPPSI ? WPPSI_SUBTEST_ABBREV_MAP : WISC_SUBTEST_ABBREV_MAP;
             for (const s of t.subtests) {
-              const abbr = abbrevMap[s.name] || abbrevMap[s.name.trim()] || WISC_SUBTEST_ABBREV_MAP[s.name];
-              if (!abbr) { if (_debug) _debugInfo.unmapped.push(`subtest:${s.name}`); continue; }
+              const abbr = _subtestMap[s.name] || _subtestMap[s.name?.trim?.()] || null;
+              if (!abbr) continue;
               hasSubtests = true;
-              if (_debug) _debugInfo.subtestCount++;
               if (s.scaledScore != null) {
                 map[`${prefix}.${abbr}.scaled`] = String(s.scaledScore);
                 map[`${prefix}.${abbr}.qualitative`] = s.qualitative || scaledQualitative(s.scaledScore);
@@ -3252,9 +3210,8 @@ function extractAllScoresMap(docs) {
           const allIdx = [...(t.composites || []), ...(t.indexes || [])];
           for (const s of allIdx) {
             const abbr = s.abbrev;
-            if (!abbr) { if (_debug) _debugInfo.unmapped.push(`index:${s.full||s.abbrev}`); continue; }
+            if (!abbr) continue;
             hasIndexes = true;
-            if (_debug) _debugInfo.indexCount++;
             if (s.standardScore != null) map[`${prefix}.${abbr}.score`] = String(s.standardScore);
             if (s.percentile != null) map[`${prefix}.${abbr}.percentile`] = String(s.percentile);
             map[`${prefix}.${abbr}.qualitative`] = s.qualitative || (s.standardScore != null ? qualitativeLabel(s.standardScore) : "");
@@ -3262,9 +3219,9 @@ function extractAllScoresMap(docs) {
           // ── FALLBACK: Narrative extraction for AI-generated text or non-standard formats ──
           if (!hasSubtests) {
             const narrSubs = detExtractNarrativeSubtestScores(txt);
-            const abbrevMap = isWAIS ? WAIS_SUBTEST_ABBREV_MAP : isWPPSI ? WPPSI_SUBTEST_ABBREV_MAP : WISC_SUBTEST_ABBREV_MAP;
+            const _narrMap = isWAIS ? WAIS_SUBTEST_ABBREV_MAP : isWPPSI ? WPPSI_SUBTEST_ABBREV_MAP : WISC_SUBTEST_ABBREV_MAP;
             for (const s of narrSubs) {
-              const abbr = abbrevMap[s.name] || abbrevMap[s.name.trim()] || WISC_SUBTEST_ABBREV_MAP[s.name];
+              const abbr = _narrMap[s.name] || _narrMap[s.name?.trim?.()] || null;
               if (!abbr || map[`${prefix}.${abbr}.scaled`]) continue;
               if (s.scaledScore != null) {
                 map[`${prefix}.${abbr}.scaled`] = String(s.scaledScore);
@@ -3380,56 +3337,7 @@ function extractAllScoresMap(docs) {
       }
     }
   } catch (e) { /* extraction failed */ }
-  // ── Step 6: Backfill missing qualitative/category for any entry that has a score ──
-  for (const key of Object.keys(map)) {
-    if (key.endsWith(".scaled")) {
-      const qKey = key.replace(".scaled", ".qualitative");
-      if (!map[qKey]) {
-        const ss = parseFloat(map[key]);
-        if (!isNaN(ss)) map[qKey] = scaledQualitative(ss);
-      }
-    } else if (key.endsWith(".score")) {
-      const qKey = key.replace(".score", ".qualitative");
-      if (!map[qKey]) {
-        const ss = parseFloat(map[key]);
-        if (!isNaN(ss)) map[qKey] = qualitativeLabel(ss);
-      }
-    }
-  }
-
-  if (typeof window !== "undefined" && window.__DEBUG_EXTRACT__) {
-    const allKeys = Object.keys(map);
-    console.log("[DEBUG_EXTRACT]", {
-      instrument: _debugInfo.instrument,
-      prefix: _debugInfo.prefix,
-      subtestCount: _debugInfo.subtestCount,
-      indexCount: _debugInfo.indexCount,
-      totalKeys: allKeys.length,
-      unmapped: _debugInfo.unmapped,
-      sampleKeys: allKeys.slice(0, 25),
-    });
-  }
   return map;
-}
-
-// ── Step 5: Validate extracted score map for out-of-range values ──
-// Returns { outOfRange: string[], valid: boolean }
-function validateScoreMap(map) {
-  const outOfRange = [];
-  for (const [key, val] of Object.entries(map)) {
-    const n = parseFloat(val);
-    if (isNaN(n)) continue;
-    if (key.endsWith(".scaled") && (n < 1 || n > 19))
-      outOfRange.push(`${key} = ${val} (expected 1–19)`);
-    else if (key.endsWith(".score") && (n < 40 || n > 160))
-      outOfRange.push(`${key} = ${val} (expected 40–160)`);
-    else if (key.endsWith(".percentile") && (n < 1 || n > 99))
-      outOfRange.push(`${key} = ${val} (expected 1–99)`);
-  }
-  if (typeof window !== "undefined" && window.__DEBUG_EXTRACT__ && outOfRange.length > 0) {
-    console.warn("[DEBUG_EXTRACT] Out-of-range scores:", outOfRange);
-  }
-  return { outOfRange, valid: outOfRange.length === 0 };
 }
 
 /**
@@ -8393,11 +8301,6 @@ export default function App() {
       }
       const html = buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", scoreMap, cogTestType);
       if (!html || html === (at.content || "")) return prev;
-      // ── Step 5: validate score ranges in debug mode ──
-      if (typeof window !== "undefined" && window.__DEBUG_EXTRACT__) {
-        const sv = validateScoreMap(scoreMap);
-        if (!sv.valid) console.warn("[DEBUG_EXTRACT] Auto-appendix validation issues:", sv.outOfRange);
-      }
       return { ...prev, appendix_tables: { ...at, content: html } };
     });
   }, [docs, derivedFirstName, tools, tableBlocksKey, waisScoresKey, cogContentKey, acadContentKey, memContentKey, useWAISByAge, useWPPSIByAge]);
@@ -8909,17 +8812,10 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
           }
           const mandatoryHtml = buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", scoreMap, cogTestType);
 
-          // ── Step 5: validate extracted scores and warn user ──
-          const scoreValidation = validateScoreMap(scoreMap);
-          if (!scoreValidation.valid && typeof window !== "undefined" && window.__DEBUG_EXTRACT__) {
-            console.warn("[DEBUG_EXTRACT] Score validation issues:", scoreValidation.outOfRange);
-          }
-          const validationSuffix = scoreValidation.valid ? "" : " · ⚠ " + scoreValidation.outOfRange.length + " out-of-range value(s) — check console";
-
           uSec(sid, { content: mandatoryHtml });
-          showToast((filledCount > 0
+          showToast(filledCount > 0
             ? `Tables built — ${filledCount} scores auto-filled from docs/sections`
-            : "Mandatory tables created with — placeholders — upload score PDFs or generate other sections first") + validationSuffix,
+            : "Mandatory tables created with — placeholders — upload score PDFs or generate other sections first",
             filledCount > 0 ? "success" : "info");
           setGenning(false);
           return;
