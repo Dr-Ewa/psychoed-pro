@@ -684,7 +684,7 @@ function autoClassifyDoc(text, fileName) {
   const cats = [];
 
   // Cognitive testing
-  if (/\bwisc\b|wppsi|wais[\s-]|full.?scale.?iq|fsiq|verbal.?comprehension.?index|vci|visual.?spatial.?index|vsi|fluid.?reasoning.?index|fri|working.?memory.?index|wmi|processing.?speed.?index|psi|cognitive.?proficiency|general.?ability/i.test(t))
+  if (/\bwisc\b|wppsi|\bwais\b|wais[\s\-\u2013\u2014]|full.?scale.?iq|fsiq|verbal.?comprehension.?index|vci|visual.?spatial.?index|vsi|fluid.?reasoning.?index|fri|working.?memory.?index|wmi|processing.?speed.?index|psi|cognitive.?proficiency|general.?ability|perceptual.?reasoning.?index|pri|wechsler.?adult|wechsler.?intelligence|wechsler.?preschool/i.test(t))
     cats.push("Cognitive Testing (WISC, WPPSI, WAIS)");
 
   // Academic testing
@@ -950,21 +950,6 @@ Use [firstName] and correct pronouns throughout. Do not add observations that we
 Steps: 1. Find the section starting with "ABOUT WISC-V CDN SCORES" or similar. 2. Copy all interpretive text verbatim. 3. Stop before the SUMMARY section. 4. Remove page headers/footers and copyright lines. 5. Replace the child's name with [FIRST_NAME]. 6. Replace pronouns.
 If no uploaded cognitive report text is found, write the section from provided scores using professional school psychologist tone.
 
-WAIS (Ages 17+) SPECIFIC INSTRUCTIONS:
-If the assessment uses the WAIS-IV (Wechsler Adult Intelligence Scale-4th Edition), you MUST write a thorough and comprehensive narrative overview of all cognitive results. This is NOT a template fill — you must write a full interpretive report section.
-Requirements for WAIS sections:
-- Report EVERY index score and subtest score with its exact percentile rank and classification range.
-- Describe each index (Verbal Comprehension, Perceptual Reasoning, Working Memory, Processing Speed) in its own paragraph with all contributing subtests, their scaled scores, and percentiles.
-- Report the Full Scale IQ (FSIQ) with percentile and confidence interval.
-- Include the General Ability Index (GAI) if available.
-- Compare index scores and note any statistically significant discrepancies.
-- Be SPECIFIC and OBJECTIVE: state only what the scores show. Do not speculate, infer, or add clinical impressions beyond what the data supports.
-- Do NOT use placeholders like [range], [percentile], [score], [classification]. You MUST write the actual numeric values and classification labels.
-- If EXTRACTED SCORES are provided in the context, use those EXACT values. Do not guess or invent scores.
-- Do NOT add information that is not in the source documents. Do NOT omit any scores that are present.
-- Use exact score values as they appear in the source. Do not round, estimate, or approximate.
-- Use professional school psychologist tone with cautious, evidence-based phrasing.
-- Use [FIRST_NAME] for the student's name throughout.
 
 CRITICAL — STRUCTURED SCORE SUMMARY: After the narrative section, you MUST include a clearly labeled score summary block in this EXACT format (one line per score). This is used for automatic table generation:
 --- SCORE SUMMARY ---
@@ -1997,14 +1982,55 @@ function qualitativeLabel(ss) {
 // ── AGE PARSING HELPER ──
 function ageFromAgeAtTesting(ageAtTesting) {
   if (!ageAtTesting) return null;
-  const s = String(ageAtTesting);
-  const yMatch = s.match(/(\d{1,2})\s*years?/i);
-  const mMatch = s.match(/(\d{1,2})\s*months?/i);
-  const years = yMatch ? parseInt(yMatch[1], 10) : 0;
-  const months = mMatch ? parseInt(mMatch[1], 10) : 0;
+  const s = String(ageAtTesting).trim();
+  let years = 0, months = 0;
+
+  // Format: "17;2" or "17:2" (years;months — common Q-interactive / psychoed format)
+  const semicolonMatch = s.match(/^(\d{1,2})[;:](\d{1,2})$/);
+  if (semicolonMatch) {
+    years = parseInt(semicolonMatch[1], 10);
+    months = parseInt(semicolonMatch[2], 10);
+    return { years, months, totalMonths: years * 12 + months };
+  }
+
+  // Format: "17y 2m" or "17yr 2mo" or "17y2m"
+  const shortMatch = s.match(/^(\d{1,2})\s*y(?:rs?|ears?)?[\s,]*(\d{1,2})\s*m(?:os?|onths?)?/i);
+  if (shortMatch) {
+    years = parseInt(shortMatch[1], 10);
+    months = parseInt(shortMatch[2], 10);
+    return { years, months, totalMonths: years * 12 + months };
+  }
+
+  // Format: "17 years 2 months" or "17 years, 2 months"
+  const longMatch = s.match(/(\d{1,2})\s*years?[\s,]+(\d{1,2})\s*months?/i);
+  if (longMatch) {
+    years = parseInt(longMatch[1], 10);
+    months = parseInt(longMatch[2], 10);
+    return { years, months, totalMonths: years * 12 + months };
+  }
+
+  // Format: "17 years" (no months component)
+  const yearsOnlyMatch = s.match(/^(\d{1,2})\s*(?:years?|yrs?)\b/i);
+  if (yearsOnlyMatch) {
+    years = parseInt(yearsOnlyMatch[1], 10);
+    return { years, months: 0, totalMonths: years * 12 };
+  }
+
+  // Format: plain integer "17" — treat as years only
+  const intMatch = s.match(/^(\d{1,2})$/);
+  if (intMatch) {
+    years = parseInt(intMatch[1], 10);
+    if (years >= 3 && years <= 25) return { years, months: 0, totalMonths: years * 12 };
+  }
+
+  // Fallback: extract any years/months mentions anywhere in the string
+  const yFallback = s.match(/(\d{1,2})\s*(?:years?|yrs?)/i);
+  const mFallback = s.match(/(\d{1,2})\s*(?:months?|mos?)/i);
+  years = yFallback ? parseInt(yFallback[1], 10) : 0;
+  months = mFallback ? parseInt(mFallback[1], 10) : 0;
   if (!Number.isFinite(years) || !Number.isFinite(months)) return null;
   const totalMonths = years * 12 + months;
-  return { years, months, totalMonths };
+  return totalMonths > 0 ? { years, months, totalMonths } : null;
 }
 function scaledQualitative(ss) {
   if (ss >= 16) return "Very High";
@@ -2197,8 +2223,9 @@ function detCleanText(text) {
     c = c.replace(new RegExp("\\[" + p + "\\]", "gi"), (m) => m.slice(1, -1));
   }
   c = c.replace(/\[FIRST[_\s]?NAME\]/gi, "[firstName]");
-  // Strip inline " CDN" from test names (e.g. "WISC-V CDN" → "WISC-V")
-  c = c.replace(/\b(WISC-V|WPPSI-IV|WAIS-IV|WIAT-III|WIAT-4|WISC|WPPSI|WAIS|WIAT)\s+CDN\b/g, "$1");
+  // Strip inline " CDN" and "®" from test names (e.g. "WISC-V® CDN" → "WISC-V")
+  c = c.replace(/\b(WISC-V|WPPSI-IV|WAIS-IV|WIAT-III|WIAT-4|WISC|WPPSI|WAIS|WIAT)[®\u00AE]?\s+CDN\b/g, "$1");
+  c = c.replace(/\b(WISC-V|WPPSI-IV|WAIS-IV|WIAT-III|WISC|WPPSI|WAIS|WIAT)[®\u00AE]/g, "$1");
   return c.replace(/\n{3,}/g, "\n\n").trim();
 }
 
@@ -5174,7 +5201,7 @@ function buildReportHtml(meta, secs, tools, usedToolsStr) {
   if (meta.dob && meta.dateOfTesting) {
     const totalMonths = calcAgeObj(meta.dob, meta.dateOfTesting)?.totalMonths;
     if (totalMonths != null) {
-      if (totalMonths >= 203) cogTestType = "wais-iv";
+      if (totalMonths >= 192) cogTestType = "wais-iv";
       else if (totalMonths < 83) cogTestType = "wppsi-iv";
     }
   }
@@ -5282,7 +5309,6 @@ function buildReportHtml(meta, secs, tools, usedToolsStr) {
   const cog = getSectionContent("cognitive");
   if (cog) {
     bodyHtml += boldHeading("Results and Interpretation");
-    bodyHtml += `<p style="text-align:justify;line-height:1.5;margin:0;font-size:12pt">The actual test scores contained within this report are attached as an appendix. Please note all testing was completed. A summary of the trends that emerged is included in the sections that follow. From a review of these results the following patterns of abilities, skills and needs emerge.</p>`;
     bodyHtml += boldHeading("Cognitive/Intellectual Functioning");
     bodyHtml += nl2p(cog);
   }
@@ -6362,7 +6388,7 @@ const SecEd = memo(function SecEd({
 
   // Age-based instrument flags for cognitive manual entry UI
   const secEdAge = useMemo(() => ageFromAgeAtTesting(meta?.ageAtTesting), [meta?.ageAtTesting]);
-  const secEdUseWAIS = sid === "cognitive" && secEdAge ? secEdAge.totalMonths >= 203 : false;
+  const secEdUseWAIS = sid === "cognitive" && secEdAge ? secEdAge.totalMonths >= 192 : false;
   const secEdUseWPPSI = sid === "cognitive" && secEdAge ? secEdAge.totalMonths < 83 : false;
 
   // Debounced text input: buffer keystrokes locally, sync to parent after 300ms idle
@@ -7910,7 +7936,7 @@ export default function App() {
 
   // ── Age-based cognitive instrument selection ──
   const derivedAge = useMemo(() => ageFromAgeAtTesting(meta.ageAtTesting), [meta.ageAtTesting]);
-  const useWAISByAge = derivedAge ? derivedAge.totalMonths >= 203 : false; // 16 years 11 months = 203 months
+  const useWAISByAge = derivedAge ? derivedAge.totalMonths >= 192 : false; // 16 years 0 months = 192 months
   const useWPPSIByAge = derivedAge ? derivedAge.totalMonths < 83 : false;   // under 6 years 11 months = 83 months
 
   /** Shorthand: apply [firstName] + pronoun placeholders using current meta */
@@ -7970,7 +7996,7 @@ export default function App() {
     if (!derivedAge) return;
     const cogToolIds = new Set(["wais-iv", "wppsi-iv", "wisc-v"]);
     let targetId = "wisc-v";
-    if (derivedAge.totalMonths >= 203) targetId = "wais-iv";
+    if (derivedAge.totalMonths >= 192) targetId = "wais-iv";
     else if (derivedAge.totalMonths < 83) targetId = "wppsi-iv";
     setTools((prev) => {
       let changed = false;
@@ -8577,7 +8603,7 @@ export default function App() {
             if (sid === "cognitive" || sid === "summary" || sid === "recommendations" || sid === "appendix_tables") {
         // ── DETERMINISTIC EXTRACTION — NO AI ──
         // Find all docs with WISC content
-        const wiscDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && /WISC|WPPSI|WAIS|Wechsler/i.test(d.extractedText));
+        const wiscDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 200 && /WISC|WPPSI|WAIS|Wechsler/i.test(d.extractedText) && !d.extractedText.startsWith("["));
         const allTextDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && !d.extractedText.startsWith("["));
 
         if (sid === "cognitive") {
@@ -9196,7 +9222,7 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
 
                 if (sid === "cognitive" || sid === "summary" || sid === "recommendations" || sid === "appendix_tables") {
           // ── DETERMINISTIC EXTRACTION — NO AI ──
-          const wiscDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && /WISC|WPPSI|WAIS|Wechsler/i.test(d.extractedText));
+          const wiscDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 200 && /WISC|WPPSI|WAIS|Wechsler/i.test(d.extractedText) && !d.extractedText.startsWith("["));
           const allTextDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && !d.extractedText.startsWith("["));
 
           if (sid === "cognitive") {
@@ -10574,13 +10600,10 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
                         {renderSection("doc_review", "Review of Documents", "bold")}
                         {renderSection("observations", "Behavior Observations:", "bold")}
 
-                        {/* RESULTS AND INTERPRETATION — special structure per template */}
+                        {/* RESULTS AND INTERPRETATION */}
                         {secs.cognitive?.content && (
                           <div style={{ marginBottom: 20, pageBreakInside: "avoid" }}>
                             <p style={{ fontWeight: "bold", marginBottom: 6, fontSize: 12 }}>RESULTS AND INTERPRETATION</p>
-                            <div style={{ whiteSpace: "pre-line", textAlign: "justify", marginBottom: 12 }}>
-                              The actual test scores contained within this report are attached as an appendix. Please note all testing was completed. A summary of the trends that emerged is included in the sections that follow. From a review of these results the following patterns of abilities, skills and needs emerge.
-                            </div>
                             <p style={{ fontWeight: "bold", marginBottom: 6, fontSize: 12 }}>Cognitive/Intellectual Functioning</p>
                             <div style={{ whiteSpace: "pre-line", textAlign: "justify" }}>
                               {cleanAIOutput(secs.cognitive.content.replace(/[⟦⟧]/g, ""), "cognitive")}
