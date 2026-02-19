@@ -8256,8 +8256,6 @@ export default function App() {
 
   // Auto-fill appendix tables from uploaded PDFs and generated section content.
   // Always builds the 3 mandatory tables; fills scores when available.
-  // Track cognitive _waisScores to know when to re-run
-  const waisScoresKey = JSON.stringify(secs.cognitive?._waisScores || null);
   const cogContentKey = (secs.cognitive?.content || "").length;
   const acadContentKey = (secs.academic?.content || "").length;
   const memContentKey = (secs.memory?.content || "").length;
@@ -8286,14 +8284,6 @@ export default function App() {
       if (pseudoDocs.length > 0) {
         const sectionScores = extractAllScoresMap(pseudoDocs);
         for (const [k, val] of Object.entries(sectionScores)) {
-          if (!scoreMap[k]) scoreMap[k] = val;
-        }
-      }
-
-      // Merge stored WAIS scores from AI-generated cognitive section
-      const waisScores = prev.cognitive?._waisScores;
-      if (waisScores) {
-        for (const [k, val] of Object.entries(waisScores)) {
           if (!scoreMap[k]) scoreMap[k] = val;
         }
       }
@@ -8358,7 +8348,7 @@ export default function App() {
       if (!html || html === (at.content || "")) return prev;
       return { ...prev, appendix_tables: { ...at, content: html } };
     });
-  }, [docs, derivedFirstName, tools, tableBlocksKey, waisScoresKey, cogContentKey, acadContentKey, memContentKey, useWAISByAge, useWPPSIByAge]);
+  }, [docs, derivedFirstName, tools, tableBlocksKey, cogContentKey, acadContentKey, memContentKey, useWAISByAge, useWPPSIByAge]);
 
     useEffect(() => {
     const id = "psychoed-print-styles";
@@ -8721,42 +8711,6 @@ export default function App() {
         const allTextDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && !d.extractedText.startsWith("["));
 
         if (sid === "cognitive") {
-          // ── Helper: Generate AI academic impact summary for cognitive scores ──
-          const generateCogImpactSummary = async (baseContent, testName, scoreSummary) => {
-            uSec(sid, { content: baseContent + "\n\n[Generating academic impact summary...]" });
-            try {
-              const impactPrompt = `Write an Academic Impact paragraph (150-250 words) for a psychoeducational assessment report.
-
-Based on the following ${testName} cognitive scores, write a cohesive paragraph that:
-1. Describes how this cognitive profile is expected to impact academic functioning
-2. Connects specific cognitive strengths to areas where the student is likely to perform well academically
-3. Connects specific cognitive weaknesses to areas where the student may experience academic difficulty
-4. Addresses implications for reading, writing, mathematics, and classroom learning as relevant
-5. Discusses how the pattern of strengths and weaknesses may interact (e.g., strong verbal but weak processing speed may mean the student understands content but struggles with timed work)
-6. Uses cautious, professional language — "may", "suggests", "is expected to", "at times"
-
-SCORES:
-${scoreSummary}
-
-Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write in connected paragraphs. Do NOT restate individual scores — synthesize them into a functional academic narrative. Output only the paragraph(s).`;
-
-              const result = await aiGen(
-                meta, tools, impactPrompt,
-                { name: "Standard", desc: "Functional impact, strengths-based, Ontario style." },
-                "", [], GLOBAL_TONE_RULES, 2000, "cognitive",
-                accessPassword, proxyUrl, apiKey, controller.signal, openaiModel
-              );
-              if (result.ok) {
-                let impact = cleanAIOutput(result.text, "cognitive");
-                if (!/academic\s+impact|implications?\s+for\s+academic|impact\s+on\s+learning/i.test(impact)) {
-                  impact = "Academic Impact\n\n" + impact;
-                }
-                return baseContent + "\n\n" + impact;
-              }
-            } catch (e) { /* fall through */ }
-            return baseContent;
-          };
-
           // ── WISC-V / WPPSI-IV / WAIS-IV: verbatim extraction from Q-interactive PDF ──
           // Also treat pasted Assessment Notes text as a pseudo-doc for extraction
           const ctxText = s.ctx?.trim() || "";
@@ -8788,10 +8742,14 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
             if (hasScores) {
               const content = fillWAISCognitiveTemplate(wm, derivedFirstName, meta.pronouns);
               uSec(sid, { content });
-              showToast("WAIS-IV cognitive section generated from entered scores", "success");
+              showToast("WAIS-IV cognitive section filled from entered scores", "success");
               setGenning(false);
               return;
             }
+            // WAIS selected but no text extracted and no manual scores — hard stop, no AI
+            showToast("Upload the WAIS-IV report as a PDF or .docx, or enter scores manually in the form above.", "warn");
+            setGenning(false);
+            return;
           }
           // ── WPPSI-IV manual score entry → fill template directly (no AI needed) ──
           if (useWPPSIByAge || tools.some(t => t.id === "wppsi-iv" && t.used)) {
@@ -8800,12 +8758,16 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
             if (hasScores) {
               const content = fillWPPSICognitiveTemplate(wm, derivedFirstName, meta.pronouns);
               uSec(sid, { content });
-              showToast("WPPSI-IV cognitive section generated from entered scores", "success");
+              showToast("WPPSI-IV cognitive section filled from entered scores", "success");
               setGenning(false);
               return;
             }
+            // WPPSI selected but no text extracted and no manual scores — hard stop, no AI
+            showToast("Upload the WPPSI-IV report as a PDF or .docx, or enter scores manually in the form above.", "warn");
+            setGenning(false);
+            return;
           }
-          // No extraction succeeded — fall through to AI generation below
+          // WISC-V: no extraction succeeded — fall through to AI generation below
         }
 
         if (sid === "summary") {
@@ -8857,14 +8819,6 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
             const sectionScores = extractAllScoresMap(pseudoDocs);
             // Merge section scores (don't overwrite PDF-extracted scores)
             for (const [k, val] of Object.entries(sectionScores)) {
-              if (!scoreMap[k]) scoreMap[k] = val;
-            }
-          }
-
-          // ── Merge stored WAIS scores from AI-generated cognitive section ──
-          const waisScores = secs.cognitive?._waisScores;
-          if (waisScores) {
-            for (const [k, val] of Object.entries(waisScores)) {
               if (!scoreMap[k]) scoreMap[k] = val;
             }
           }
@@ -9033,38 +8987,6 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
       }
 
       // ── WAIS COGNITIVE: Extract structured scores from docs and inject as context ──
-      if (sid === "cognitive" && tools.some(t => t.id === "wais-iv" && t.used)) {
-        const allDocsForScores = docs.filter(d => d.extractedText && d.extractedText.length > 50);
-        const waisScoreMap = extractAllScoresMap(allDocsForScores);
-        const waisKeys = Object.entries(waisScoreMap).filter(([k]) => k.startsWith("WAIS."));
-        if (waisKeys.length > 0) {
-          const lines = ["=== WAIS-IV EXTRACTED SCORES (use these EXACT values) ==="];
-          const indexMap = { FSIQ: "Full Scale IQ", VCI: "Verbal Comprehension Index", PRI: "Perceptual Reasoning Index", WMI: "Working Memory Index", PSI: "Processing Speed Index", GAI: "General Ability Index" };
-          const subtestMap = { SI: "Similarities", VC: "Vocabulary", IN: "Information", BD: "Block Design", MR: "Matrix Reasoning", VP: "Visual Puzzles", DS: "Digit Span", AR: "Arithmetic", SS: "Symbol Search", CD: "Coding" };
-          lines.push("\nINDEX SCORES:");
-          for (const [abbr, full] of Object.entries(indexMap)) {
-            const score = waisScoreMap[`WAIS.${abbr}.score`];
-            const pct = waisScoreMap[`WAIS.${abbr}.percentile`];
-            const qual = waisScoreMap[`WAIS.${abbr}.qualitative`];
-            if (score) lines.push(`  ${full} (${abbr}): Standard Score = ${score}, Percentile = ${pct || "N/A"}, Classification = ${qual || qualitativeLabel(parseInt(score))}`);
-          }
-          lines.push("\nSUBTEST SCORES:");
-          for (const [abbr, full] of Object.entries(subtestMap)) {
-            const scaled = waisScoreMap[`WAIS.${abbr}.scaled`];
-            const pct = waisScoreMap[`WAIS.${abbr}.percentile`];
-            if (scaled) lines.push(`  ${full} (${abbr}): Scaled Score = ${scaled}, Percentile = ${pct || "N/A"}`);
-          }
-          lines.push("\nCRITICAL: Use these EXACT scores in your narrative. Do NOT use placeholders like [range] or [percentile]. Write the actual values.");
-          ctxParts.push(lines.join("\n"));
-        }
-        // Also extract raw text from WAIS docs for additional context
-        const waisDocs = docs.filter(d => d.extractedText && /WAIS/i.test(d.extractedText));
-        if (waisDocs.length > 0) {
-          const rawText = waisDocs[0].extractedText.slice(0, 6000);
-          ctxParts.push("=== RAW WAIS-IV DOCUMENT TEXT (for score verification) ===\n" + rawText);
-        }
-      }
-
       // Include socio-emotional inputs for the social_emotional section
       if (sid === "social_emotional") {
         const seParts = [];
@@ -9211,93 +9133,7 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
           // Clean markdown artifacts and duplicate section titles from all non-table sections
           content = cleanAIOutput(content, sid);
         }
-        // WAIS cognitive: extract scores from AI output (multiple strategies)
-        let waisExtractedScores = null;
-        if (sid === "cognitive" && tools.some(t => t.id === "wais-iv" && t.used)) {
-          waisExtractedScores = {};
-
-          // Strategy 1: Parse structured SCORE SUMMARY block if present
-          if (/---\s*SCORE\s*SUMMARY\s*---/i.test(content)) {
-            const summaryMatch = content.match(/---\s*SCORE\s*SUMMARY\s*---([\s\S]*?)---\s*END\s*SCORE\s*SUMMARY\s*---/i);
-            if (summaryMatch) {
-              const lines = summaryMatch[1].trim().split("\n");
-              for (const line of lines) {
-                const m = line.match(/^([A-Z]{2,5})\s*=\s*(\d+)\s*,\s*PR\s*=\s*(\d+(?:\.\d+)?)/);
-                if (m) {
-                  const abbr = m[1];
-                  const score = parseInt(m[2], 10);
-                  const pct = parseFloat(m[3]);
-                  const indexAbbrevs = ["FSIQ","VCI","PRI","WMI","PSI","GAI","NVI","CPI","VSI","FRI"];
-                  if (indexAbbrevs.includes(abbr)) {
-                    waisExtractedScores[`WAIS.${abbr}.score`] = String(score);
-                    waisExtractedScores[`WAIS.${abbr}.percentile`] = String(pct);
-                    waisExtractedScores[`WAIS.${abbr}.qualitative`] = qualitativeLabel(score);
-                  } else {
-                    waisExtractedScores[`WAIS.${abbr}.scaled`] = String(score);
-                    waisExtractedScores[`WAIS.${abbr}.percentile`] = String(pct);
-                  }
-                }
-              }
-              // Strip the score summary block from displayed content
-              content = content.replace(/\n*---\s*SCORE\s*SUMMARY\s*---[\s\S]*?---\s*END\s*SCORE\s*SUMMARY\s*---\s*/i, "").trim();
-            }
-          }
-
-          // Strategy 2: Narrative extraction from AI text (always runs as fallback)
-          try {
-            const narrSubs = detExtractNarrativeSubtestScores(content);
-            for (const s of narrSubs) {
-              const abbr =
-                WAIS_SUBTEST_ABBREV_MAP[s.name] ||
-                WAIS_SUBTEST_ABBREV_MAP[s.name?.trim?.()] ||
-                null;
-              if (!abbr || waisExtractedScores[`WAIS.${abbr}.scaled`]) continue;
-              if (s.scaledScore != null) waisExtractedScores[`WAIS.${abbr}.scaled`] = String(s.scaledScore);
-              if (s.percentile != null) waisExtractedScores[`WAIS.${abbr}.percentile`] = String(s.percentile);
-            }
-            const narrIdx = detExtractNarrativeIndexScores(content);
-            if (narrIdx) {
-              for (const s of narrIdx) {
-                if (!s.abbrev || waisExtractedScores[`WAIS.${s.abbrev}.score`]) continue;
-                if (s.standardScore != null) waisExtractedScores[`WAIS.${s.abbrev}.score`] = String(s.standardScore);
-                if (s.percentile != null) waisExtractedScores[`WAIS.${s.abbrev}.percentile`] = String(s.percentile);
-                waisExtractedScores[`WAIS.${s.abbrev}.qualitative`] = s.qualitative || qualitativeLabel(s.standardScore);
-              }
-            }
-          } catch (e) { /* narrative extraction failed — continue with what we have */ }
-
-          // Strategy 3: Inline abbreviation extraction (e.g., "VCI = 98, PR = 45")
-          try {
-            const inlIdx = detExtractIndexScores(content);
-            if (inlIdx) {
-              for (const s of inlIdx) {
-                if (!s.abbrev || waisExtractedScores[`WAIS.${s.abbrev}.score`]) continue;
-                if (s.standardScore != null) waisExtractedScores[`WAIS.${s.abbrev}.score`] = String(s.standardScore);
-                if (s.percentile != null) waisExtractedScores[`WAIS.${s.abbrev}.percentile`] = String(s.percentile);
-                waisExtractedScores[`WAIS.${s.abbrev}.qualitative`] = s.qualitative || qualitativeLabel(s.standardScore);
-              }
-            }
-            const inlSubs = detExtractInlineScores(content);
-            for (const s of inlSubs) {
-              const abbr =
-                WAIS_SUBTEST_ABBREV_MAP[s.name] ||
-                WAIS_SUBTEST_ABBREV_MAP[s.name?.trim?.()] ||
-                null;
-              if (!abbr || waisExtractedScores[`WAIS.${abbr}.scaled`]) continue;
-              if (s.scaledScore != null) waisExtractedScores[`WAIS.${abbr}.scaled`] = String(s.scaledScore);
-              if (s.percentile != null) waisExtractedScores[`WAIS.${abbr}.percentile`] = String(s.percentile);
-            }
-          } catch (e) { /* inline extraction failed */ }
-
-          // If we got nothing, set to null so we don't store empty object
-          if (Object.keys(waisExtractedScores).length === 0) {
-            waisExtractedScores = null;
-            console.warn("[PsychoEd] WAIS score extraction found 0 scores in AI output");
-          } else {
-            console.log("[PsychoEd] WAIS scores extracted:", Object.keys(waisExtractedScores).length, "keys", waisExtractedScores);
-          }
-        }
-        uSec(sid, { content, ...(waisExtractedScores ? { _waisScores: waisExtractedScores } : {}) });
+        uSec(sid, { content });
         showToast("Section generated successfully", "success");
       } else {
         // Show error both as toast AND in section content so user can see it
