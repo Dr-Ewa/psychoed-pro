@@ -2508,12 +2508,35 @@ function detExtractDocxTables(docxTables) {
         }
       }
     }
-    if (/composite|index/i.test(hdr) && /standard/i.test(hdr)) {
-      const nameC = table.rows[0].findIndex((h) => /composite|index|scale/i.test(h));
-      const ssC = table.rows[0].findIndex((h) => /standard|score/i.test(h) && !/scaled/i.test(h));
-      const pctC = table.rows[0].findIndex((h) => /percentile|pr/i.test(h));
+    if (/composite|index/i.test(hdr) && (/standard/i.test(hdr) || /composite\s*score/i.test(hdr))) {
+      let nameC = table.rows[0].findIndex((h) => /composite|index|scale/i.test(h));
+      let ssC = table.rows[0].findIndex((h) => /standard|score/i.test(h) && !/scaled/i.test(h));
+      let pctC = table.rows[0].findIndex((h) => /percentile|pr/i.test(h));
       const qualC = table.rows[0].findIndex((h) => /qualitative|description|classification/i.test(h));
       const key = /composite/i.test(hdr) ? "composites" : "indexes";
+      // WAIS-IV fix: the abbreviation column (e.g. "VCI") may appear between nameC and ssC.
+      // If ssC points to a column whose first data row contains an abbreviation (not a number),
+      // advance ssC to the next column that contains a numeric standard score.
+      if (nameC !== -1 && ssC !== -1 && table.rows.length > 1) {
+        const testVal = (table.rows[1][ssC] || "").trim();
+        if (isNaN(parseInt(testVal)) && testVal.length <= 5) {
+          // This column is likely the abbreviation column — find the next numeric column
+          for (let ci = ssC + 1; ci < table.rows[0].length; ci++) {
+            const v = parseInt((table.rows[1][ci] || "").trim());
+            if (!isNaN(v) && v >= STANDARD_SCORE_MIN && v <= STANDARD_SCORE_MAX) {
+              ssC = ci;
+              // Re-find pctC after the new ssC if it wasn't found already
+              if (pctC === -1 || pctC <= ssC) {
+                for (let pi = ssC + 1; pi < table.rows[0].length; pi++) {
+                  const pv = parseInt((table.rows[1][pi] || "").trim());
+                  if (!isNaN(pv) && pv >= 0 && pv <= 100) { pctC = pi; break; }
+                }
+              }
+              break;
+            }
+          }
+        }
+      }
       if (nameC !== -1 && ssC !== -1) {
         result[key] = [];
         for (let r = 1; r < table.rows.length; r++) {
@@ -2523,8 +2546,14 @@ function detExtractDocxTables(docxTables) {
           const pc = pctC !== -1 ? parseInt(row[pctC]) : null;
           const ql = qualC !== -1 ? (row[qualC] || "").trim() : null;
           if (nm && nm !== "-" && nm !== "—" && !isNaN(ss) && ss >= STANDARD_SCORE_MIN && ss <= STANDARD_SCORE_MAX) {
-            const def = DET_INDEX_DEFS.find((d) => nm.includes(d.abbrev) || nm.includes(d.full));
-            result[key].push({ abbrev: def?.abbrev || nm, full: def?.full || nm, standardScore: ss, percentile: isNaN(pc) ? null : pc, qualitative: ql || qualitativeLabel(ss) });
+            // Also check abbreviation column if available (between nameC and ssC)
+            let abbrevHint = null;
+            for (let ci = nameC + 1; ci < ssC; ci++) {
+              const cellVal = (row[ci] || "").trim();
+              if (cellVal.length >= 2 && cellVal.length <= 5 && /^[A-Z]+$/.test(cellVal)) { abbrevHint = cellVal; break; }
+            }
+            const def = DET_INDEX_DEFS.find((d) => (abbrevHint && d.abbrev === abbrevHint) || nm.includes(d.abbrev) || nm.includes(d.full));
+            result[key].push({ abbrev: def?.abbrev || abbrevHint || nm, full: def?.full || nm, standardScore: ss, percentile: isNaN(pc) ? null : pc, qualitative: ql || qualitativeLabel(ss) });
           }
         }
       }
@@ -4165,8 +4194,14 @@ function parseWAISScores(txt) {
   ];
   for (const [key, namePat, abbrPat] of indexes) {
     const patterns = [
+      // Pattern 0: WAIS table format — abbrev on its own line followed by score then pct
+      //   e.g. "...\n46\nVCI\n132\n98\n124-137\n..." (each cell on its own line)
+      new RegExp(abbrPat.source + "\\n(\\d{2,3})\\n(\\d{1,3})\\n", abbrPat.flags),
+      // Pattern 1: inline "FullName ... Score Pct" (standard)
       new RegExp(namePat.source + "\\s+(?:Index\\s+)?(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", namePat.flags),
+      // Pattern 2: "ABBR ... Score Pct" (standard)
       new RegExp(abbrPat.source + "\\s+(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", abbrPat.flags),
+      // Pattern 3: "ABBR \d+ Score Pct \d+" (alternate)
       new RegExp(abbrPat.source + "\\s+\\d+\\s+(\\d{2,3})\\s+(\\d{1,3})\\s+\\d+", abbrPat.flags),
     ];
     for (const p of patterns) {
@@ -8412,11 +8447,25 @@ export default function App() {
             extracted = parsed.fullText || "";
             _docxTables = parsed.tables || null;
             if (!extracted || extracted.length <= 50) {
+              // parseDocxStructured returned no text (e.g. legacy .doc binary — try generic extractor)
+              try {
+                extracted = await extractTextFromFile(f, (msg) => showToast(msg, "info"), base64Data);
+              } catch (_) { /* ignore */ }
+            }
+            if (!extracted || extracted.length <= 50) {
               extracted = "[Word document uploaded — paste relevant content into Assessment Notes.]";
             }
           } catch (docxErr) {
-            // DOCX parsing failed
-            extracted = "[Word document uploaded — paste relevant content into Assessment Notes.]";
+            // DOCX parsing failed (e.g. legacy .doc OLE binary — JSZip cannot read it)
+            // Fall back to generic text extractor which handles more formats
+            try {
+              extracted = await extractTextFromFile(f, (msg) => showToast(msg, "info"), base64Data);
+              if (!extracted || extracted.length <= 50) {
+                extracted = "[Word document uploaded — paste relevant content into Assessment Notes.]";
+              }
+            } catch (_) {
+              extracted = "[Word document uploaded — paste relevant content into Assessment Notes.]";
+            }
           }
         } else {
           extracted = await extractTextFromFile(f, (msg) => showToast(msg, "info"), base64Data);
