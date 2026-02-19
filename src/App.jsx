@@ -2173,27 +2173,88 @@ function detCleanText(text) {
   return c.replace(/\n{3,}/g, "\n\n").trim();
 }
 
+/**
+ * Format verbatim Q-interactive cognitive text to match report style.
+ * Called after detCleanText. Converts ALL-CAPS index headings to Title Case,
+ * consolidates PDF line-wrap single newlines into spaces, and ensures
+ * consistent double-newline paragraph separation.
+ */
+function formatCognitiveExtract(text) {
+  if (!text) return text;
+  let t = text;
+
+  // Normalise line endings
+  t = t.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+
+  // Known score-report acronyms that should stay ALL-CAPS
+  const ACRONYMS = new Set([
+    "IQ","FSIQ","VCI","VSI","FRI","WMI","PSI","PRI","GAI","CPI","NVI","VAI","AWMI","QRI","NSI","STI","SRI",
+    "WISC","WPPSI","WAIS","WIAT","CDN","IV","V",
+  ]);
+
+  // Convert ALL-CAPS standalone heading lines (no sentence punctuation) to Title Case
+  t = t.replace(/^([A-Z][A-Z ',/\-\u2013\u2014]{3,})$/gm, (match) => {
+    if (/[.!?]/.test(match)) return match; // sentence fragment — leave alone
+    return match.split(/\s+/).map(word => {
+      const clean = word.replace(/[^A-Z]/g, "");
+      if (ACRONYMS.has(clean) || ACRONYMS.has(word)) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }).join(" ");
+  });
+
+  // Ensure blank line before any sub-heading line that butts up against prose
+  t = t.replace(/([^\n])\n([A-Z][a-zA-Z ',/\-\u2013\u2014]{3,70}\n)/g, "$1\n\n$2");
+
+  // Re-join single-newline line-wraps within a paragraph
+  // (lower-case or digit continuation after a lower/mid-sentence ending)
+  t = t.replace(/([a-z,;])\n([a-z])/g, "$1 $2");
+
+  // Collapse 3+ blank lines → 2, trim
+  t = t.replace(/\n{3,}/g, "\n\n").trim();
+
+  return t;
+}
+
 // ── SCORE EXTRACTORS (from text) ──
 
 /** Extract subtest scores from table rows or inline text patterns.
  *  Returns [{name, scaledScore, percentile, qualitative}] or null. */
 function detExtractSubtestScores(text) {
   const results = [];
+  // Normalise the text once: collapse any whitespace sequence (including newlines
+  // that pdfjsLib inserts between columns) to a single space.  This lets all
+  // patterns work even when Q-interactive CDN PDFs fragment rows across lines.
+  const flat = text.replace(/[ \t]*\n[ \t]*/g, " ");
+
   for (const name of DET_SUBTEST_NAMES) {
     const esc = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const sep = "[\\s\\t]+";
-    // Pattern 1: Name  Raw  Scaled  CI  Percentile
-    const re1 = new RegExp(esc + sep + "\\d+" + sep + "(\\d{1,2})" + sep + "\\d+\\s*[-–—]\\s*\\d+" + sep + "(\\d{1,3})", "i");
-    // Pattern 2: Name  Scaled  Percentile
+    // Pattern 1: Name  Raw  Scaled  CI(optional)  Percentile  [Qualitative]
+    //   e.g. "Similarities 15 10 8-12 50 Average"
+    //        "Similarities 15 10 50"  (no CI column)
+    const re1 = new RegExp(
+      esc + sep + "\\d{1,3}" + sep + "(\\d{1,2})" +
+      "(?:" + sep + "\\d+\\s*[-–—]\\s*\\d+)?" +    // optional CI
+      sep + "(\\d{1,3}(?:\\.\\d+)?)",
+      "i"
+    );
+    // Pattern 2: Name  Scaled  Percentile  (no raw score column)
     const re2 = new RegExp(esc + sep + "(\\d{1,2})" + sep + "(\\d{1,3}(?:\\.\\d+)?)", "i");
-    let m = text.match(re1);
-    if (m && +m[1] >= SCALED_SCORE_MIN && +m[1] <= SCALED_SCORE_MAX) {
-      results.push({ name, scaledScore: +m[1], percentile: +m[2], qualitative: scaledQualitative(+m[1]) });
-      continue;
-    }
-    m = text.match(re2);
-    if (m && +m[1] >= SCALED_SCORE_MIN && +m[1] <= SCALED_SCORE_MAX && +m[2] <= PERCENTILE_MAX) {
-      results.push({ name, scaledScore: +m[1], percentile: +m[2], qualitative: scaledQualitative(+m[1]) });
+
+    // Try on flat (collapsed) text first, then original
+    for (const src of [flat, text]) {
+      let m = src.match(re1);
+      if (m && +m[1] >= SCALED_SCORE_MIN && +m[1] <= SCALED_SCORE_MAX && +m[2] <= PERCENTILE_MAX) {
+        if (!results.find(r => r.name === name))
+          results.push({ name, scaledScore: +m[1], percentile: +m[2], qualitative: scaledQualitative(+m[1]) });
+        break;
+      }
+      m = src.match(re2);
+      if (m && +m[1] >= SCALED_SCORE_MIN && +m[1] <= SCALED_SCORE_MAX && +m[2] <= PERCENTILE_MAX) {
+        if (!results.find(r => r.name === name))
+          results.push({ name, scaledScore: +m[1], percentile: +m[2], qualitative: scaledQualitative(+m[1]) });
+        break;
+      }
     }
   }
   return results.length > 0 ? results : null;
@@ -2289,37 +2350,54 @@ function detExtractNarrativeIndexScores(text) {
 function detExtractIndexScores(text) {
   const results = [];
   const seen = new Set();
+  // Flatten line-breaks between columns so patterns work on fragmented PDF rows
+  const flat = text.replace(/[ \t]*\n[ \t]*/g, " ");
+
   for (const { abbrev, full } of DET_INDEX_DEFS) {
     if (seen.has(abbrev)) continue;
     const sep = "[\\s\\t]+";
-    // Table row: "VCI  22  102  96-108  55  Average"
-    const reT = new RegExp("(?:^|\\n)\\s*" + abbrev + sep + "(?:\\d+" + sep + ")?(\\d{2,3})" + sep + "(\\d+)\\s*[-–—]\\s*(\\d+)" + sep + "(\\d{1,3})", "m");
-    // Inline: "VCI = 98, PR = 45, ... CI = 91-106"
-    const reI = new RegExp(abbrev + "\\s*=\\s*(\\d{2,3})\\s*,\\s*PR\\s*=\\s*(\\d{1,3})(?:.*?CI\\s*=\\s*(\\d+)\\s*[-–—]\\s*(\\d+))?", "i");
-    // Simple: "VCI = 98, PR = 45"
-    const reS = new RegExp(abbrev + "\\s*=\\s*(\\d{2,3}).*?PR\\s*=\\s*(\\d{1,3})", "i");
-    // Table simple: "VCI  102  55"
-    const reT2 = new RegExp("(?:^|\\n)\\s*" + abbrev + sep + "(\\d{2,3})" + sep + "(\\d{1,3})(?:\\s|$|\\n)", "m");
+    const abbrEsc = abbrev.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-    let m = text.match(reT);
-    if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX) {
-      results.push({ abbrev, full, standardScore: +m[1], percentile: +m[4], ci: `${m[2]}-${m[3]}`, qualitative: qualitativeLabel(+m[1]) });
-      seen.add(abbrev); continue;
+    // Pattern A: table row with CI — "VCI  22  102  96-108  55  Average"
+    //   (optional sum-of-scaled-scores column before standard score)
+    const reA = new RegExp(
+      "(?:^|[\\s])\\s*" + abbrEsc + sep +
+      "(?:\\d+" + sep + ")?" +                           // optional sum col
+      "(\\d{2,3})" + sep +                               // standard score
+      "(\\d+)\\s*[-–—]\\s*(\\d+)" + sep +               // CI
+      "(\\d{1,3})",                                      // percentile
+      "m"
+    );
+    // Pattern B: table row without CI — "VCI  102  55  Average"
+    const reB = new RegExp(
+      "(?:^|[\\s])\\s*" + abbrEsc + sep +
+      "(?:\\d+" + sep + ")?" +
+      "(\\d{2,3})" + sep +
+      "(\\d{1,3})(?:[\\s]|$)",
+      "m"
+    );
+    // Pattern C: inline "VCI = 98, PR = 45"
+    const reC = new RegExp(abbrEsc + "\\s*=\\s*(\\d{2,3})(?:[\\s\\S]{0,60}?(\\d{1,3})(?:st|nd|rd|th)\\s*percentile)?", "i");
+
+    let found = false;
+    for (const src of [flat, text]) {
+      let m = src.match(reA);
+      if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX && +m[4] <= PERCENTILE_MAX) {
+        results.push({ abbrev, full, standardScore: +m[1], percentile: +m[4], ci: `${m[2]}-${m[3]}`, qualitative: qualitativeLabel(+m[1]) });
+        seen.add(abbrev); found = true; break;
+      }
+      m = src.match(reB);
+      if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX && +m[2] <= PERCENTILE_MAX) {
+        results.push({ abbrev, full, standardScore: +m[1], percentile: +m[2], ci: null, qualitative: qualitativeLabel(+m[1]) });
+        seen.add(abbrev); found = true; break;
+      }
     }
-    m = text.match(reI);
-    if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX) {
-      results.push({ abbrev, full, standardScore: +m[1], percentile: +m[2], ci: m[3] && m[4] ? `${m[3]}-${m[4]}` : null, qualitative: qualitativeLabel(+m[1]) });
-      seen.add(abbrev); continue;
-    }
-    m = text.match(reS);
-    if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX) {
-      results.push({ abbrev, full, standardScore: +m[1], percentile: +m[2], ci: null, qualitative: qualitativeLabel(+m[1]) });
-      seen.add(abbrev); continue;
-    }
-    m = text.match(reT2);
-    if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX && +m[2] <= PERCENTILE_MAX) {
-      results.push({ abbrev, full, standardScore: +m[1], percentile: +m[2], ci: null, qualitative: qualitativeLabel(+m[1]) });
-      seen.add(abbrev);
+    if (!found) {
+      const m = text.match(reC);
+      if (m && +m[1] >= STANDARD_SCORE_MIN && +m[1] <= STANDARD_SCORE_MAX) {
+        results.push({ abbrev, full, standardScore: +m[1], percentile: m[2] ? +m[2] : null, ci: null, qualitative: qualitativeLabel(+m[1]) });
+        seen.add(abbrev);
+      }
     }
   }
   return results.length > 0 ? results : null;
@@ -2501,7 +2579,10 @@ function deterministicExtract(text, docxTables, pdfPages) {
     }
 
     // Priority 3: Regex extraction from text (inline scores)
-    const scoreSrc = result.sections.cognitive.text || text;
+    // Always use the full document text — score tables appear BEFORE the
+    // interpretive cognitive section (before the cognitive_start anchor), so
+    // using only cognitive.text would miss them entirely.
+    const scoreSrc = text;
     if (!result.appendix_tables.subtests) {
       result.appendix_tables.subtests = detExtractSubtestScores(scoreSrc);
     }
@@ -8512,7 +8593,8 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
           if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
           if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
           if (extracted) {
-            const content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
+            const formatted = formatCognitiveExtract(sanitizeTone(extracted));
+            const content = derivedFirstName ? capitalizeSentences(personalize(formatted, derivedFirstName, meta.pronouns)) : formatted;
             uSec(sid, { content });
             showToast("Cognitive text extracted from uploaded report", "success");
             setGenning(false);
@@ -9108,7 +9190,8 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
             if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
             if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
             if (extracted) {
-              let content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
+              const formatted = formatCognitiveExtract(sanitizeTone(extracted));
+              let content = derivedFirstName ? capitalizeSentences(personalize(formatted, derivedFirstName, meta.pronouns)) : formatted;
               // Try WISC score extraction for AI impact
               const scoreDocs = wiscDocs.length > 0 ? wiscDocs : selDocs(sid);
               for (const d of scoreDocs) {
