@@ -2062,23 +2062,27 @@ const DET_SUBTEST_ABBREVS = {
 // ── SECTION ANCHORS ──
 const DET_ANCHORS = {
   cognitive_start: [
-    // Exact Q-interactive section headings — most specific, checked first
+    // Tier 1: Exact standalone heading lines Q-interactive uses (most specific)
     /^\s*Interpretation\s+of\s+WAIS[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?Results?\s*$/im,
     /^\s*INTERPRETATION\s+OF\s+WAIS[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?RESULTS?\s*$/im,
     /^\s*Interpretation\s+of\s+WPPSI[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?Results?\s*$/im,
     /^\s*INTERPRETATION\s+OF\s+WPPSI[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?RESULTS?\s*$/im,
     /^\s*Interpretation\s+of\s+WISC[\s\u2013\u2014\-]*V\s+(?:CDN\s+)?Results?\s*$/im,
     /^\s*INTERPRETATION\s+OF\s+WISC[\s\u2013\u2014\-]*V\s+(?:CDN\s+)?RESULTS?\s*$/im,
-    /ABOUT WISC-V\s*(?:CDN\s*)?SCORES/i,
-    /ABOUT WPPSI-IV\s*(?:CDN\s*)?SCORES/i,
-    /ABOUT WAIS-IV\s*(?:CDN\s*)?SCORES/i,
-    // Multi-line tolerant: "was administered" near "Wechsler/WISC" (PDF may split across lines)
+    // Tier 2: Non-line-anchored fallback for same headings (handles PDFs with no preceding newline)
+    /\bInterpretation\s+of\s+WAIS[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?Results?\b/i,
+    /\bInterpretation\s+of\s+WPPSI[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?Results?\b/i,
+    /\bInterpretation\s+of\s+WISC[\s\u2013\u2014\-]*V\s+(?:CDN\s+)?Results?\b/i,
+    // Tier 3: ABOUT … SCORES headings (no line anchors needed, distinctive enough)
+    /ABOUT\s+WISC[\s\-–\u2013]*V\s*(?:CDN\s*)?SCORES/i,
+    /ABOUT\s+WPPSI[\s\-–\u2013]*IV\s*(?:CDN\s*)?SCORES/i,
+    /ABOUT\s+WAIS[\s\-–\u2013]*IV\s*(?:CDN\s*)?SCORES/i,
+    // Tier 4: Broad fallbacks — "was administered" near test name
     /\bwas\s+administered\b[\s\S]{0,120}(?:Wechsler|WISC|WPPSI|WAIS)/i,
-    /\bThe\s+Wechsler\s+Intelligence\s+Scale/i,
+    /\bThe\s+Wechsler\s+(?:Intelligence|Adult|Preschool)/i,
     /\bThe\s+WISC[®–\- ]*V\b/i,
     /\bThe\s+WPPSI[®–\- ]*IV\b/i,
     /\bThe\s+WAIS[®–\- ]*IV\b/i,
-    /\bWISC[®\-–]*\s*V\s*(?:CDN)?\b/i,
   ],
   cognitive_end: [
     /^\s*SUMMARY\s*$/m,
@@ -2123,11 +2127,34 @@ const DET_ANCHORS = {
 
 // Headers to strip (PDF page artifacts, not content)
 const DET_STRIP_PATTERNS = [
-  /^.*(?:WISC|WPPSI|WAIS)[®]*[-–]\s*(?:V|IV)\s*(?:CDN\s*)?Interpretive Report.*$/gmi,
-  /^\s*ANCILLARY\s*INDEX\s*SCORES\s*$/gmi,
-  /^.*INTERPRETATION OF (?:WISC|WPPSI|WAIS).*(?:RESULTS|CDN RESULTS).*$/gmi,
-  /\d{2}\/\d{2}\/\d{4},\s*Page\s*\d+\s*[^\n]*/gi,
-  /Copyright\s*©.*?reserved\.\s*/gi,
+  // Running headers: "WISC-V CDN Interpretive Report", "WAIS-IV Interpretive Report", etc.
+  /^.*(?:WISC|WPPSI|WAIS)[®]*\s*[-–\u2013\u2014]\s*(?:V|IV)\s*(?:CDN\s*)?Interpretive Report.*$/gmi,
+  // Q-interactive / Q-global / Pearson branding lines
+  /^.*\bQ-interactive\b.*$/gmi,
+  /^.*\bQ-global\b.*$/gmi,
+  /^.*\bPearson\s+(?:Education|Clinical|Canada|Inc)\b.*$/gmi,
+  // Section heading lines that are PDF artefacts, not report content
+  /^.*INTERPRETATION OF (?:WISC|WPPSI|WAIS).*(?:RESULTS?|CDN RESULTS?).*$/gmi,
+  /^\s*ABOUT\s+(?:WISC|WPPSI|WAIS)[^\n]*SCORES\s*$/gmi,
+  /^\s*PRIMARY\s+INDEX\s+SCORES\s*$/gmi,
+  /^\s*ANCILLARY\s*(?:AND\s*COMPLEMENTARY\s*)?INDEX\s*SCORES\s*$/gmi,
+  /^\s*COMPLEMENTARY\s+(?:INDEX|SUBTEST)\s+SCORES\s*$/gmi,
+  /^\s*PROCESS\s+SCORES\s*$/gmi,
+  /^\s*SUBTEST\s+SCORE\s+SUMMARY\s*$/gmi,
+  // Date/page footer lines
+  /\d{2}\/\d{2}\/\d{4},?\s*Page\s*\d+\s*(?:of\s*\d+)?\s*[^\n]*/gi,
+  // Copyright / legal lines
+  /Copyright\s*©.*?(?:reserved|Inc\.|Ltd\.)[^\n]*/gi,
+  /All\s+rights\s+reserved[^\n]*/gi,
+  // Score-table column header lines that bleed into text
+  /^\s*Subtest\s+Raw\s+Score\s+Scaled\s+Score[^\n]*$/gmi,
+  /^\s*Standard\s+Score\s+Percentile\s+Rank[^\n]*$/gmi,
+  /^\s*Sum\s+of\s+Scaled\s+Scores[^\n]*$/gmi,
+  /^\s*Qualitative\s+Description[^\n]*$/gmi,
+  /^\s*Composite\s+Score\s+Summary[^\n]*$/gmi,
+  // Confidence interval footnotes
+  /^\s*(?:Note[s]?:?\s*)?(?:The\s+)?(?:95|90)\s*%\s+confidence\s+interval[^\n]*$/gmi,
+  // Page-break artefacts
   /---\s*PAGE\s*BREAK\s*---/gi,
 ];
 
@@ -2170,6 +2197,8 @@ function detCleanText(text) {
     c = c.replace(new RegExp("\\[" + p + "\\]", "gi"), (m) => m.slice(1, -1));
   }
   c = c.replace(/\[FIRST[_\s]?NAME\]/gi, "[firstName]");
+  // Strip inline " CDN" from test names (e.g. "WISC-V CDN" → "WISC-V")
+  c = c.replace(/\b(WISC-V|WPPSI-IV|WAIS-IV|WIAT-III|WIAT-4|WISC|WPPSI|WAIS|WIAT)\s+CDN\b/g, "$1");
   return c.replace(/\n{3,}/g, "\n\n").trim();
 }
 
@@ -2927,68 +2956,68 @@ function extractCognitiveText(docs) {
         return result.sections.cognitive.text;
       }
 
-      // ── BROAD FALLBACK: find ANY substantial WISC content ──
-      // Some PDFs have text split across items so anchors fail.
-      // Try progressively broader patterns.
+      // ── BROAD FALLBACK: prose-anchored patterns that won't match score tables ──
+      // These specifically look for the START of interpretive narrative prose,
+      // not score tables. Ordered from most specific (WAIS/WPPSI/WISC) to broadest.
       const broadPatterns = [
-        // Multi-line tolerant: "was administered" ... "Wechsler" with newlines allowed
-        /\bwas administered\b[\s\S]{0,120}(?:Wechsler|WISC|WPPSI|WAIS)/i,
-        // Just "WISC-V" or "Wechsler Intelligence Scale" anywhere
-        /(?:The\s+)?(?:WISC[®\-–]*V|Wechsler\s+Intelligence\s+Scale)/i,
-        // "Full Scale" or "FSIQ" (definitely interpretive content)
-        /(?:Full\s+Scale\s+IQ|FSIQ\s*=?\s*\d)/i,
-        // Any index abbreviation with score
-        /(?:VCI|VSI|FRI|WMI|PSI)\s*=\s*\d{2,3}/i,
+        // WAIS-IV interpretive prose starters
+        /\bwas administered[\s\S]{0,80}(?:Wechsler Adult|WAIS)/i,
+        /\bThe\s+WAIS[\s\-–\u2013\u2014]*IV\b/i,
+        /\bWechsler\s+Adult\s+Intelligence\s+Scale/i,
+        // WPPSI-IV interpretive prose starters
+        /\bwas administered[\s\S]{0,80}(?:Wechsler Preschool|WPPSI)/i,
+        /\bThe\s+WPPSI[\s\-–\u2013\u2014]*IV\b/i,
+        /\bWechsler\s+Preschool\s+and\s+Primary/i,
+        // WISC-V interpretive prose starters
+        /\bwas administered[\s\S]{0,80}(?:Wechsler Intelligence|WISC)/i,
+        /\bThe\s+WISC[®\-–\u2013\u2014]*V\b/i,
+        /\bWechsler\s+Intelligence\s+Scale/i,
       ];
+
+      const cogEndPats = [...DET_ANCHORS.cognitive_end];
 
       for (const pat of broadPatterns) {
         const m = txt.search(pat);
         if (m === -1) continue;
 
-        // Back up to paragraph/line start
+        // Back up to the start of the paragraph containing the match
         let start = m;
         while (start > 0 && txt[start - 1] !== "\n") start--;
-        // Go back further to capture paragraph context (up to 200 chars before)
+        // Go back one more paragraph to capture any intro sentence before the match
         let paraStart = start;
-        let newlineCount = 0;
-        while (paraStart > 0 && newlineCount < 2) {
+        let nlCount = 0;
+        while (paraStart > 0 && nlCount < 2) {
           paraStart--;
-          if (txt[paraStart] === "\n") newlineCount++;
+          if (txt[paraStart] === "\n") nlCount++;
         }
-        if (paraStart > 0) paraStart++; // don't include the leading newline
+        if (paraStart > 0) paraStart++;
 
-        // Find end: SUMMARY or end of text
         const fromStart = txt.slice(paraStart);
         let endIdx = fromStart.length;
-        const endPats = [/^\s*SUMMARY\s*$/m, /^\s*Summary\s*$/m];
-        for (const ep of endPats) {
+        for (const ep of cogEndPats) {
           const em = fromStart.search(ep);
           if (em !== -1 && em < endIdx) endIdx = em;
         }
 
         let extracted = fromStart.slice(0, endIdx).trim();
         if (extracted.length > 200) {
-          extracted = detCleanText(extracted);
-          return extracted;
+          return detCleanText(extracted);
         }
       }
 
-      // ── LAST RESORT: return ALL text from first WISC mention to SUMMARY ──
-      const firstWisc = txt.search(/WISC|Wechsler/i);
-      if (firstWisc !== -1) {
-        let start = firstWisc;
+      // ── LAST RESORT: everything from first Wechsler/test mention to Summary ──
+      const firstTestMention = txt.search(/\b(?:WAIS|WPPSI|WISC|Wechsler)/i);
+      if (firstTestMention !== -1) {
+        let start = firstTestMention;
         while (start > 0 && txt[start - 1] !== "\n") start--;
         const rest = txt.slice(start);
         let endIdx = rest.length;
-        const endPats2 = [/^\s*SUMMARY\s*$/m, /^\s*Summary\s*$/m];
-        for (const ep of endPats2) {
+        for (const ep of cogEndPats) {
           const em = rest.search(ep);
           if (em !== -1 && em < endIdx) endIdx = em;
         }
         const lastResort = detCleanText(rest.slice(0, endIdx).trim());
-        if (lastResort.length > 100) {
-          return lastResort;
-        }
+        if (lastResort.length > 100) return lastResort;
       }
 
     }
