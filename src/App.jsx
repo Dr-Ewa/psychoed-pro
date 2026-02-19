@@ -2473,7 +2473,7 @@ function detDetectPDFTables(pageLines) {
   let group = [multiColLines[0]];
   for (let i = 1; i < multiColLines.length; i++) {
     const prev = multiColLines[i - 1], curr = multiColLines[i];
-    if (Math.abs(curr.line.items.length - prev.line.items.length) <= 1 && curr.idx - prev.idx <= 3) {
+    if (Math.abs(curr.line.items.length - prev.line.items.length) <= 1 && curr.idx - prev.idx <= 2) {
       group.push(curr);
     } else {
       if (group.length >= 2) tables.push(group.map((g) => g.line.items.map((it) => it.text.trim())));
@@ -2613,36 +2613,56 @@ function deterministicExtract(text, docxTables, pdfPages) {
       if (dt.indexes) result.appendix_tables.indexes = dt.indexes;
     }
 
+    // Primary index abbreviations (vs ancillary/supplemental indexes)
+    const PRIMARY_INDEX_ABBREVS = ["FSIQ", "VCI", "VSI", "FRI", "WMI", "PSI", "PRI"];
+
+    // Helper: split flat index array into composites (primary) and indexes (ancillary)
+    function splitIndexScores(arr) {
+      if (!arr || arr.length === 0) return { composites: null, indexes: null };
+      const composites = arr.filter((s) => PRIMARY_INDEX_ABBREVS.includes(s.abbrev));
+      const ancillary = arr.filter((s) => !PRIMARY_INDEX_ABBREVS.includes(s.abbrev));
+      return { composites: composites.length > 0 ? composites : null, indexes: ancillary.length > 0 ? ancillary : null };
+    }
+
     // Priority 2: PDF coordinate-based table detection
     if (pdfPages && pdfPages.length > 0) {
+      let allCoordIndexRows = [];
       for (const page of pdfPages) {
         if (!page.lines) continue;
         const pageTables = detDetectPDFTables(page.lines);
         for (const rows of pageTables) {
           if (rows.length < 2) continue;
           const hdr = rows[0].join(" ").toLowerCase();
-          if (/subtest/.test(hdr) && /scaled/.test(hdr) && !result.appendix_tables.subtests) {
+          // Subtest table: header must contain "subtest" OR "scaled score" (singular, not "Scaled Scores") without "standard score"
+          // The Q-interactive index table has "Sum of Scaled Scores" (plural) + "Standard Score" — must NOT match here
+          const isSubtestHdr = /\bsubtest\b/i.test(hdr) || (/\bscaled\s+score\b(?!s)/i.test(hdr) && !/\bstandard\s+score\b/i.test(hdr));
+          if (isSubtestHdr && !result.appendix_tables.subtests) {
             result.appendix_tables.subtests = detParseSubtestRows(rows);
           }
-          if ((/composite/.test(hdr) || /index/.test(hdr)) && /standard/.test(hdr)) {
-            const target = /composite/.test(hdr) ? "composites" : "indexes";
-            if (!result.appendix_tables[target]) {
-              result.appendix_tables[target] = detParseIndexRows(rows);
-            }
+          // Index/composite table: header contains "standard" and "index", "composite", or "score summary"
+          if ((/composite/i.test(hdr) || /\bindex\b/i.test(hdr) || /score\s*summary/i.test(hdr)) && /standard/i.test(hdr)) {
+            const parsed = detParseIndexRows(rows);
+            if (parsed && parsed.length > 0) allCoordIndexRows.push(...parsed);
           }
         }
       }
+      // Deduplicate and split coord-detected index rows into composites/ancillary
+      if (allCoordIndexRows.length > 0) {
+        const seen = new Set();
+        const unique = allCoordIndexRows.filter((s) => { if (seen.has(s.abbrev)) return false; seen.add(s.abbrev); return true; });
+        const split = splitIndexScores(unique);
+        if (split.composites) result.appendix_tables.composites = split.composites;
+        if (split.indexes) result.appendix_tables.indexes = split.indexes;
+      }
     }
 
-    // Priority 3: Regex extraction from text (inline scores)
-    // Always use the full document text — score tables appear BEFORE the
-    // interpretive cognitive section (before the cognitive_start anchor), so
-    // using only cognitive.text would miss them entirely.
+    // Priority 3: Regex extraction from full document text — always runs to fill any gaps
+    // Score tables appear BEFORE the cognitive anchor so we use full text, not cognitive.text
     const scoreSrc = text;
     if (!result.appendix_tables.subtests) {
       result.appendix_tables.subtests = detExtractSubtestScores(scoreSrc);
     }
-    // Also grab inline abbreviation scores and merge
+    // Merge inline abbreviation scores from cognitive section
     if (result.sections.cognitive.text) {
       const inl = detExtractInlineScores(result.sections.cognitive.text);
       if (inl.length > 0) {
@@ -2657,14 +2677,18 @@ function deterministicExtract(text, docxTables, pdfPages) {
         }
       }
     }
-    if (!result.appendix_tables.composites && !result.appendix_tables.indexes) {
+    // Always extract index scores from text to fill any gaps left by coord detection
+    {
       const idx = detExtractIndexScores(scoreSrc);
-      if (idx) {
-        const primary = ["FSIQ", "VCI", "VSI", "FRI", "WMI", "PSI", "PRI"];
-        result.appendix_tables.composites = idx.filter((s) => primary.includes(s.abbrev));
-        result.appendix_tables.indexes = idx.filter((s) => !primary.includes(s.abbrev));
-        if (result.appendix_tables.composites.length === 0) result.appendix_tables.composites = null;
-        if (result.appendix_tables.indexes.length === 0) result.appendix_tables.indexes = null;
+      if (idx && idx.length > 0) {
+        const split = splitIndexScores(idx);
+        // Use text result if it found more composites than coord did, or coord missed them
+        if (!result.appendix_tables.composites || (split.composites && split.composites.length > result.appendix_tables.composites.length)) {
+          result.appendix_tables.composites = split.composites;
+        }
+        if (!result.appendix_tables.indexes && split.indexes) {
+          result.appendix_tables.indexes = split.indexes;
+        }
       }
     }
   } catch (e) {
@@ -2708,7 +2732,8 @@ function detParseIndexRows(rows) {
   const results = [];
   const hdr = rows[0].map((c) => c.toLowerCase());
   const nameC = hdr.findIndex((h) => /composite|index|scale|name/i.test(h));
-  const ssC = hdr.findIndex((h) => /standard|score/i.test(h) && !/scaled/i.test(h));
+  // ssC must not point to the same column as nameC (Q-interactive header "Index Score" matches both)
+  const ssC = hdr.findIndex((h, i) => i !== nameC && /standard\s*score|\bstandard\b/i.test(h) && !/scaled/i.test(h));
   const pctC = hdr.findIndex((h) => /percentile|pr/i.test(h));
   const qualC = hdr.findIndex((h) => /qualitative|description|classification/i.test(h));
   if (nameC === -1 || ssC === -1) {
