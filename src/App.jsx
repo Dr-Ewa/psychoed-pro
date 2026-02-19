@@ -489,7 +489,7 @@ const SS = { DRAFT: "draft", APPROVED: "approved" };
 
 const DOC_CATEGORIES = [
   "Intake Questionnaire", "Background Information",
-  "Cognitive Testing (WISC, WPPSI, WAIS)", "Academic Testing (WIAT)",
+  "Cognitive Testing (WISC, WPPSI)", "Academic Testing (WIAT)",
   "Memory and Learning (WRAML, CMS)", "Visual Motor Integration (Beery VMI)",
   "Adaptive Functioning (Vineland)",
   "Social Emotional Functioning (BASC, Conners, CBRS, MASC, CDI, GAD)",
@@ -503,7 +503,7 @@ const SEC_CAT_MAP = {
   background: ["Intake Questionnaire", "Background Information", "Medical Reports", "Previous Assessments", "Parent Questionnaires"],
   doc_review: ["Previous Assessments", "School Reports and Report Cards", "Parent Questionnaires", "Teacher Questionnaires", "Medical Reports"],
   observations: ["Behavioural Observations", "Teacher Questionnaires", "Parent Questionnaires"],
-  cognitive: ["Cognitive Testing (WISC, WPPSI, WAIS)"],
+  cognitive: ["Cognitive Testing (WISC, WPPSI)"],
   memory: ["Memory and Learning (WRAML, CMS)"],
   visual_motor: ["Visual Motor Integration (Beery VMI)"],
   social_emotional: ["Social Emotional Functioning (BASC, Conners, CBRS, MASC, CDI, GAD)", "Teacher Questionnaires", "Parent Questionnaires", "Medical Reports"],
@@ -513,7 +513,7 @@ const SEC_CAT_MAP = {
   strengths_needs: DOC_CATEGORIES,
   recommendations: DOC_CATEGORIES,
   appendix: DOC_CATEGORIES,
-  appendix_tables: ["Cognitive Testing (WISC, WPPSI, WAIS)", "Academic Testing (WIAT)"],
+  appendix_tables: ["Cognitive Testing (WISC, WPPSI)", "Academic Testing (WIAT)"],
 };
 
 // Auto-classify a document based on extracted text content and filename
@@ -684,8 +684,8 @@ function autoClassifyDoc(text, fileName) {
   const cats = [];
 
   // Cognitive testing
-  if (/\bwisc\b|wppsi|\bwais\b|wais[\s\-\u2013\u2014]|full.?scale.?iq|fsiq|verbal.?comprehension.?index|vci|visual.?spatial.?index|vsi|fluid.?reasoning.?index|fri|working.?memory.?index|wmi|processing.?speed.?index|psi|cognitive.?proficiency|general.?ability|perceptual.?reasoning.?index|pri|wechsler.?adult|wechsler.?intelligence|wechsler.?preschool/i.test(t))
-    cats.push("Cognitive Testing (WISC, WPPSI, WAIS)");
+  if (/\bwisc\b|wppsi|full.?scale.?iq|fsiq|verbal.?comprehension.?index|vci|visual.?spatial.?index|vsi|fluid.?reasoning.?index|fri|working.?memory.?index|wmi|processing.?speed.?index|psi|cognitive.?proficiency|general.?ability|perceptual.?reasoning.?index|pri|wechsler.?intelligence|wechsler.?preschool/i.test(t))
+    cats.push("Cognitive Testing (WISC, WPPSI)");
 
   // Academic testing
   if (/\bwiat\b|wechsler.?individual.?achievement|word.?reading|pseudoword|numerical.?operations|spelling|reading.?comprehension|math.?problem|sentence.?composition|oral.?reading.?fluency/i.test(t))
@@ -771,7 +771,6 @@ const TABS = [
 const TOOLS = [
   { id: "wisc-v", name: "Wechsler Intelligence Scale for Children-5th Edition (WISC-V)", used: false, cat: "Cognitive" },
   { id: "wppsi-iv", name: "Wechsler Preschool and Primary Scale of Intelligence-4th Edition (WPPSI-IV)", used: false, cat: "Cognitive" },
-  { id: "wais-iv", name: "Wechsler Adult Intelligence Scale-4th Edition (WAIS-IV)", used: false, cat: "Cognitive" },
   { id: "wiat-iii", name: "Wechsler Individual Achievement Test-3rd Edition (WIAT-III)", used: false, cat: "Academic" },
   { id: "wiat-4", name: "Wechsler Individual Achievement Test-4th Edition (WIAT-4)", used: false, cat: "Academic" },
   { id: "wraml-3", name: "Wide Range Assessment of Memory and Learning-Third (WRAML-3)", used: false, cat: "Memory" },
@@ -837,32 +836,6 @@ The Verbal Delayed Index is an estimate of how well [firstName] can store and re
 const VMI_TEMPLATE = `[firstName] was administered the Beery Buktenica Developmental Test of Visual Motor Integration Sixth Edition to assess the extent to which [pronoun] can integrate both visual and motor abilities. On the Visual Motor Integration test, where [firstName] had to copy various geometric forms of increasing difficulty without erasing, [pronoun] demonstrated [VMI_RANGE] ability to integrate visual perception and fine motor requirements (at around the [VMI_PERCENTILE] percentile).`;
 
 // ── WAIS-IV COGNITIVE TEMPLATE (ages 16+) ──
-const WAIS_COG_TEMPLATE = `Cognitive Functioning
-
-The Wechsler Adult Intelligence Scale, Fourth Edition (WAIS-IV), was administered to assess overall cognitive functioning. Cognitive ability is a foundational factor that influences how efficiently an individual can acquire new knowledge, reason through complex problems, and adapt to the demands of academic and vocational settings. The WAIS-IV provides a Full Scale IQ (FSIQ), which represents a broad estimate of overall intellectual ability, as well as four index scores that reflect specific areas of cognitive functioning: Verbal Comprehension, Perceptual Reasoning, Working Memory, and Processing Speed. Taken together, these index scores provide a profile of cognitive strengths and areas of relative weakness that can help explain patterns of performance in school, at work, and in daily life. It is important to note that the FSIQ is most meaningful when the index scores are relatively consistent with one another. When significant variability exists across indexes, the individual index scores may provide a more accurate picture of cognitive functioning than the FSIQ alone. Scores are reported as standard scores with a mean of 100 and a standard deviation of 15. Percentile ranks indicate how performance compares to same age peers.
-
-At the present moment, [firstName] obtained a Full Scale IQ score of [FSIQ_SCORE] ([FSIQ_PERCENTILE] percentile), which falls within the [FSIQ_DESCRIPTOR] range. This score provides a broad estimate of [firstName]'s overall intellectual ability and suggests that [possessive] general cognitive functioning is [FSIQ_DESCRIPTOR] when compared to same age peers.
-
-Verbal Comprehension
-
-The Verbal Comprehension Index (VCI) measures the ability to reason with verbal information, form and apply verbal concepts, and draw upon acquired knowledge and language skills. This domain is central to many aspects of everyday functioning, including understanding spoken and written language, expressing ideas clearly, following verbal instructions, and engaging in classroom discussions or workplace communication. Strong verbal comprehension supports the ability to learn from reading, understand complex instructions, and communicate ideas effectively. Individuals who perform well in this area tend to benefit from language based instruction and can often explain their reasoning with ease. [firstName] obtained a VCI score of [VCI_SCORE] ([VCI_PERCENTILE] percentile), which falls within the [VCI_DESCRIPTOR] range. This suggests that [firstName]'s ability to reason using language, understand verbal concepts, and apply acquired knowledge is [VCI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [SI_SCALED] on Similarities ([SI_PERCENTILE] percentile), which measures verbal reasoning and concept formation; [VC_SCALED] on Vocabulary ([VC_PERCENTILE] percentile), which measures word knowledge and verbal expression; and [IN_SCALED] on Information ([IN_PERCENTILE] percentile), which measures breadth of general factual knowledge. This pattern suggests that verbal reasoning represents [VCI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require understanding and explaining ideas using language.
-
-Perceptual Reasoning
-
-The Perceptual Reasoning Index (PRI) measures the ability to reason with nonverbal, visually presented information, including analysing visual patterns, solving novel problems without relying on language, and understanding spatial relationships. This domain is important for tasks that require figuring things out without verbal instruction, such as interpreting charts and graphs, understanding mechanical or spatial concepts, assembling objects, navigating unfamiliar environments, and solving problems that have not been encountered before. Strong perceptual reasoning supports the ability to think flexibly, recognize patterns, and approach novel situations with effective problem solving strategies. [firstName] obtained a PRI score of [PRI_SCORE] ([PRI_PERCENTILE] percentile), which falls within the [PRI_DESCRIPTOR] range. This suggests that [firstName]'s ability to analyse visual information, identify patterns, and reason through novel nonverbal problems is [PRI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [BD_SCALED] on Block Design ([BD_PERCENTILE] percentile), which measures spatial analysis and construction; [MR_SCALED] on Matrix Reasoning ([MR_PERCENTILE] percentile), which measures nonverbal abstract reasoning; and [VP_SCALED] on Visual Puzzles ([VP_PERCENTILE] percentile), which measures the ability to analyse and synthesize visual information. This pattern suggests that visual reasoning represents [PRI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require solving novel problems using visual information.
-
-Working Memory
-
-The Working Memory Index (WMI) measures the ability to hold information in mind temporarily, manipulate it mentally, and use it to complete a task. Working memory is essential for a wide range of academic and daily activities, including following multi step instructions, performing mental arithmetic, taking notes while listening, reading comprehension, and keeping track of information during conversations or complex tasks. Weaknesses in working memory can lead to difficulty following through on instructions, losing track of what one was doing, and needing information to be repeated. Even when an individual understands the material, limited working memory can make it difficult to manage the demands of tasks that require holding several pieces of information in mind at once. [firstName] obtained a WMI score of [WMI_SCORE] ([WMI_PERCENTILE] percentile), which falls within the [WMI_DESCRIPTOR] range. This suggests that [firstName]'s ability to hold information in mind, mentally manipulate it, and use it to complete a task is [WMI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [DS_SCALED] on Digit Span ([DS_PERCENTILE] percentile), which measures auditory short-term memory and mental manipulation of number sequences; and [AR_SCALED] on Arithmetic ([AR_PERCENTILE] percentile), which measures mental computation and quantitative reasoning under timed conditions. This pattern suggests that working memory represents [WMI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require following multi step instructions or mentally manipulating information.
-
-Processing Speed
-
-The Processing Speed Index (PSI) measures the speed and accuracy with which an individual can scan, identify, and respond to simple visual information under timed conditions. Processing speed is not a measure of how quickly someone thinks in general, but rather how efficiently they can perform routine cognitive tasks that require sustained visual attention and consistent output. This domain is relevant to many academic and vocational activities, including completing timed tests, copying information, scanning text for specific details, and keeping pace with the flow of classroom instruction or workplace demands. Slower processing speed can mean that an individual requires more time to complete routine tasks, even when they fully understand the material. This can sometimes be mistaken for a lack of understanding or motivation, when in reality the individual simply needs more time to demonstrate what they know. [firstName] obtained a PSI score of [PSI_SCORE] ([PSI_PERCENTILE] percentile), which falls within the [PSI_DESCRIPTOR] range. This suggests that [firstName]'s speed and accuracy when performing routine visual cognitive tasks is [PSI_DESCRIPTOR] relative to same age peers. Within this domain, [firstName] scored [SS_SCALED] on Symbol Search ([SS_PERCENTILE] percentile), which measures visual scanning speed and decision making; and [CD_SCALED] on Coding ([CD_PERCENTILE] percentile), which measures speed of transcribing simple visual information using a key. This pattern suggests that processing efficiency represents [PSI_STRENGTH_OR_WEAKER] at the present moment, particularly when tasks require quick visual attention and consistent pace.
-
-Cognitive Profile Summary
-
-Overall, [firstName] demonstrates cognitive functioning within the [FSIQ_DESCRIPTOR] range, with variability observed across domains. Relative strengths were observed in [WAIS_STRENGTHS]. Areas of somewhat weaker performance were observed in [WAIS_WEAKER_AREAS]. This profile suggests that [firstName] may show stronger learning efficiency when tasks align with relative strengths, and may require additional time or support at times when tasks place heavier demands on relative weaker areas.`;
-
 // ── WPPSI-IV COGNITIVE TEMPLATE (ages < 6) ──
 const WPPSI_COG_TEMPLATE = `Cognitive Functioning
 
@@ -946,7 +919,7 @@ Your task is to compose these observations into a coherent, professional paragra
 Start with the standard testing setting: 'Testing was conducted at the psychological assessment center in a quiet room with minimal to no distractions. Assessment stimuli were presented on an iPad or computer monitor positioned to the right of [firstName], in accordance with standardized procedures.'
 Then weave the selected observations into natural paragraphs covering: appearance and demeanour, engagement and cooperation, attention and concentration, motor skills and handwriting, and a validity conclusion.
 Use [firstName] and correct pronouns throughout. Do not add observations that were not selected. Do not diagnose. Describe only observable behaviour. Use professional, cautious language. Output only the section content.`,
-  cognitive: `Extract the interpretive text from the uploaded WISC-V (or WPPSI/WAIS) report document and output it as the Cognitive/Intellectual Functioning section.
+  cognitive: `Extract the interpretive text from the uploaded WISC-V (or WPPSI-IV) report document and output it as the Cognitive/Intellectual Functioning section.
 Steps: 1. Find the section starting with "ABOUT WISC-V CDN SCORES" or similar. 2. Copy all interpretive text verbatim. 3. Stop before the SUMMARY section. 4. Remove page headers/footers and copyright lines. 5. Replace the child's name with [FIRST_NAME]. 6. Replace pronouns.
 If no uploaded cognitive report text is found, write the section from provided scores using professional school psychologist tone.
 
@@ -1141,10 +1114,10 @@ HTML STYLING — use inline styles on every element:
 
 TABLES TO BUILD — tables in this exact order:
 
-Table 1. Cognitive Subtest Score Summary (test-specific: WISC-V, WAIS-IV, or WPPSI-IV)
+Table 1. Cognitive Subtest Score Summary (test-specific: WISC-V or WPPSI-IV)
 Columns: Subtest | Scaled Score | Percentile Rank | Classification
 
-Table 2. Cognitive Index Score Summary (test-specific: WISC-V, WAIS-IV, or WPPSI-IV)
+Table 2. Cognitive Index Score Summary (test-specific: WISC-V or WPPSI-IV)
 Columns: Index | Standard Score | Percentile Rank | Classification
 
 Table 3. WIAT-III Subtest Score Summary
@@ -1397,11 +1370,10 @@ const APPENDIX_BLOCKS = [
 // APPENDIX TABLES — BLOCKS
 // Only WISC-V and WIAT-III have corresponding appendix score tables
 const TOOLS_WITH_TABLES = new Set([
-  "wisc-v","wais-iv","wppsi-iv","wiat-iii","wiat-4",
+  "wisc-v","wppsi-iv","wiat-iii","wiat-4",
 ]);
 const TABLE_BLOCKS = [
   { id: "wisc-v",        label: "WISC-V",              cat: "Cognitive" },
-  { id: "wais-iv",       label: "WAIS-IV",             cat: "Cognitive" },
   { id: "wppsi-iv",      label: "WPPSI-IV",            cat: "Cognitive" },
   { id: "wiat-iii",      label: "WIAT-III",            cat: "Academic" },
   { id: "wiat-4",        label: "WIAT-4",              cat: "Academic" },
@@ -1747,7 +1719,7 @@ function cleanAIOutput(text, sectionId) {
     "COGNITIVE/INTELLECTUAL FUNCTIONING", "COGNITIVE\\/INTELLECTUAL FUNCTIONING",
     "Cognitive/Intellectual Functioning", "Cognitive\\/Intellectual Functioning",
     "INTERPRETATION OF WISC-V RESULTS", "INTERPRETATION OF WISC-V CDN RESULTS",
-    "INTERPRETATION OF WPPSI-IV RESULTS", "INTERPRETATION OF WAIS-IV RESULTS",
+    "INTERPRETATION OF WPPSI-IV RESULTS",
     "RESULTS AND INTERPRETATION", "MEMORY AND LEARNING", "Memory and Learning",
     "VISUAL-MOTOR INTEGRATION SKILLS", "Visual-motor integration skills",
     "VISUAL MOTOR INTEGRATION", "Visual Motor Integration",
@@ -2089,26 +2061,21 @@ const DET_SUBTEST_ABBREVS = {
 const DET_ANCHORS = {
   cognitive_start: [
     // Tier 1: Exact standalone heading lines Q-interactive uses (most specific)
-    /^\s*Interpretation\s+of\s+WAIS[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?Results?\s*$/im,
-    /^\s*INTERPRETATION\s+OF\s+WAIS[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?RESULTS?\s*$/im,
     /^\s*Interpretation\s+of\s+WPPSI[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?Results?\s*$/im,
     /^\s*INTERPRETATION\s+OF\s+WPPSI[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?RESULTS?\s*$/im,
     /^\s*Interpretation\s+of\s+WISC[\s\u2013\u2014\-]*V\s+(?:CDN\s+)?Results?\s*$/im,
     /^\s*INTERPRETATION\s+OF\s+WISC[\s\u2013\u2014\-]*V\s+(?:CDN\s+)?RESULTS?\s*$/im,
     // Tier 2: Non-line-anchored fallback for same headings (handles PDFs with no preceding newline)
-    /\bInterpretation\s+of\s+WAIS[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?Results?\b/i,
     /\bInterpretation\s+of\s+WPPSI[\s\u2013\u2014\-]*IV\s+(?:CDN\s+)?Results?\b/i,
     /\bInterpretation\s+of\s+WISC[\s\u2013\u2014\-]*V\s+(?:CDN\s+)?Results?\b/i,
     // Tier 3: ABOUT … SCORES headings (no line anchors needed, distinctive enough)
     /ABOUT\s+WISC[\s\-–\u2013]*V\s*(?:CDN\s*)?SCORES/i,
     /ABOUT\s+WPPSI[\s\-–\u2013]*IV\s*(?:CDN\s*)?SCORES/i,
-    /ABOUT\s+WAIS[\s\-–\u2013]*IV\s*(?:CDN\s*)?SCORES/i,
     // Tier 4: Broad fallbacks — "was administered" near test name
-    /\bwas\s+administered\b[\s\S]{0,120}(?:Wechsler|WISC|WPPSI|WAIS)/i,
+    /\bwas\s+administered\b[\s\S]{0,120}(?:Wechsler|WISC|WPPSI)/i,
     /\bThe\s+Wechsler\s+(?:Intelligence|Adult|Preschool)/i,
     /\bThe\s+WISC[®–\- ]*V\b/i,
     /\bThe\s+WPPSI[®–\- ]*IV\b/i,
-    /\bThe\s+WAIS[®–\- ]*IV\b/i,
   ],
   cognitive_end: [
     /^\s*SUMMARY\s*$/m,
@@ -2154,14 +2121,14 @@ const DET_ANCHORS = {
 // Headers to strip (PDF page artifacts, not content)
 const DET_STRIP_PATTERNS = [
   // Running headers: "WISC-V CDN Interpretive Report", "WAIS-IV Interpretive Report", etc.
-  /^.*(?:WISC|WPPSI|WAIS)[®]*\s*[-–\u2013\u2014]\s*(?:V|IV)\s*(?:CDN\s*)?Interpretive Report.*$/gmi,
+  /^.*(?:WISC|WPPSI)[®]*\s*[-–\u2013\u2014]\s*(?:V|IV)\s*(?:CDN\s*)?Interpretive Report.*$/gmi,
   // Q-interactive / Q-global / Pearson branding lines
   /^.*\bQ-interactive\b.*$/gmi,
   /^.*\bQ-global\b.*$/gmi,
   /^.*\bPearson\s+(?:Education|Clinical|Canada|Inc)\b.*$/gmi,
   // Section heading lines that are PDF artefacts, not report content
-  /^.*INTERPRETATION OF (?:WISC|WPPSI|WAIS).*(?:RESULTS?|CDN RESULTS?).*$/gmi,
-  /^\s*ABOUT\s+(?:WISC|WPPSI|WAIS)[^\n]*SCORES\s*$/gmi,
+  /^.*INTERPRETATION OF (?:WISC|WPPSI).*(?:RESULTS?|CDN RESULTS?).*$/gmi,
+  /^\s*ABOUT\s+(?:WISC|WPPSI)[^\n]*SCORES\s*$/gmi,
   /^\s*PRIMARY\s+INDEX\s+SCORES\s*$/gmi,
   /^\s*ANCILLARY\s*(?:AND\s*COMPLEMENTARY\s*)?INDEX\s*SCORES\s*$/gmi,
   /^\s*COMPLEMENTARY\s+(?:INDEX|SUBTEST)\s+SCORES\s*$/gmi,
@@ -2224,8 +2191,8 @@ function detCleanText(text) {
   }
   c = c.replace(/\[FIRST[_\s]?NAME\]/gi, "[firstName]");
   // Strip inline " CDN" and "®" from test names (e.g. "WISC-V® CDN" → "WISC-V")
-  c = c.replace(/\b(WISC-V|WPPSI-IV|WAIS-IV|WIAT-III|WIAT-4|WISC|WPPSI|WAIS|WIAT)[®\u00AE]?\s+CDN\b/g, "$1");
-  c = c.replace(/\b(WISC-V|WPPSI-IV|WAIS-IV|WIAT-III|WISC|WPPSI|WAIS|WIAT)[®\u00AE]/g, "$1");
+  c = c.replace(/\b(WISC-V|WPPSI-IV|WIAT-III|WIAT-4|WISC|WPPSI|WIAT)[®\u00AE]?\s+CDN\b/g, "$1");
+  c = c.replace(/\b(WISC-V|WPPSI-IV|WIAT-III|WISC|WPPSI|WIAT)[®\u00AE]/g, "$1");
   return c.replace(/\n{3,}/g, "\n\n").trim();
 }
 
@@ -2245,7 +2212,7 @@ function formatCognitiveExtract(text) {
   // Known score-report acronyms that should stay ALL-CAPS
   const ACRONYMS = new Set([
     "IQ","FSIQ","VCI","VSI","FRI","WMI","PSI","PRI","GAI","CPI","NVI","VAI","AWMI","QRI","NSI","STI","SRI",
-    "WISC","WPPSI","WAIS","WIAT","CDN","IV","V",
+    "WISC","WPPSI","WIAT","CDN","IV","V",
   ]);
 
   // Convert ALL-CAPS standalone heading lines (no sentence punctuation) to Title Case
@@ -2587,9 +2554,9 @@ function deterministicExtract(text, docxTables, pdfPages) {
     result.errors.push("Document has insufficient text");
     return result;
   }
-  if (!/WISC|WPPSI|WAIS|Wechsler/i.test(text)) {
+  if (!/WISC|WPPSI|Wechsler/i.test(text)) {
     result.status = DET_STATUS.NO_CONTENT;
-    result.errors.push("Not a WISC/WPPSI/WAIS report");
+    result.errors.push("Not a WISC/WPPSI report");
     return result;
   }
 
@@ -2861,13 +2828,7 @@ const WPPSI_SUBTEST_ABBREV_MAP = {
   "Bug Search": "BS", "Cancellation": "CA", "Animal Coding": "AC",
 };
 
-const WAIS_SUBTEST_ABBREV_MAP = {
-  "Similarities": "SI", "Vocabulary": "VC", "Information": "IN", "Comprehension": "CO",
-  "Block Design": "BD", "Matrix Reasoning": "MR", "Visual Puzzles": "VP",
-  "Figure Weights": "FW", "Picture Completion": "PC",
-  "Digit Span": "DS", "Arithmetic": "AR", "Letter-Number Sequencing": "LN",
-  "Symbol Search": "SS", "Coding": "CD", "Cancellation": "CA",
-};
+
 
 // Mapping: parseWIATScores keys → template placeholder keys
 const WIAT_KEY_MAP = {
@@ -3045,7 +3006,7 @@ function extractCognitiveText(docs) {
       if (!txt || txt.length < 200) { continue; }
 
       // Check for WISC content with broad matching
-      const hasWisc = /WISC|WPPSI|WAIS|Wechsler/i.test(txt);
+      const hasWisc = /WISC|WPPSI|Wechsler/i.test(txt);
       if (!hasWisc) { continue; }
 
 
@@ -3060,8 +3021,6 @@ function extractCognitiveText(docs) {
       // not score tables. Ordered from most specific (WAIS/WPPSI/WISC) to broadest.
       const broadPatterns = [
         // WAIS-IV interpretive prose starters
-        /\bwas administered[\s\S]{0,80}(?:Wechsler Adult|WAIS)/i,
-        /\bThe\s+WAIS[\s\-–\u2013\u2014]*IV\b/i,
         /\bWechsler\s+Adult\s+Intelligence\s+Scale/i,
         // WPPSI-IV interpretive prose starters
         /\bwas administered[\s\S]{0,80}(?:Wechsler Preschool|WPPSI)/i,
@@ -3105,7 +3064,7 @@ function extractCognitiveText(docs) {
       }
 
       // ── LAST RESORT: everything from first Wechsler/test mention to Summary ──
-      const firstTestMention = txt.search(/\b(?:WAIS|WPPSI|WISC|Wechsler)/i);
+      const firstTestMention = txt.search(/\b(?:WPPSI|WISC|Wechsler)/i);
       if (firstTestMention !== -1) {
         let start = firstTestMention;
         while (start > 0 && txt[start - 1] !== "\n") start--;
@@ -3133,7 +3092,7 @@ function extractSummaryText(docs) {
     for (const d of docs) {
       const txt = d.extractedText || "";
       if (!txt || txt.length < 200) continue;
-      if (!/WISC|WPPSI|WAIS|Wechsler/i.test(txt)) continue;
+      if (!/WISC|WPPSI|Wechsler/i.test(txt)) continue;
       const result = deterministicExtract(txt, d._docxTables || null, d._pdfPages || null);
       if (result.sections.summary.status === DET_STATUS.OK) return result.sections.summary.text;
     }
@@ -3148,7 +3107,7 @@ function extractRecommendationsText(docs) {
     for (const d of docs) {
       const txt = d.extractedText || "";
       if (!txt || txt.length < 200) continue;
-      if (!/WISC|WPPSI|WAIS|Wechsler/i.test(txt)) continue;
+      if (!/WISC|WPPSI|Wechsler/i.test(txt)) continue;
       const result = deterministicExtract(txt, d._docxTables || null, d._pdfPages || null);
       if (result.sections.recommendations.status === DET_STATUS.OK) return result.sections.recommendations.text;
     }
@@ -3167,7 +3126,7 @@ function buildAppendixTablesFromDocs(docs, firstName) {
       if (!txt || txt.length < 200) continue;
 
       // ── WISC extraction ──
-      if (!wiscTables && /WISC|WPPSI|WAIS|Wechsler/i.test(txt)) {
+      if (!wiscTables && /WISC|WPPSI|Wechsler/i.test(txt)) {
         const result = deterministicExtract(txt, d._docxTables || null, d._pdfPages || null);
         const t = result.appendix_tables;
         if (t.subtests || t.composites || t.indexes) {
@@ -3214,17 +3173,16 @@ function extractAllScoresMap(docs) {
       if (!txt || txt.length < 150) continue;
 
       // ── WISC / WPPSI / WAIS extraction ──
-      if (/WISC|WPPSI|WAIS|Wechsler/i.test(txt)) {
+      if (/WISC|WPPSI|Wechsler/i.test(txt)) {
         try {
-          const isWAIS = /WAIS/i.test(txt);
           const isWPPSI = /WPPSI/i.test(txt);
-          const prefix = isWAIS ? "WAIS" : isWPPSI ? "WPPSI" : "WISC";
+          const prefix = isWPPSI ? "WPPSI" : "WISC";
           const result = deterministicExtract(txt, d._docxTables || null, d._pdfPages || null);
           const t = result.appendix_tables;
           let hasSubtests = false;
           let hasIndexes = false;
           if (t.subtests) {
-            const _subtestMap = isWAIS ? WAIS_SUBTEST_ABBREV_MAP : isWPPSI ? WPPSI_SUBTEST_ABBREV_MAP : WISC_SUBTEST_ABBREV_MAP;
+            const _subtestMap = isWPPSI ? WPPSI_SUBTEST_ABBREV_MAP : WISC_SUBTEST_ABBREV_MAP;
             for (const s of t.subtests) {
               const abbr = _subtestMap[s.name] || _subtestMap[s.name?.trim?.()] || null;
               if (!abbr) continue;
@@ -3248,7 +3206,7 @@ function extractAllScoresMap(docs) {
           // ── FALLBACK: Narrative extraction for AI-generated text or non-standard formats ──
           if (!hasSubtests) {
             const narrSubs = detExtractNarrativeSubtestScores(txt);
-            const _narrMap = isWAIS ? WAIS_SUBTEST_ABBREV_MAP : isWPPSI ? WPPSI_SUBTEST_ABBREV_MAP : WISC_SUBTEST_ABBREV_MAP;
+            const _narrMap = isWPPSI ? WPPSI_SUBTEST_ABBREV_MAP : WISC_SUBTEST_ABBREV_MAP;
             for (const s of narrSubs) {
               const abbr = _narrMap[s.name] || _narrMap[s.name?.trim?.()] || null;
               if (!abbr || map[`${prefix}.${abbr}.scaled`]) continue;
@@ -3273,569 +3231,7 @@ function extractAllScoresMap(docs) {
           }
           // ── FALLBACK: always run dedicated parsers and fill any scores deterministicExtract missed ──
           // Runs unconditionally so partial deterministicExtract results are always completed.
-          if (isWAIS) {
-            const parsed = parseWAISScores(txt);
-            if (parsed) {
-              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["pri","PRI"],["wmi","WMI"],["psi","PSI"],["gai","GAI"],["cpi","CPI"]];
-              for (const [k, abbr] of idxMap) {
-                if (parsed[k] && !map[`WAIS.${abbr}.score`]) {
-                  map[`WAIS.${abbr}.score`] = String(parsed[k].score);
-                  map[`WAIS.${abbr}.percentile`] = String(parsed[k].pct);
-                  map[`WAIS.${abbr}.qualitative`] = qualitativeLabel(parsed[k].score);
-                }
-              }
-              if (parsed.subtests) {
-                for (const [abbr, data] of Object.entries(parsed.subtests)) {
-                  if (!map[`WAIS.${abbr}.scaled`]) {
-                    map[`WAIS.${abbr}.scaled`] = String(data.scaled);
-                    map[`WAIS.${abbr}.percentile`] = String(data.pct);
-                    map[`WAIS.${abbr}.qualitative`] = scaledQualitative(data.scaled);
-                  }
-                }
-              }
-            }
-          }
           if (isWPPSI) {
-            const parsed = parseWPPSIScores(txt);
-            if (parsed) {
-              const idxMap = [["fsiq","FSIQ"],["vci","VCI"],["vsi","VSI"],["fri","FRI"],["wmi","WMI"],["psi","PSI"],["gai","GAI"],["cpi","CPI"],["nvi","NVI"],["vai","VAI"]];
-              for (const [k, abbr] of idxMap) {
-                if (parsed[k] && !map[`WPPSI.${abbr}.score`]) {
-                  map[`WPPSI.${abbr}.score`] = String(parsed[k].score);
-                  map[`WPPSI.${abbr}.percentile`] = String(parsed[k].pct);
-                  map[`WPPSI.${abbr}.qualitative`] = qualitativeLabel(parsed[k].score);
-                }
-              }
-              if (parsed.subtests) {
-                for (const [abbr, data] of Object.entries(parsed.subtests)) {
-                  if (!map[`WPPSI.${abbr}.scaled`]) {
-                    map[`WPPSI.${abbr}.scaled`] = String(data.scaled);
-                    map[`WPPSI.${abbr}.percentile`] = String(data.pct);
-                    map[`WPPSI.${abbr}.qualitative`] = scaledQualitative(data.scaled);
-                  }
-                }
-              }
-            }
-          }
-        } catch (e) { /* parse error */ }
-      }
-
-      // ── WIAT extraction ──
-      if (/WIAT/i.test(txt)) {
-        try {
-          const sc = parseWIATScores(txt);
-          for (const [rawKey, data] of Object.entries(sc)) {
-            const tplKey = WIAT_KEY_MAP[rawKey];
-            if (!tplKey || !data || data.ss == null) continue;
-            map[`WIAT.${tplKey}.score`] = String(data.ss);
-            if (data.percentile != null) map[`WIAT.${tplKey}.percentile`] = String(data.percentile);
-            map[`WIAT.${tplKey}.qualitative`] = ssToRange(data.ss) || "";
-          }
-        } catch (e) { /* parse error */ }
-      }
-
-      // ── WRAML-3 extraction ──
-      if (/WRAML/i.test(txt)) {
-        try {
-          const sc = parseWRAML3Scores(txt);
-          // Indexes
-          const ixMap = { GIM:"GIM", VIM:"VIM", VBM:"VBM", AC:"AC", GD:"GD", VD:"VD", VBD:"VBD", SM_IDX:"SM_IDX" };
-          for (const [k, mk] of Object.entries(ixMap)) {
-            if (!sc[k]) continue;
-            map[`WRAML.${mk}.score`] = String(sc[k].score);
-            map[`WRAML.${mk}.percentile`] = String(sc[k].pct);
-            map[`WRAML.${mk}.qualitative`] = wraml3IndexRange(sc[k].score);
-          }
-          // Subtests (immediate)
-          const ssMap = { PM:"PM", DL:"DL", SM:"SM", VL:"VL", FW:"FW", NL:"NL", SEM:"SEM", SR:"SR" };
-          for (const [k, mk] of Object.entries(ssMap)) {
-            if (!sc[k]) continue;
-            map[`WRAML.${mk}.score`] = String(sc[k].ss);
-            map[`WRAML.${mk}.percentile`] = String(WRAML3_SS_TO_PCT[sc[k].ss] ?? "");
-            map[`WRAML.${mk}.qualitative`] = wraml3SSRange(sc[k].ss);
-          }
-          // Subtests (delayed)
-          const dlMap = { PMD:"PMD", DLD:"DLD", SMD:"SMD", VLD:"VLD" };
-          for (const [k, mk] of Object.entries(dlMap)) {
-            if (!sc[k]) continue;
-            map[`WRAML.${mk}.score`] = String(sc[k].ss);
-            map[`WRAML.${mk}.percentile`] = String(WRAML3_SS_TO_PCT[sc[k].ss] ?? "");
-            map[`WRAML.${mk}.qualitative`] = wraml3SSRange(sc[k].ss);
-          }
-        } catch (e) { /* parse error */ }
-      }
-    }
-  } catch (e) { /* extraction failed */ }
-  return map;
-}
-
-/**
- * Build placeholder tables with score cells filled from `scores` map (or "___" if absent).
- * Only tables whose block ID is in `tableBlockIds` are included.
- */
-function buildBlankPlaceholderTablesHTML(firstName, tableBlockIds, scores, dataOnly) {
-  const nm = firstName || "[firstName]";
-  const ids = new Set(tableBlockIds || []);
-  if (ids.size === 0) return null;
-  const sc = scores || {};
-  const parts = [];
-  // has(): true if ANY of the given score keys have real data
-  function has(...keys) { return keys.some((k) => !!sc[k]); }
-  function v(key) { return sc[key] || "___"; }
-
-  const th = 'style="padding:3px 10px;border:0.5pt solid #666;font-size:10pt;text-align:left;font-weight:bold;font-family:\'Times New Roman\',Times,serif"';
-  const thC = 'style="padding:3px 10px;border:0.5pt solid #666;font-size:10pt;text-align:center;font-weight:bold;font-family:\'Times New Roman\',Times,serif"';
-  const cap = 'style="font-weight:bold;font-size:12pt;padding:6px 10px;text-align:left;border:0.5pt solid #666;font-family:\'Times New Roman\',Times,serif"';
-  const tbl = 'style="width:100%;border-collapse:collapse;margin:6pt 0 6pt 0;font-family:\'Times New Roman\',Times,serif;font-size:11pt;border:0.5pt solid #666"';
-
-  function td(val, center) {
-    const align = center ? "text-align:center;" : "";
-    return `<td style="padding:3px 10px;border:0.5pt solid #999;${align}">${val}</td>`;
-  }
-  function tdBold(val, center) {
-    const align = center ? "text-align:center;" : "";
-    return `<td style="padding:3px 10px;border:0.5pt solid #999;font-weight:bold;${align}">${val}</td>`;
-  }
-  function rowBg(i) { return ''; }
-  function compBg(i) { return `style="font-weight:bold;background:${i % 2 === 0 ? '#f0f0fa' : '#e8e8f0'}"`; }
-
-  // Helper: build a table from rows. When dataOnly=true, skip rows without data and skip entire table if no data rows.
-  // When dataOnly=false (default), include ALL rows with ___ placeholders.
-  function buildTable(caption, headers, rowDefs) {
-    const dataRows = [];
-    let ri = 0;
-    for (const rd of rowDefs) {
-      if (dataOnly && !has(...rd.keys)) continue; // ← skip rows with no score data (only in dataOnly mode)
-      dataRows.push(rd.render(ri));
-      ri++;
-    }
-    if (dataRows.length === 0) return null; // ← skip entire table if no rows
-    let h = `<table ${tbl}>\n<caption ${cap}>${caption}</caption>\n`;
-    h += `<thead><tr>${headers}</tr></thead>\n<tbody>\n`;
-    h += dataRows.join("");
-    h += `</tbody></table>`;
-    return h;
-  }
-
-  // ═══ WISC-V / WPPSI-IV / WAIS-IV ═══
-  const cogId = ids.has("wisc-v") ? "wisc-v" : ids.has("wppsi-iv") ? "wppsi-iv" : ids.has("wais-iv") ? "wais-iv" : null;
-  const cogName = cogId === "wppsi-iv" ? "WPPSI-IV" : cogId === "wais-iv" ? "WAIS-IV" : "WISC-V";
-  const cogPrefix = cogId === "wais-iv" ? "WAIS" : cogId === "wppsi-iv" ? "WPPSI" : "WISC";
-  if (cogId) {
-    const subtests = cogName === "WPPSI-IV"
-      ? [["Information","IN"],["Similarities","SI"],["Vocabulary","VC"],["Comprehension","CO"],["Block Design","BD"],["Object Assembly","OA"],["Matrix Reasoning","MR"],["Picture Concepts","PC"],["Bug Search","BS"],["Cancellation","CA"],["Picture Memory","PM"],["Zoo Locations","ZL"]]
-      : cogName === "WAIS-IV"
-        ? [["Similarities","SI"],["Vocabulary","VC"],["Information","IN"],["Block Design","BD"],["Matrix Reasoning","MR"],["Visual Puzzles","VP"],["Digit Span","DS"],["Arithmetic","AR"],["Symbol Search","SS"],["Coding","CD"]]
-        : [["Similarities","SI"],["Vocabulary","VC"],["Block Design","BD"],["Visual Puzzles","VP"],["Matrix Reasoning","MR"],["Figure Weights","FW"],["Digit Span","DS"],["Picture Span","PS"],["Coding","CD"],["Symbol Search","SS"],["Information","IN"],["Comprehension","CO"],["Arithmetic","AR"],["Letter-Number Sequencing","LN"],["Cancellation","CA"]];
-    const subTbl = buildTable(`${cogName} Subtest Score Summary — ${nm}`,
-      `<th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th>`,
-      subtests.map(([name, abbr]) => ({
-        keys: [`${cogPrefix}.${abbr}.scaled`, `${cogPrefix}.${abbr}.percentile`],
-        render: (i) => `<tr ${rowBg(i)}>${td(name)}${td(v(`${cogPrefix}.${abbr}.scaled`), true)}${td(v(`${cogPrefix}.${abbr}.percentile`), true)}</tr>\n`,
-      }))
-    );
-    if (subTbl) parts.push(subTbl);
-
-    const composites = cogName === "WPPSI-IV"
-      ? [["Verbal Comprehension Index","VCI"],["Visual Spatial Index","VSI"],["Fluid Reasoning Index","FRI"],["Working Memory Index","WMI"],["Processing Speed Index","PSI"],["Full Scale IQ","FSIQ"]]
-      : cogName === "WAIS-IV"
-        ? [["Verbal Comprehension Index","VCI"],["Perceptual Reasoning Index","PRI"],["Working Memory Index","WMI"],["Processing Speed Index","PSI"],["Full Scale IQ","FSIQ"],["General Ability Index","GAI"]]
-        : [["Verbal Comprehension Index","VCI"],["Visual Spatial Index","VSI"],["Fluid Reasoning Index","FRI"],["Working Memory Index","WMI"],["Processing Speed Index","PSI"],["Full Scale IQ","FSIQ"]];
-    const compTbl = buildTable(`${cogName} Composite Score Summary — ${nm}`,
-      `<th ${th}>Composite</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Qualitative Description</th>`,
-      composites.map(([name, abbr]) => ({
-        keys: [`${cogPrefix}.${abbr}.score`, `${cogPrefix}.${abbr}.percentile`, `${cogPrefix}.${abbr}.qualitative`],
-        render: (i) => `<tr ${compBg(i)}>${tdBold(`${name} (${abbr})`)}${tdBold(v(`${cogPrefix}.${abbr}.score`), true)}${tdBold(v(`${cogPrefix}.${abbr}.percentile`), true)}${tdBold(v(`${cogPrefix}.${abbr}.qualitative`), true)}</tr>\n`,
-      }))
-    );
-    if (compTbl) parts.push(compTbl);
-
-    if (cogName === "WISC-V") {
-      const indexes = [["Nonverbal Index","NVI"],["General Ability Index","GAI"],["Cognitive Proficiency Index","CPI"],["Auditory Working Memory Index","AWMI"]];
-      const idxTbl = buildTable(`WISC-V Ancillary Index Score Summary — ${nm}`,
-        `<th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Qualitative Description</th>`,
-        indexes.map(([name, abbr]) => ({
-          keys: [`WISC.${abbr}.score`, `WISC.${abbr}.percentile`, `WISC.${abbr}.qualitative`],
-          render: (i) => `<tr ${compBg(i)}>${tdBold(`${name} (${abbr})`)}${tdBold(v(`WISC.${abbr}.score`), true)}${tdBold(v(`WISC.${abbr}.percentile`), true)}${tdBold(v(`WISC.${abbr}.qualitative`), true)}</tr>\n`,
-        }))
-      );
-      if (idxTbl) parts.push(idxTbl);
-    }
-  }
-
-  // ═══ WIAT-III / WIAT-4 ═══
-  if (ids.has("wiat-iii") || ids.has("wiat-4")) {
-    const wiatName = ids.has("wiat-4") ? "WIAT-4" : "WIAT-III";
-    const subtests = [
-      ["Listening Comprehension","ListeningComprehension"],["Receptive Vocabulary","ReceptiveVocabulary"],["Oral Discourse Comprehension","OralDiscourseComprehension"],
-      ["Word Reading","WordReading"],["Pseudoword Decoding","PseudowordDecoding"],["Oral Reading Fluency","OralReadingFluency"],["Reading Comprehension","ReadingComprehension"],
-      ["Spelling","Spelling"],["Sentence Composition","SentenceComposition"],["Essay Composition","EssayComposition"],
-      ["Math Problem Solving","MathProblemSolving"],["Numerical Operations","NumericalOperations"],
-    ];
-    const subTbl = buildTable(`${wiatName} Subtest Score Summary — ${nm}`,
-      `<th ${th}>Subtest</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Qualitative Description</th>`,
-      subtests.map(([name, key]) => ({
-        keys: [`WIAT.${key}.score`, `WIAT.${key}.percentile`, `WIAT.${key}.qualitative`],
-        render: (i) => `<tr ${rowBg(i)}>${td(name)}${td(v(`WIAT.${key}.score`), true)}${td(v(`WIAT.${key}.percentile`), true)}${td(v(`WIAT.${key}.qualitative`), true)}</tr>\n`,
-      }))
-    );
-    if (subTbl) parts.push(subTbl);
-
-    const composites = [
-      ["Oral Language Composite","OralLanguageComposite"],["Total Reading","TotalReading"],["Basic Reading","BasicReading"],
-      ["Reading Comprehension and Fluency","ReadingComprehensionFluency"],["Written Expression","WrittenExpression"],["Mathematics","Mathematics"],
-    ];
-    const compTbl = buildTable(`${wiatName} Composite Score Summary — ${nm}`,
-      `<th ${th}>Composite</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Qualitative Description</th>`,
-      composites.map(([name, key]) => ({
-        keys: [`WIAT.${key}.score`, `WIAT.${key}.percentile`, `WIAT.${key}.qualitative`],
-        render: (i) => `<tr ${compBg(i)}>${tdBold(name)}${tdBold(v(`WIAT.${key}.score`), true)}${tdBold(v(`WIAT.${key}.percentile`), true)}${tdBold(v(`WIAT.${key}.qualitative`), true)}</tr>\n`,
-      }))
-    );
-    if (compTbl) parts.push(compTbl);
-  }
-
-  // ═══ WRAML-3 ═══
-  if (ids.has("wraml-3")) {
-    const rows = [
-      { name: "General Immediate Memory Index", key: "GIM", type: "index" },
-      { name: "  Verbal Immediate Memory Index", key: "VBM", type: "index" },
-      { name: "    Story Memory", key: "SM", type: "sub" },
-      { name: "    Verbal Learning", key: "VL", type: "sub" },
-      { name: "  Visual Immediate Memory Index", key: "VIM", type: "index" },
-      { name: "    Design Memory", key: "DL", type: "sub" },
-      { name: "    Picture Memory", key: "PM", type: "sub" },
-      { name: "  Attention/Concentration Index", key: "AC", type: "index" },
-      { name: "    Finger Windows", key: "FW", type: "sub" },
-      { name: "    Number-Letter", key: "NL", type: "sub" },
-      { name: "General Delayed Index", key: "GD", type: "index" },
-      { name: "  Verbal Delayed Index", key: "VBD", type: "index" },
-      { name: "    Story Memory Delayed", key: "SMD", type: "sub" },
-      { name: "    Verbal Learning Delayed", key: "VLD", type: "sub" },
-      { name: "  Visual Delayed Index", key: "VD", type: "index" },
-      { name: "    Design Memory Delayed", key: "DLD", type: "sub" },
-      { name: "    Picture Memory Delayed", key: "PMD", type: "sub" },
-    ];
-    const wramlTbl = buildTable(`WRAML-3 Score Summary — ${nm}`,
-      `<th ${th}>Scale / Subtest</th><th ${thC}>Standard / Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Qualitative Description</th>`,
-      rows.map((r) => ({
-        keys: [`WRAML.${r.key}.score`, `WRAML.${r.key}.percentile`, `WRAML.${r.key}.qualitative`],
-        render: (i) => r.type === "index"
-          ? `<tr ${compBg(i)}>${tdBold(r.name.trim())}${tdBold(v(`WRAML.${r.key}.score`), true)}${tdBold(v(`WRAML.${r.key}.percentile`), true)}${tdBold(v(`WRAML.${r.key}.qualitative`), true)}</tr>\n`
-          : `<tr ${rowBg(i)}>${td(r.name)}${td(v(`WRAML.${r.key}.score`), true)}${td(v(`WRAML.${r.key}.percentile`), true)}${td(v(`WRAML.${r.key}.qualitative`), true)}</tr>\n`,
-      }))
-    );
-    if (wramlTbl) parts.push(wramlTbl);
-  }
-
-  // ═══ Beery VMI ═══
-  if (ids.has("beery-6")) {
-    const rows = [["Visual-Motor Integration (VMI)","VMI.vmi"],["Visual Perception","VMI.vp"],["Motor Coordination","VMI.mc"]];
-    const vmiTbl = buildTable(`Beery-Buktenica VMI-6 Score Summary — ${nm}`,
-      `<th ${th}>Test</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Qualitative Description</th>`,
-      rows.map(([name, key]) => ({
-        keys: [`${key}.score`, `${key}.percentile`, `${key}.qualitative`],
-        render: (i) => `<tr ${rowBg(i)}>${td(name)}${td(v(`${key}.score`), true)}${td(v(`${key}.percentile`), true)}${td(v(`${key}.qualitative`), true)}</tr>\n`,
-      }))
-    );
-    if (vmiTbl) parts.push(vmiTbl);
-  }
-
-  // ═══ BASC-3 (one table per respondent form) ═══
-  const bascForms = [];
-  if (ids.has("basc-3-p")) bascForms.push(["Parent", "BASC3P"]);
-  if (ids.has("basc-3-t")) bascForms.push(["Teacher", "BASC3T"]);
-  if (ids.has("basc-3-s")) bascForms.push(["Self-Report", "BASC3S"]);
-  for (const [resp, prefix] of bascForms) {
-    const scales = [
-      { name: "Externalizing Problems", key: "ExtProb", type: "comp" },
-      { name: "  Hyperactivity", key: "Hyper", type: "sub" },
-      { name: "  Aggression", key: "Aggr", type: "sub" },
-      { name: "  Conduct Problems", key: "Conduct", type: "sub" },
-      { name: "Internalizing Problems", key: "IntProb", type: "comp" },
-      { name: "  Anxiety", key: "Anx", type: "sub" },
-      { name: "  Depression", key: "Dep", type: "sub" },
-      { name: "  Somatization", key: "Somat", type: "sub" },
-      { name: "Behavioural Symptoms Index", key: "BSI", type: "comp" },
-      { name: "  Atypicality", key: "Atyp", type: "sub" },
-      { name: "  Withdrawal", key: "Withdr", type: "sub" },
-      { name: "  Attention Problems", key: "AttnProb", type: "sub" },
-      { name: "Adaptive Skills", key: "AdaptSkills", type: "comp" },
-      { name: "  Adaptability", key: "Adapt", type: "sub" },
-      { name: "  Social Skills", key: "Social", type: "sub" },
-      { name: "  Leadership", key: "Leader", type: "sub" },
-      { name: "  Activities of Daily Living", key: "ADL", type: "sub" },
-      { name: "  Functional Communication", key: "FuncComm", type: "sub" },
-    ];
-    const bascTbl = buildTable(`BASC-3 ${resp} Rating Scale — ${nm}`,
-      `<th ${th}>Scale</th><th ${thC}>T-Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th>`,
-      scales.map((r) => ({
-        keys: [`${prefix}.${r.key}.tscore`, `${prefix}.${r.key}.percentile`, `${prefix}.${r.key}.classification`],
-        render: (i) => r.type === "comp"
-          ? `<tr ${compBg(i)}>${tdBold(r.name.trim())}${tdBold(v(`${prefix}.${r.key}.tscore`), true)}${tdBold(v(`${prefix}.${r.key}.percentile`), true)}${tdBold(v(`${prefix}.${r.key}.classification`), true)}</tr>\n`
-          : `<tr ${rowBg(i)}>${td(r.name)}${td(v(`${prefix}.${r.key}.tscore`), true)}${td(v(`${prefix}.${r.key}.percentile`), true)}${td(v(`${prefix}.${r.key}.classification`), true)}</tr>\n`,
-      }))
-    );
-    if (bascTbl) parts.push(bascTbl);
-  }
-
-  // ═══ Conners 4 (one table per respondent form) ═══
-  const connersForms = [];
-  if (ids.has("conners-4-p")) connersForms.push(["Parent", "C4P"]);
-  if (ids.has("conners-4-t")) connersForms.push(["Teacher", "C4T"]);
-  for (const [resp, prefix] of connersForms) {
-    const scales = [
-      ["Inattention","Inatt"],["Hyperactivity/Impulsivity","HyperImp"],["Learning Problems","LearnProb"],
-      ["Executive Functioning","ExecFunc"],["Defiance/Aggression","DefAggr"],["Peer Relations","PeerRel"],
-      ["Conners 4 ADHD Index","ADHDIdx"],["DSM-5 ADHD Inattentive","DSM5Inatt"],["DSM-5 ADHD Hyperactive-Impulsive","DSM5Hyper"],
-    ];
-    const cTbl = buildTable(`Conners 4 — ${resp} Form — ${nm}`,
-      `<th ${th}>Scale</th><th ${thC}>T-Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th>`,
-      scales.map(([name, key]) => ({
-        keys: [`${prefix}.${key}.tscore`, `${prefix}.${key}.percentile`, `${prefix}.${key}.classification`],
-        render: (i) => `<tr ${rowBg(i)}>${td(name)}${td(v(`${prefix}.${key}.tscore`), true)}${td(v(`${prefix}.${key}.percentile`), true)}${td(v(`${prefix}.${key}.classification`), true)}</tr>\n`,
-      }))
-    );
-    if (cTbl) parts.push(cTbl);
-  }
-
-  // ═══ Conners CBRS ═══
-  if (ids.has("conners-cbrs-p")) {
-    const scales = [
-      ["Emotional Distress","EmotDist"],["Upsetting Thoughts/Physical Symptoms","UpsetPhys"],["Social Problems","SocProb"],
-      ["Defiant/Aggressive Behaviours","DefAggr"],["Academic Difficulties","AcadDiff"],["Language","Lang"],
-      ["Math","Math"],["Hyperactivity/Impulsivity","HyperImp"],["Separation Fears","SepFears"],["Perfectionistic and Compulsive Behaviours","PerfComp"],
-      ["Violence Potential","ViolPot"],["Physical Symptoms","PhysSym"],
-    ];
-    const cbrsTbl = buildTable(`Conners CBRS — Parent Form — ${nm}`,
-      `<th ${th}>Scale</th><th ${thC}>T-Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th>`,
-      scales.map(([name, key]) => ({
-        keys: [`CBRS.${key}.tscore`, `CBRS.${key}.percentile`, `CBRS.${key}.classification`],
-        render: (i) => `<tr ${rowBg(i)}>${td(name)}${td(v(`CBRS.${key}.tscore`), true)}${td(v(`CBRS.${key}.percentile`), true)}${td(v(`CBRS.${key}.classification`), true)}</tr>\n`,
-      }))
-    );
-    if (cbrsTbl) parts.push(cbrsTbl);
-  }
-
-  // ═══ Vineland-3 ═══
-  if (ids.has("vineland-3")) {
-    const rows = [
-      { name: "Adaptive Behaviour Composite", key: "ABC", type: "comp" },
-      { name: "Communication Domain", key: "Comm", type: "comp" },
-      { name: "  Receptive", key: "Recept", type: "sub" },
-      { name: "  Expressive", key: "Express", type: "sub" },
-      { name: "  Written", key: "Written", type: "sub" },
-      { name: "Daily Living Skills Domain", key: "DLS", type: "comp" },
-      { name: "  Personal", key: "Personal", type: "sub" },
-      { name: "  Domestic", key: "Domestic", type: "sub" },
-      { name: "  Community", key: "Community", type: "sub" },
-      { name: "Socialization Domain", key: "Soc", type: "comp" },
-      { name: "  Interpersonal Relationships", key: "Interp", type: "sub" },
-      { name: "  Play and Leisure Time", key: "PlayLeis", type: "sub" },
-      { name: "  Coping Skills", key: "Coping", type: "sub" },
-      { name: "Motor Skills Domain", key: "Motor", type: "comp" },
-      { name: "  Gross Motor", key: "GrossMotor", type: "sub" },
-      { name: "  Fine Motor", key: "FineMotor", type: "sub" },
-    ];
-    const vinTbl = buildTable(`Vineland-3 Adaptive Behavior Scales — ${nm}`,
-      `<th ${th}>Domain / Subdomain</th><th ${thC}>Standard / v-Scale Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Adaptive Level</th>`,
-      rows.map((r) => ({
-        keys: [`VIN.${r.key}.score`, `VIN.${r.key}.percentile`, `VIN.${r.key}.qualitative`],
-        render: (i) => r.type === "comp"
-          ? `<tr ${compBg(i)}>${tdBold(r.name.trim())}${tdBold(v(`VIN.${r.key}.score`), true)}${tdBold(v(`VIN.${r.key}.percentile`), true)}${tdBold(v(`VIN.${r.key}.qualitative`), true)}</tr>\n`
-          : `<tr ${rowBg(i)}>${td(r.name)}${td(v(`VIN.${r.key}.score`), true)}${td(v(`VIN.${r.key}.percentile`), true)}${td(v(`VIN.${r.key}.qualitative`), true)}</tr>\n`,
-      }))
-    );
-    if (vinTbl) parts.push(vinTbl);
-  }
-
-  // ═══ Brown EF/A Scales ═══
-  if (ids.has("brown-efa")) {
-    const scales = [["Activation","Activation"],["Focus","Focus"],["Effort","Effort"],["Emotion","Emotion"],["Memory","Memory"],["Action","Action"],["Total Composite","Total"]];
-    const brownTbl = buildTable(`Brown Executive Function/Attention Scales — ${nm}`,
-      `<th ${th}>Cluster</th><th ${thC}>T-Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th>`,
-      scales.map(([name, key]) => ({
-        keys: [`BROWN.${key}.tscore`, `BROWN.${key}.percentile`, `BROWN.${key}.classification`],
-        render: (i) => name === "Total Composite"
-          ? `<tr ${compBg(i)}>${tdBold(name)}${tdBold(v(`BROWN.${key}.tscore`), true)}${tdBold(v(`BROWN.${key}.percentile`), true)}${tdBold(v(`BROWN.${key}.classification`), true)}</tr>\n`
-          : `<tr ${rowBg(i)}>${td(name)}${td(v(`BROWN.${key}.tscore`), true)}${td(v(`BROWN.${key}.percentile`), true)}${td(v(`BROWN.${key}.classification`), true)}</tr>\n`,
-      }))
-    );
-    if (brownTbl) parts.push(brownTbl);
-  }
-
-  // ═══ PHQ-9 ═══
-  if (ids.has("phq-9")) {
-    const t = buildTable(`Patient Health Questionnaire-9 (PHQ-9) — ${nm}`,
-      `<th ${th}>Measure</th><th ${thC}>Score</th><th ${thC}>Severity</th>`,
-      [{ keys: ["PHQ9.Total.score", "PHQ9.Total.severity"], render: (i) => `<tr ${rowBg(i)}>${td("PHQ-9 Total")}${td(v("PHQ9.Total.score"), true)}${td(v("PHQ9.Total.severity"), true)}</tr>\n` }]
-    );
-    if (t) parts.push(t);
-  }
-
-  // ═══ GAD-7 ═══
-  if (ids.has("gad-7")) {
-    const t = buildTable(`Generalized Anxiety Disorder-7 (GAD-7) — ${nm}`,
-      `<th ${th}>Measure</th><th ${thC}>Score</th><th ${thC}>Severity</th>`,
-      [{ keys: ["GAD7.Total.score", "GAD7.Total.severity"], render: (i) => `<tr ${rowBg(i)}>${td("GAD-7 Total")}${td(v("GAD7.Total.score"), true)}${td(v("GAD7.Total.severity"), true)}</tr>\n` }]
-    );
-    if (t) parts.push(t);
-  }
-
-  // ═══ BAI ═══
-  if (ids.has("bai")) {
-    const t = buildTable(`Beck Anxiety Inventory (BAI) — ${nm}`,
-      `<th ${th}>Measure</th><th ${thC}>Score</th><th ${thC}>Severity</th>`,
-      [{ keys: ["BAI.Total.score", "BAI.Total.severity"], render: (i) => `<tr ${rowBg(i)}>${td("BAI Total")}${td(v("BAI.Total.score"), true)}${td(v("BAI.Total.severity"), true)}</tr>\n` }]
-    );
-    if (t) parts.push(t);
-  }
-
-  // ═══ BDI-2 ═══
-  if (ids.has("bdi-2")) {
-    const t = buildTable(`Beck Depression Inventory-II (BDI-2) — ${nm}`,
-      `<th ${th}>Measure</th><th ${thC}>Score</th><th ${thC}>Severity</th>`,
-      [{ keys: ["BDI2.Total.score", "BDI2.Total.severity"], render: (i) => `<tr ${rowBg(i)}>${td("BDI-II Total")}${td(v("BDI2.Total.score"), true)}${td(v("BDI2.Total.severity"), true)}</tr>\n` }]
-    );
-    if (t) parts.push(t);
-  }
-
-  // ═══ ASRS ═══
-  if (ids.has("asrs")) {
-    const scales = [["Total Score","Total"],["DSM-5 Scale","DSM5"],["Social/Communication","SocComm"],["Unusual Behaviours","Unusual"],["Self-Regulation","SelfReg"],["Peer Socialization","PeerSoc"],["Adult Socialization","AdultSoc"]];
-    const asrsTbl = buildTable(`Autism Spectrum Rating Scale (ASRS) — ${nm}`,
-      `<th ${th}>Scale</th><th ${thC}>T-Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th>`,
-      scales.map(([name, key]) => ({
-        keys: [`ASRS.${key}.tscore`, `ASRS.${key}.percentile`, `ASRS.${key}.classification`],
-        render: (i) => `<tr ${rowBg(i)}>${td(name)}${td(v(`ASRS.${key}.tscore`), true)}${td(v(`ASRS.${key}.percentile`), true)}${td(v(`ASRS.${key}.classification`), true)}</tr>\n`,
-      }))
-    );
-    if (asrsTbl) parts.push(asrsTbl);
-  }
-
-  return parts.length > 0 ? parts.join("\n") : null;
-}
-
-/**
- * Build the 3 MANDATORY appendix tables (cognitive subtest, cognitive index, WIAT-III)
- * Automatically selects WISC-V or WAIS-IV tables based on cogTest parameter.
- * with a fixed structure that is NEVER modified. Missing values use "—".
- * This function always returns HTML — it never returns null.
- */
-function buildMandatoryAppendixTablesHTML(firstName, scores, cogTest) {
-  const nm = firstName || "[firstName]";
-  const sc = scores || {};
-  const isWAIS = cogTest === "wais-iv";
-  const isWPPSI = cogTest === "wppsi-iv";
-  function v(key) { return sc[key] || "\u2014"; }
-
-  const th = 'style="padding:3px 10px;border:0.5pt solid #666;font-size:11pt;text-align:left;font-weight:bold;font-family:\'Times New Roman\',Times,serif;line-height:1.0;margin:0"';
-  const thC = 'style="padding:3px 10px;border:0.5pt solid #666;font-size:11pt;text-align:center;font-weight:bold;font-family:\'Times New Roman\',Times,serif;line-height:1.0;margin:0"';
-  const cap = 'style="font-weight:bold;font-size:12pt;padding:6px 10px;text-align:left;border:0.5pt solid #666;font-family:\'Times New Roman\',Times,serif;margin:0"';
-  const tbl = 'style="width:100%;border-collapse:collapse;margin:6pt 0 6pt 0;font-family:\'Times New Roman\',Times,serif;font-size:11pt;border:0.5pt solid #666;line-height:1.0"';
-
-  function td(val, center) {
-    const align = center ? "text-align:center;" : "";
-    return `<td style="padding:3px 10px;border:0.5pt solid #999;${align}line-height:1.0;margin:0">${val}</td>`;
-  }
-  function tdBold(val, center) {
-    const align = center ? "text-align:center;" : "";
-    return `<td style="padding:3px 10px;border:0.5pt solid #999;font-weight:bold;${align}line-height:1.0;margin:0">${val}</td>`;
-  }
-  function rowBg(i) { return ''; }
-  function compBg(i) { return 'style="font-weight:bold"'; }
-
-  // Derive classification from scaled score (only if score exists in map)
-  function classifyScaled(ssKey) {
-    const raw = sc[ssKey];
-    if (!raw) return "\u2014";
-    const n = parseInt(raw, 10);
-    if (isNaN(n)) return "\u2014";
-    if (n >= 16) return "Very High";
-    if (n >= 13) return "High Average";
-    if (n >= 8) return "Average";
-    if (n >= 6) return "Low Average";
-    if (n >= 4) return "Low";
-    return "Very Low";
-  }
-
-  // Derive classification from standard score (only if score exists in map)
-  function classifyStandard(ssKey) {
-    const raw = sc[ssKey];
-    if (!raw) return "\u2014";
-    const n = parseInt(raw, 10);
-    if (isNaN(n)) return "\u2014";
-    if (n >= 130) return "Very Superior";
-    if (n >= 120) return "Superior";
-    if (n >= 110) return "High Average";
-    if (n >= 90) return "Average";
-    if (n >= 80) return "Low Average";
-    if (n >= 70) return "Low";
-    return "Very Low";
-  }
-
-  const parts = [];
-
-  if (isWAIS) {
-    // ── TABLE 1: WAIS-IV Subtest Score Summary ──
-    const waisCoreSubtests = [
-      ["Similarities", "SI"],
-      ["Vocabulary", "VC"],
-      ["Information", "IN"],
-      ["Block Design", "BD"],
-      ["Matrix Reasoning", "MR"],
-      ["Visual Puzzles", "VP"],
-      ["Digit Span", "DS"],
-      ["Arithmetic", "AR"],
-      ["Symbol Search", "SS"],
-      ["Coding", "CD"],
-    ];
-    const waisSupplementalSubtests = [
-      ["Comprehension", "CO"],
-      ["Figure Weights", "FW"],
-      ["Picture Completion", "PC"],
-      ["Letter-Number Sequencing", "LN"],
-      ["Cancellation", "CA"],
-    ].filter(([, abbr]) => sc[`WAIS.${abbr}.scaled`]);
-    const waisSubtests = [...waisCoreSubtests, ...waisSupplementalSubtests];
-    let t1 = `<table ${tbl}>\n<caption ${cap}>Table 1. WAIS-IV Subtest Score Summary</caption>\n`;
-    t1 += `<thead><tr><th ${th}>Subtest</th><th ${thC}>Scaled Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
-    waisSubtests.forEach(([name, abbr], i) => {
-      const scaledKey = `WAIS.${abbr}.scaled`;
-      const pctKey = `WAIS.${abbr}.percentile`;
-      const qualKey = `WAIS.${abbr}.qualitative`;
-      const classification = sc[qualKey] || classifyScaled(scaledKey);
-      t1 += `<tr ${rowBg(i)}>${td(name)}${td(v(scaledKey), true)}${td(v(pctKey), true)}${td(classification, true)}</tr>\n`;
-    });
-    t1 += `</tbody></table>`;
-    parts.push(t1);
-
-    // ── TABLE 2: WAIS-IV Index Score Summary ──
-    const waisCoreIndexes = [
-      ["Verbal Comprehension Index (VCI)", "VCI"],
-      ["Perceptual Reasoning Index (PRI)", "PRI"],
-      ["Working Memory Index (WMI)", "WMI"],
-      ["Processing Speed Index (PSI)", "PSI"],
-      ["Full Scale IQ (FSIQ)", "FSIQ"],
-    ];
-    const waisSupplementalIndexes = [
-      ["General Ability Index (GAI)", "GAI"],
-      ["Cognitive Proficiency Index (CPI)", "CPI"],
-    ].filter(([, abbr]) => sc[`WAIS.${abbr}.score`]);
-    const waisIndexes = [...waisCoreIndexes, ...waisSupplementalIndexes];
-    let t2 = `<table ${tbl}>\n<caption ${cap}>Table 2. WAIS-IV Index Score Summary</caption>\n`;
-    t2 += `<thead><tr><th ${th}>Index</th><th ${thC}>Standard Score</th><th ${thC}>Percentile Rank</th><th ${thC}>Classification</th></tr></thead>\n<tbody>\n`;
-    waisIndexes.forEach(([name, abbr], i) => {
-      const scoreKey = `WAIS.${abbr}.score`;
-      const pctKey = `WAIS.${abbr}.percentile`;
-      const qualKey = `WAIS.${abbr}.qualitative`;
-      const classification = sc[qualKey] || classifyStandard(scoreKey);
-      t2 += `<tr ${compBg(i)}>${tdBold(name)}${tdBold(v(scoreKey), true)}${tdBold(v(pctKey), true)}${tdBold(classification, true)}</tr>\n`;
-    });
-    t2 += `</tbody></table>`;
-    parts.push(t2);
-
-  } else if (isWPPSI) {
     // ── TABLE 1: WPPSI-IV Subtest Score Summary ──
     const wppsiCoreSubtests = [
       ["Receptive Vocabulary", "RV"],
@@ -4080,7 +3476,7 @@ function extractCognitiveScoreTable(docs) {
     for (const d of docs) {
       const txt = d.extractedText || "";
       if (!txt || txt.length < 100) continue;
-      if (!/WISC|WPPSI|WAIS/i.test(txt)) continue;
+      if (!/WISC|WPPSI/i.test(txt)) continue;
       const result = deterministicExtract(txt, d._docxTables || null, d._pdfPages || null);
       const t = result.appendix_tables;
       const lines = [];
@@ -4179,89 +3575,6 @@ function parseWRAML3Scores(txt) {
 
 // ── WAIS-IV Score Parser ──
 // Extracts FSIQ, VCI, PRI, WMI, PSI from WAIS-IV score report PDF text
-function parseWAISScores(txt) {
-  if (!txt || txt.length < 50) return null;
-  const sc = {};
-  // Pattern pairs: [key, indexName regex, abbreviation regex]
-  const indexes = [
-    ["fsiq", /Full\s*Scale(?:\s*IQ)?/i, /FSIQ/],
-    ["vci",  /Verbal\s*Comprehension(?:\s*Index)?/i, /VCI/],
-    ["pri",  /Perceptual\s*Reasoning(?:\s*Index)?/i, /PRI/],
-    ["wmi",  /Working\s*Memory(?:\s*Index)?/i, /WMI/],
-    ["psi",  /Processing\s*Speed(?:\s*Index)?/i, /PSI/],
-    ["gai",  /General\s*Ability(?:\s*Index)?/i, /GAI/],
-    ["cpi",  /Cognitive\s*Proficiency(?:\s*Index)?/i, /CPI/],
-  ];
-  for (const [key, namePat, abbrPat] of indexes) {
-    const patterns = [
-      // Pattern 0: WAIS table format — abbrev on its own line followed by score then pct
-      //   e.g. "...\n46\nVCI\n132\n98\n124-137\n..." (each cell on its own line)
-      new RegExp(abbrPat.source + "\\n(\\d{2,3})\\n(\\d{1,3})\\n", abbrPat.flags),
-      // Pattern 1: inline "FullName ... Score Pct" (standard)
-      new RegExp(namePat.source + "\\s+(?:Index\\s+)?(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", namePat.flags),
-      // Pattern 2: "ABBR ... Score Pct" (standard)
-      new RegExp(abbrPat.source + "\\s+(?:\\d+\\s+)?(\\d{2,3})\\s+(\\d{1,3})", abbrPat.flags),
-      // Pattern 3: "ABBR \d+ Score Pct \d+" (alternate)
-      new RegExp(abbrPat.source + "\\s+\\d+\\s+(\\d{2,3})\\s+(\\d{1,3})\\s+\\d+", abbrPat.flags),
-    ];
-    for (const p of patterns) {
-      const m = txt.match(p);
-      if (m) {
-        const score = +m[1];
-        const pct = +m[2];
-        if (score >= 40 && score <= 160 && pct >= 0 && pct <= 100) {
-          sc[key] = { score, pct };
-          break;
-        }
-      }
-    }
-  }
-  // ── Subtest extraction (scaled scores 1-19, percentiles 0-99) ──
-  const subtests = [
-    ["SI", /Similarities/i],
-    ["VC", /Vocabulary/i],
-    ["IN", /Information/i],
-    ["BD", /Block\s*Design/i],
-    ["MR", /Matrix\s*Reasoning/i],
-    ["VP", /Visual\s*Puzzles/i],
-    ["DS", /Digit\s*Span/i],
-    ["AR", /Arithmetic/i],
-    ["SS", /Symbol\s*Search/i],
-    ["CD", /Coding/i],
-    ["CO", /(?<!Oral\s+Discourse\s+)Comprehension(?!\s+(?:and|&)\s+Fluency)/i],
-    ["FW", /Figure\s*Weights/i],
-    ["LN", /Letter[\s-]*Number\s*Sequencing/i],
-    ["CA", /Cancellation/i],
-    ["PC", /Picture\s*Completion/i],
-  ];
-  sc.subtests = {};
-  for (const [abbr, namePat] of subtests) {
-    // Try: "SubtestName  scaledScore  percentile"
-    const patterns = [
-      new RegExp(namePat.source + "\\s+(\\d{1,2})\\s+(\\d{1,3})", namePat.flags),
-      // Table: "SubtestName  rawScore  scaledScore  percentile"
-      new RegExp(namePat.source + "\\s+\\d+\\s+(\\d{1,2})\\s+(\\d{1,3})", namePat.flags),
-    ];
-    for (const p of patterns) {
-      const m = txt.match(p);
-      if (m) {
-        const scaled = +m[1];
-        const pct = +m[2];
-        if (scaled >= 1 && scaled <= 19 && pct >= 0 && pct <= 99) {
-          sc.subtests[abbr] = { scaled, pct };
-          break;
-        }
-      }
-    }
-  }
-  // Need at least FSIQ + 2 indexes to be valid
-  const keys = Object.keys(sc).filter(k => k !== "subtests");
-  if (!sc.fsiq || keys.length < 3) return null;
-  return sc;
-}
-
-// ── WPPSI-IV Score Parser ──
-// Extracts FSIQ, VCI, VSI, FRI, WMI, PSI from WPPSI-IV score report PDF text
 function parseWPPSIScores(txt) {
   if (!txt || txt.length < 50) return null;
   const sc = {};
@@ -4360,42 +3673,6 @@ function deriveStrengthsWeaknesses(scores, indexList) {
 }
 
 // ── Extract WAIS-IV cognitive text from docs ──
-function extractWAISCogText(docs, firstName, pronouns) {
-  if (!docs || docs.length === 0) return null;
-  for (const d of docs) {
-    const txt = d.extractedText || "";
-    if (!txt || txt.length < 100) continue;
-    if (!/WAIS|Wechsler\s*Adult/i.test(txt)) continue;
-    const sc = parseWAISScores(txt);
-    if (!sc) continue;
-    // Build manual-like object from parsed scores
-    const wm = {};
-    if (sc.fsiq) { wm.fsiqScore = String(sc.fsiq.score); wm.fsiqPercentile = String(sc.fsiq.pct); }
-    if (sc.vci) { wm.vciScore = String(sc.vci.score); wm.vciPercentile = String(sc.vci.pct); }
-    if (sc.pri) { wm.priScore = String(sc.pri.score); wm.priPercentile = String(sc.pri.pct); }
-    if (sc.wmi) { wm.wmiScore = String(sc.wmi.score); wm.wmiPercentile = String(sc.wmi.pct); }
-    if (sc.psi) { wm.psiScore = String(sc.psi.score); wm.psiPercentile = String(sc.psi.pct); }
-    if (sc.gai) { wm.gaiScore = String(sc.gai.score); wm.gaiPercentile = String(sc.gai.pct); }
-    if (sc.cpi) { wm.cpiScore = String(sc.cpi.score); wm.cpiPercentile = String(sc.cpi.pct); }
-    // Pass subtests through
-    if (sc.subtests) {
-      for (const [abbr, data] of Object.entries(sc.subtests)) {
-        wm[`sub_${abbr}_scaled`] = String(data.scaled);
-        wm[`sub_${abbr}_pct`] = String(data.pct);
-      }
-    }
-    // Auto-derive strengths/weaknesses
-    const sw = deriveStrengthsWeaknesses(sc, [
-      ["vci", "verbal reasoning"], ["pri", "visual reasoning"],
-      ["wmi", "working memory"], ["psi", "processing efficiency"],
-    ]);
-    wm.strengths = sw.strengths;
-    wm.weakerAreas = sw.weaker;
-    return { wm, scores: sc };
-  }
-  return null;
-}
-
 // ── Extract WPPSI-IV cognitive text from docs ──
 function extractWPPSICogText(docs, firstName, pronouns) {
   if (!docs || docs.length === 0) return null;
@@ -5005,57 +4282,6 @@ function descriptorToStrengthLabel(descriptor) {
   return "an area of somewhat weaker development";
 }
 
-function fillWAISCognitiveTemplate(waisManual, firstName, pronouns) {
-  const m = waisManual || {};
-  let text = WAIS_COG_TEMPLATE;
-
-  const fsiqDesc = percentileToDescriptor(m.fsiqPercentile);
-  const vciDesc = percentileToDescriptor(m.vciPercentile);
-  const priDesc = percentileToDescriptor(m.priPercentile);
-  const wmiDesc = percentileToDescriptor(m.wmiPercentile);
-  const psiDesc = percentileToDescriptor(m.psiPercentile);
-
-  text = text.replace(/\[FSIQ_SCORE\]/g, m.fsiqScore || "___");
-  text = text.replace(/\[FSIQ_PERCENTILE\]/g, m.fsiqPercentile ? String(m.fsiqPercentile) + getSuffix(m.fsiqPercentile) : "___");
-  text = text.replace(/\[FSIQ_DESCRIPTOR\]/g, fsiqDesc || "___");
-
-  text = text.replace(/\[VCI_SCORE\]/g, m.vciScore || "___");
-  text = text.replace(/\[VCI_PERCENTILE\]/g, m.vciPercentile ? String(m.vciPercentile) + getSuffix(m.vciPercentile) : "___");
-  text = text.replace(/\[VCI_DESCRIPTOR\]/g, vciDesc || "___");
-  text = text.replace(/\[VCI_STRENGTH_OR_WEAKER\]/g, descriptorToStrengthLabel(vciDesc));
-
-  text = text.replace(/\[PRI_SCORE\]/g, m.priScore || "___");
-  text = text.replace(/\[PRI_PERCENTILE\]/g, m.priPercentile ? String(m.priPercentile) + getSuffix(m.priPercentile) : "___");
-  text = text.replace(/\[PRI_DESCRIPTOR\]/g, priDesc || "___");
-  text = text.replace(/\[PRI_STRENGTH_OR_WEAKER\]/g, descriptorToStrengthLabel(priDesc));
-
-  text = text.replace(/\[WMI_SCORE\]/g, m.wmiScore || "___");
-  text = text.replace(/\[WMI_PERCENTILE\]/g, m.wmiPercentile ? String(m.wmiPercentile) + getSuffix(m.wmiPercentile) : "___");
-  text = text.replace(/\[WMI_DESCRIPTOR\]/g, wmiDesc || "___");
-  text = text.replace(/\[WMI_STRENGTH_OR_WEAKER\]/g, descriptorToStrengthLabel(wmiDesc));
-
-  text = text.replace(/\[PSI_SCORE\]/g, m.psiScore || "___");
-  text = text.replace(/\[PSI_PERCENTILE\]/g, m.psiPercentile ? String(m.psiPercentile) + getSuffix(m.psiPercentile) : "___");
-  text = text.replace(/\[PSI_DESCRIPTOR\]/g, psiDesc || "___");
-  text = text.replace(/\[PSI_STRENGTH_OR_WEAKER\]/g, descriptorToStrengthLabel(psiDesc));
-
-  text = text.replace(/\[WAIS_STRENGTHS\]/g, m.strengths?.trim() || "verbal reasoning and visual reasoning");
-  text = text.replace(/\[WAIS_WEAKER_AREAS\]/g, m.weakerAreas?.trim() || "processing efficiency and working memory demands");
-
-  // ── Subtest replacements ──
-  const waisSubs = ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD"];
-  for (const abbr of waisSubs) {
-    const scaled = m[`sub_${abbr}_scaled`] || "___";
-    const pct = m[`sub_${abbr}_pct`] ? String(m[`sub_${abbr}_pct`]) + getSuffix(m[`sub_${abbr}_pct`]) : "___";
-    text = text.replace(new RegExp(`\\[${abbr}_SCALED\\]`, "g"), scaled);
-    text = text.replace(new RegExp(`\\[${abbr}_PERCENTILE\\]`, "g"), pct);
-  }
-
-  text = personalize(text, firstName, pronouns);
-  text = capitalizeSentences(text);
-  return text;
-}
-
 function fillWPPSICognitiveTemplate(wppsiManual, firstName, pronouns) {
   const m = wppsiManual || {};
   let text = WPPSI_COG_TEMPLATE;
@@ -5139,8 +4365,8 @@ async function aiGen(meta, tools, prompt, strat, ctx, docs, toneRules, maxTokens
   const piiMap = buildPiiMap(meta);
 
     // For appendix_tables, use a minimal system prompt that doesn't conflict with HTML output
-  const aiCogTest = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
-  const cogTableLabel = aiCogTest === "wais-iv" ? "WAIS-IV" : "WISC-V";
+  const aiCogTest = tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
+  const cogTableLabel = aiCogTest === "wppsi-iv" ? "WPPSI-IV" : "WISC-V";
   const systemPrompt = sectionId === "appendix_tables"
     ? [
         "You are a psychoeducational report score table generator.",
@@ -5281,13 +4507,10 @@ function buildReportHtml(meta, secs, tools, usedToolsStr) {
   if (meta.dob && meta.dateOfTesting) {
     const totalMonths = calcAgeObj(meta.dob, meta.dateOfTesting)?.totalMonths;
     if (totalMonths != null) {
-      if (totalMonths >= 192) cogTestType = "wais-iv";
       else if (totalMonths < 83) cogTestType = "wppsi-iv";
     }
   }
-  if (cogTestType === "wisc-v") {
-    if (tools.find(t => t.id === "wais-iv" && t.used)) cogTestType = "wais-iv";
-    else if (tools.find(t => t.id === "wppsi-iv" && t.used)) cogTestType = "wppsi-iv";
+  if (cogTestType === "wisc-v") {    else if (tools.find(t => t.id === "wppsi-iv" && t.used)) cogTestType = "wppsi-iv";
   }
   const escape = (t) => (t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const nl2p = (t) => escape(t).split(/\n\n+/).map((p) => `<p style="text-align:justify;line-height:1.5;margin:0 0 0 0;font-size:12pt">${p.replace(/\n/g, "<br/>")}</p>`).join("");
@@ -6468,7 +5691,6 @@ const SecEd = memo(function SecEd({
 
   // Age-based instrument flags for cognitive manual entry UI
   const secEdAge = useMemo(() => ageFromAgeAtTesting(meta?.ageAtTesting), [meta?.ageAtTesting]);
-  const secEdUseWAIS = sid === "cognitive" && secEdAge ? secEdAge.totalMonths >= 192 : false;
   const secEdUseWPPSI = sid === "cognitive" && secEdAge ? secEdAge.totalMonths < 83 : false;
 
   // Debounced text input: buffer keystrokes locally, sync to parent after 300ms idle
@@ -6913,46 +6135,6 @@ const SecEd = memo(function SecEd({
                 {COG_STANDARD_OPENING}
               </div>
             )}
-            {/* ── WAIS-IV Manual Score Entry (age >= 16) ── */}
-            {secEdUseWAIS && (() => {
-              const wm = s?.waisManual || {};
-              const setWM = (field, val) => onUpdateSec(sid, { waisManual: { ...wm, [field]: val } });
-              const fieldStyle = "w-20 px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-indigo-300 focus:outline-none text-center";
-              const labelStyle = "text-xs font-medium text-gray-600 whitespace-nowrap";
-              return (
-                <div className="mb-3 p-3 bg-amber-50/60 border border-amber-200 rounded-xl space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Lock size={10} className="text-amber-500" />
-                    <span className="text-xs text-amber-700 font-bold uppercase" style={{ fontSize: 7 }}>WAIS-IV Manual Score Entry (age 16+)</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-2">
-                    {[
-                      ["FSIQ", "fsiq"], ["VCI", "vci"], ["PRI", "pri"], ["WMI", "wmi"], ["PSI", "psi"],
-                    ].map(([label, key]) => (
-                      <div key={key} className="flex items-center gap-2">
-                        <span className={labelStyle} style={{ minWidth: 32 }}>{label}:</span>
-                        <input placeholder="Score" value={wm[key + "Score"] || ""} onChange={(e) => setWM(key + "Score", e.target.value)} disabled={locked} className={fieldStyle} />
-                        <input placeholder="PR" value={wm[key + "Percentile"] || ""} onChange={(e) => setWM(key + "Percentile", e.target.value)} disabled={locked} className={fieldStyle} />
-                        {wm[key + "Percentile"] && percentileToDescriptor(wm[key + "Percentile"]) && (
-                          <span className="text-xs text-gray-400 italic" style={{ fontSize: 9 }}>{percentileToDescriptor(wm[key + "Percentile"])}</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="space-y-1.5">
-                    <div className="flex items-center gap-2">
-                      <span className={labelStyle}>Strengths:</span>
-                      <input placeholder="e.g., verbal reasoning and acquired knowledge" value={wm.strengths || ""} onChange={(e) => setWM("strengths", e.target.value)} disabled={locked} className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-indigo-300 focus:outline-none" />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className={labelStyle}>Weaker areas:</span>
-                      <input placeholder="e.g., processing speed and working memory" value={wm.weakerAreas || ""} onChange={(e) => setWM("weakerAreas", e.target.value)} disabled={locked} className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded-lg focus:ring-1 focus:ring-indigo-300 focus:outline-none" />
-                    </div>
-                  </div>
-                  <p className="text-xs text-gray-400" style={{ fontSize: 7 }}>Enter all index scores and percentile ranks, then click Insert from PDF to fill the WAIS-IV template.</p>
-                </div>
-              );
-            })()}
             {/* ── WPPSI-IV Manual Score Entry (age < 6) ── */}
             {secEdUseWPPSI && (() => {
               const wm = s?.wppsiManual || {};
@@ -8036,7 +7218,6 @@ export default function App() {
 
   // ── Age-based cognitive instrument selection ──
   const derivedAge = useMemo(() => ageFromAgeAtTesting(meta.ageAtTesting), [meta.ageAtTesting]);
-  const useWAISByAge = derivedAge ? derivedAge.totalMonths >= 192 : false; // 16 years 0 months = 192 months
   const useWPPSIByAge = derivedAge ? derivedAge.totalMonths < 83 : false;   // under 6 years 11 months = 83 months
 
   /** Shorthand: apply [firstName] + pronoun placeholders using current meta */
@@ -8094,10 +7275,9 @@ export default function App() {
   // ── Auto-select cognitive tool based on age ──
   useEffect(() => {
     if (!derivedAge) return;
-    const cogToolIds = new Set(["wais-iv", "wppsi-iv", "wisc-v"]);
+    const cogToolIds = new Set(["wppsi-iv", "wisc-v"]);
     let targetId = "wisc-v";
-    if (derivedAge.totalMonths >= 192) targetId = "wais-iv";
-    else if (derivedAge.totalMonths < 83) targetId = "wppsi-iv";
+    if (derivedAge.totalMonths < 83) targetId = "wppsi-iv";
     setTools((prev) => {
       let changed = false;
       const next = prev.map((t) => {
@@ -8270,7 +7450,7 @@ export default function App() {
       // Also extract from generated section content
       const pseudoDocs = [];
       const cogContent = prev.cognitive?.content?.replace(/[⟦⟧]/g, "")?.trim();
-      if (cogContent && cogContent.length > 100 && /WISC|WPPSI|WAIS|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI|PRI/i.test(cogContent)) {
+      if (cogContent && cogContent.length > 100 && /WISC|WPPSI|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI|PRI/i.test(cogContent)) {
         pseudoDocs.push({ extractedText: cogContent, name: "_cognitive_", _docxTables: null, _pdfPages: null });
       }
       const acadContent = prev.academic?.content?.replace(/[⟦⟧]/g, "")?.trim();
@@ -8287,668 +7467,6 @@ export default function App() {
           if (!scoreMap[k]) scoreMap[k] = val;
         }
       }
-
-      // Inject WAIS-IV manual scores into scoreMap for appendix tables
-      const waisManual = prev.cognitive?.waisManual;
-      if (waisManual) {
-        const wm = waisManual;
-        const waisIdx = [["FSIQ","fsiq"],["VCI","vci"],["PRI","pri"],["WMI","wmi"],["PSI","psi"],["GAI","gai"]];
-        for (const [abbr, key] of waisIdx) {
-          if (wm[key + "Score"]) {
-            scoreMap[`WAIS.${abbr}.score`] = wm[key + "Score"];
-            if (wm[key + "Percentile"]) {
-              scoreMap[`WAIS.${abbr}.percentile`] = wm[key + "Percentile"];
-              scoreMap[`WAIS.${abbr}.qualitative`] = percentileToDescriptor(wm[key + "Percentile"]) || "";
-            }
-          }
-        }
-        // Inject WAIS subtests
-        for (const abbr of ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD"]) {
-          if (wm[`sub_${abbr}_scaled`] && !scoreMap[`WAIS.${abbr}.scaled`]) {
-            scoreMap[`WAIS.${abbr}.scaled`] = wm[`sub_${abbr}_scaled`];
-            if (wm[`sub_${abbr}_pct`]) scoreMap[`WAIS.${abbr}.percentile`] = wm[`sub_${abbr}_pct`];
-          }
-        }
-      }
-
-      // Inject WPPSI-IV manual scores into scoreMap for appendix tables
-      const wppsiManual = prev.cognitive?.wppsiManual;
-      if (wppsiManual) {
-        const wm = wppsiManual;
-        const wppsiIdx = [["FSIQ","fsiq"],["VCI","vci"],["VSI","vsi"],["FRI","fri"],["WMI","wmi"],["PSI","psi"]];
-        for (const [abbr, key] of wppsiIdx) {
-          if (wm[key + "Score"]) {
-            scoreMap[`WPPSI.${abbr}.score`] = wm[key + "Score"];
-            if (wm[key + "Percentile"]) {
-              scoreMap[`WPPSI.${abbr}.percentile`] = wm[key + "Percentile"];
-              scoreMap[`WPPSI.${abbr}.qualitative`] = percentileToDescriptor(wm[key + "Percentile"]) || "";
-            }
-          }
-        }
-        // Inject WPPSI subtests
-        for (const abbr of ["RV","IN","BD","OA","MR","PC","PM","ZL","BS","CA"]) {
-          if (wm[`sub_${abbr}_scaled`] && !scoreMap[`WPPSI.${abbr}.scaled`]) {
-            scoreMap[`WPPSI.${abbr}.scaled`] = wm[`sub_${abbr}_scaled`];
-            if (wm[`sub_${abbr}_pct`]) scoreMap[`WPPSI.${abbr}.percentile`] = wm[`sub_${abbr}_pct`];
-          }
-        }
-      }
-
-      const hasAnyScores = Object.keys(scoreMap).length > 0;
-      if (!hasAnyScores) return prev; // No scores found — leave existing content alone
-      // Determine cognitive test type: age-based first, then tool selection, then auto-detect from scoreMap keys
-      let cogTestType = useWAISByAge ? "wais-iv" : useWPPSIByAge ? "wppsi-iv" : "wisc-v";
-      if (cogTestType === "wisc-v") {
-        if (tools.find(t => t.id === "wais-iv" && t.used)) cogTestType = "wais-iv";
-        else if (tools.find(t => t.id === "wppsi-iv" && t.used)) cogTestType = "wppsi-iv";
-        else if (Object.keys(scoreMap).some(k => k.startsWith("WAIS."))) cogTestType = "wais-iv";
-        else if (Object.keys(scoreMap).some(k => k.startsWith("WPPSI."))) cogTestType = "wppsi-iv";
-      }
-      const html = buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", scoreMap, cogTestType);
-      if (!html || html === (at.content || "")) return prev;
-      return { ...prev, appendix_tables: { ...at, content: html } };
-    });
-  }, [docs, derivedFirstName, tools, tableBlocksKey, cogContentKey, acadContentKey, memContentKey, useWAISByAge, useWPPSIByAge]);
-
-    useEffect(() => {
-    const id = "psychoed-print-styles";
-    if (!document.getElementById(id)) {
-      const style = document.createElement("style");
-      style.id = id;
-      style.textContent = PRINT_STYLES;
-      document.head.appendChild(style);
-    }
-  }, []);
-
-    useEffect(() => {
-    const id = "psychoed-keyframes";
-    if (!document.getElementById(id)) {
-      const style = document.createElement("style");
-      style.id = id;
-      style.textContent = `@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }`;
-      document.head.appendChild(style);
-    }
-  }, []);
-
-    useEffect(() => {
-    setAutoLoaded(true);
-
-    // Warn before closing tab to prevent accidental data loss
-    const handleBeforeUnload = (e) => {
-      e.preventDefault();
-      e.returnValue = "You have unsaved report data. Are you sure you want to leave?";
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    const uSec = useCallback((id, u) => {
-    setSecs((p) => ({ ...p, [id]: { ...p[id], ...u } }));
-  }, []);
-
-  const savePrompt = useCallback((sid, text) => {
-    setCustomPrompts((p) => ({ ...p, [sid]: text }));
-  }, []);
-
-  const deletePrompt = useCallback((sid) => {
-    setCustomPrompts((p) => { const n = { ...p }; delete n[sid]; return n; });
-  }, []);
-
-  // ── User-created prompt handlers ──
-  const addUserPrompt = useCallback((name, text) => {
-    setUserPrompts((p) => [...p, { id: "up_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6), name, text }]);
-  }, []);
-  const saveUserPrompt = useCallback((id, text) => {
-    setUserPrompts((p) => p.map((u) => u.id === id ? { ...u, text } : u));
-  }, []);
-  const renameUserPrompt = useCallback((id, name) => {
-    setUserPrompts((p) => p.map((u) => u.id === id ? { ...u, name } : u));
-  }, []);
-  const removeUserPrompt = useCallback((id) => {
-    setUserPrompts((p) => p.filter((u) => u.id !== id));
-  }, []);
-
-  const togDoc = useCallback((sid, did) => {
-    setSecs((p) => {
-      const ids = p[sid].docIds || [];
-      const newIds = ids.includes(did) ? ids.filter((x) => x !== did) : [...ids, did];
-      const updates = { ...p[sid], docIds: newIds };
-
-      // Auto-fill memory when WRAML3 doc toggled ON and content is empty
-      if (sid === "memory" && !ids.includes(did) && (!p[sid].content || !p[sid].content.trim())) {
-        const doc = docs.find((d) => d.id === did);
-        if (doc?.extractedText?.match(/WRAML/i)) {
-          const memDocs = docs.filter((d) => newIds.includes(d.id));
-          const text = extractMemoryText(memDocs, derivedFirstName, meta.pronouns);
-          if (text) updates.content = text;
-        }
-      }
-
-      return { ...p, [sid]: updates };
-    });
-  }, [docs, derivedFirstName, meta.pronouns]);
-
-    const processFile = useCallback((f, forSection) => {
-    if (!f) return;
-    const dataReader = new FileReader();
-    dataReader.onload = async (ev) => {
-      const base64Data = ev.target.result;
-      const isPdfOrImage = f.type === "application/pdf" || f.type?.startsWith("image/");
-      const isDocx = f.type?.includes("word") || /\.docx$/i.test(f.name);
-      if (isPdfOrImage || isDocx) showToast("Extracting text from file...", "info");
-
-      let extracted = "";
-      let _pdfPages = null;
-      let _docxTables = null;
-
-      try {
-        if (f.type === "application/pdf" && base64Data) {
-          // Use structured PDF parser — get both text and page data
-          const parsed = await parsePDFStructured(base64Data, (msg) => showToast(msg, "info"));
-          extracted = parsed.fullText || "";
-          _pdfPages = parsed.pages || null;
-          if (!extracted || extracted.length <= 50) {
-            showToast("PDF had very little extractable text. Paste scores manually.", "info");
-            extracted = "[PDF uploaded. Paste the relevant scores and text content into the Assessment Notes field for this section.]";
-          }
-        } else if (isDocx && base64Data) {
-          try {
-            const parsed = await parseDocxStructured(base64Data, (msg) => showToast(msg, "info"));
-            extracted = parsed.fullText || "";
-            _docxTables = parsed.tables || null;
-            if (!extracted || extracted.length <= 50) {
-              // parseDocxStructured returned no text (e.g. legacy .doc binary — try generic extractor)
-              try {
-                extracted = await extractTextFromFile(f, (msg) => showToast(msg, "info"), base64Data);
-              } catch (_) { /* ignore */ }
-            }
-            if (!extracted || extracted.length <= 50) {
-              extracted = "[Word document uploaded — paste relevant content into Assessment Notes.]";
-            }
-          } catch (docxErr) {
-            // DOCX parsing failed (e.g. legacy .doc OLE binary — JSZip cannot read it)
-            // Fall back to generic text extractor which handles more formats
-            try {
-              extracted = await extractTextFromFile(f, (msg) => showToast(msg, "info"), base64Data);
-              if (!extracted || extracted.length <= 50) {
-                extracted = "[Word document uploaded — paste relevant content into Assessment Notes.]";
-              }
-            } catch (_) {
-              extracted = "[Word document uploaded — paste relevant content into Assessment Notes.]";
-            }
-          }
-        } else {
-          extracted = await extractTextFromFile(f, (msg) => showToast(msg, "info"), base64Data);
-        }
-      } catch (parseErr) {
-        // File parsing failed
-        extracted = await extractTextFromFile(f, (msg) => showToast(msg, "info"), base64Data);
-      }
-
-      // Auto-classify based on content and filename
-      const autoCats = autoClassifyDoc(extracted, f.name);
-      const newId = "d" + Date.now();
-      const newDoc = {
-        id: newId,
-        name: f.name,
-        size: f.size,
-        type: f.type,
-        categories: autoCats,
-        autoClassified: true,
-        uploadedAt: Date.now(),
-        extractedText: extracted || "",
-        data: base64Data || "",
-        _pdfPages,     // Structured PDF page data for deterministic extraction
-        _docxTables,   // Structured DOCX tables for deterministic extraction
-      };
-      setDocs((p) => [...p, newDoc]);
-
-        // Auto-link to ALL sections whose SEC_CAT_MAP categories overlap with doc categories
-        setSecs((p) => {
-          const next = { ...p };
-          for (const [secId, secCats] of Object.entries(SEC_CAT_MAP)) {
-            if (!next[secId]) continue;
-            const matches = autoCats.some((c) => secCats.includes(c));
-            if (matches) {
-              const existing = next[secId].docIds || [];
-              if (!existing.includes(newId)) {
-                next[secId] = { ...next[secId], docIds: [...existing, newId] };
-              }
-            }
-          }
-          // Also ensure the explicit forSection is linked even if categories didn't match
-          if (forSection && next[forSection]) {
-            const existing = next[forSection].docIds || [];
-            if (!existing.includes(newId)) {
-              next[forSection] = { ...next[forSection], docIds: [...existing, newId] };
-            }
-          }
-          return next;
-        });
-
-        const hasText = extracted && !extracted.startsWith("[");
-
-        // Auto-populate empty Case Info fields from uploaded document headers
-        if (hasText) {
-          const caseInfo = extractCaseInfo(extracted);
-          if (Object.keys(caseInfo).length > 0) {
-            setMeta((prev) => {
-              const next = { ...prev };
-              let changed = false;
-              // Only fill fields that are currently empty
-              if (caseInfo.fullName && !prev.fullName.trim()) { next.fullName = caseInfo.fullName; changed = true; }
-              if (caseInfo.dob && !prev.dob.trim()) { next.dob = caseInfo.dob; changed = true; }
-              if (caseInfo.ageAtTesting && !prev.ageAtTesting.trim()) { next.ageAtTesting = caseInfo.ageAtTesting; changed = true; }
-              if (caseInfo.grade && !prev.grade.trim()) { next.grade = caseInfo.grade; changed = true; }
-              if (caseInfo.school && !prev.school.trim()) { next.school = caseInfo.school; changed = true; }
-              if (caseInfo.pronouns && prev.pronouns === "he/him") { next.pronouns = caseInfo.pronouns; changed = true; }
-              if (caseInfo.testingDates && prev.testingDates.every((d) => !d)) {
-                const td = [...prev.testingDates];
-                caseInfo.testingDates.forEach((d, i) => { if (i < td.length) td[i] = d; });
-                next.testingDates = td;
-                changed = true;
-              }
-              return changed ? next : prev;
-            });
-            const filled = Object.keys(caseInfo).filter((k) => k !== "dobRaw" && k !== "pronouns");
-            if (filled.length > 0) {
-              showToast(`Auto-filled: ${filled.map((k) => k === "testingDates" ? "testing dates" : k === "fullName" ? "name" : k).join(", ")}`, "info");
-            }
-          }
-        }
-
-        // Build list of auto-linked sections for toast
-        const linkedSections = Object.entries(SEC_CAT_MAP)
-          .filter(([, secCats]) => autoCats.some((c) => secCats.includes(c)))
-          .map(([secId]) => TABS.find((t) => t.id === secId)?.label || secId)
-          .filter((label) => !["Summary", "Strengths & Needs", "Identification", "Recommendations", "Appendix"].includes(label));
-
-        showToast(
-          hasText
-            ? `"${f.name}" → ${autoCats.join(", ")}${linkedSections.length > 0 ? ` · Auto-linked to: ${linkedSections.slice(0, 3).join(", ")}${linkedSections.length > 3 ? ` +${linkedSections.length - 3}` : ""}` : ""}`
-            : `"${f.name}" uploaded — paste scores into Assessment Notes`,
-          hasText ? "success" : "info"
-        );
-    };
-    dataReader.readAsDataURL(f);
-  }, [showToast]);
-
-    const handleFile = useCallback((e) => {
-    const files = e.target.files || [];
-    for (let i = 0; i < files.length; i++) {
-      processFile(files[i]);
-    }
-    e.target.value = "";
-  }, [processFile]);
-
-    const handleDragOver = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragging(false);
-  }, []);
-
-  const handleDrop = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragging(false);
-    const files = e.dataTransfer?.files;
-    if (files) {
-      for (let i = 0; i < files.length; i++) {
-        processFile(files[i]);
-      }
-    }
-  }, [processFile]);
-
-  const handleSecFile = useCallback((e) => {
-    const f = (e.target.files || [])[0];
-    if (!f) return;
-    processFile(f, secUploadTarget);
-    e.target.value = "";
-  }, [secUploadTarget, processFile]);
-
-  // Open the classification modal for an existing document
-  const editDocCats = useCallback((doc) => {
-    setUpModal({
-      docId: doc.id,
-      name: doc.name,
-      size: doc.size,
-      type: doc.type,
-      cats: [...doc.categories],
-      extractedText: doc.extractedText || "",
-    });
-  }, []);
-
-  // Save updated categories from the edit modal
-  const saveCats = useCallback(() => {
-    if (!upModal || !upModal.docId) return;
-    setDocs((p) =>
-      p.map((d) =>
-        d.id === upModal.docId
-          ? { ...d, categories: upModal.cats, autoClassified: false }
-          : d
-      )
-    );
-    showToast(`Categories updated for "${upModal.name}"`, "success");
-    setUpModal(null);
-  }, [upModal, showToast]);
-
-  const rmDoc = useCallback((id) => {
-    setDocs((p) => p.filter((d) => d.id !== id));
-    // Clean references from all sections (immutable update)
-    setSecs((p) => {
-      const next = {};
-      for (const k of Object.keys(p)) {
-        const sec = p[k];
-        if (sec.docIds && sec.docIds.includes(id)) {
-          next[k] = { ...sec, docIds: sec.docIds.filter((x) => x !== id) };
-        } else {
-          next[k] = sec;
-        }
-      }
-      return next;
-    });
-  }, []);
-
-  const selDocs = useCallback(
-    (sid) => docs.filter((d) => (secs[sid]?.docIds || []).includes(d.id)),
-    [docs, secs]
-  );
-
-  const applyQ = useCallback((sid, txt) => {
-    setSecs((p) => {
-      const s = p[sid];
-      if (!s || s.status === SS.APPROVED) return p;
-      const replaced = capitalizeSentences(sanitizeTone(personalize(txt, derivedFirstName, meta.pronouns)));
-      // Toggle: if content already ends with this text, remove it
-      const content = s.content || "";
-      if (content.trimEnd().endsWith(replaced.trimEnd())) {
-        const idx = content.lastIndexOf(replaced.trim());
-        const newContent = content.slice(0, idx).replace(/\n+$/, "");
-        return { ...p, [sid]: { ...s, content: newContent } };
-      }
-      return {
-        ...p,
-        [sid]: { ...s, content: (content ? content + "\n\n" : "") + replaced },
-      };
-    });
-  }, [derivedFirstName, meta.pronouns]);
-
-    const updateBehObsMenu = useCallback((newMenu) => {
-    setSecs((p) => {
-      const obs = p.observations;
-      if (!obs || obs.status === SS.APPROVED) return p;
-      const body = composeBehObsText(newMenu);
-      const opening = BEH_OBS_STANDARD_OPENING;
-      let content = body ? opening + "\n\n" + body : opening;
-      if (derivedFirstName) {
-        content = capitalizeSentences(personalize(content, derivedFirstName, meta.pronouns));
-      }
-      return { ...p, observations: { ...obs, behObsMenu: newMenu, content } };
-    });
-  }, [derivedFirstName, meta.pronouns]);
-
-    const gen = useCallback(async (sid) => {
-    const s = secs[sid];
-    if (!s || s.status === SS.APPROVED) return;
-
-    const src = s.aiSources || { notes: true, docs: true, draft: false };
-
-    cancelGeneration();
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-    setGenning(true);
-    try {
-            if (sid === "cognitive" || sid === "summary" || sid === "recommendations" || sid === "appendix_tables") {
-        // ── DETERMINISTIC EXTRACTION — NO AI ──
-        // Find all docs with WISC content
-        const wiscDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 200 && /WISC|WPPSI|WAIS|Wechsler/i.test(d.extractedText) && !d.extractedText.startsWith("["));
-        const allTextDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && !d.extractedText.startsWith("["));
-
-        if (sid === "cognitive") {
-          // ── WISC-V / WPPSI-IV / WAIS-IV: verbatim extraction from Q-interactive PDF ──
-          // Also treat pasted Assessment Notes text as a pseudo-doc for extraction
-          const ctxText = s.ctx?.trim() || "";
-          const ctxPseudoDocs = (ctxText.length > 200 && /WISC|WPPSI|WAIS|Wechsler/i.test(ctxText))
-            ? [{ extractedText: ctxText, _docxTables: null, _pdfPages: null }]
-            : [];
-          let extracted = extractCognitiveText(selDocs(sid));
-          if (!extracted && wiscDocs.length > 0) extracted = extractCognitiveText(wiscDocs);
-          if (!extracted && allTextDocs.length > 0) extracted = extractCognitiveText(allTextDocs);
-          if (!extracted && ctxPseudoDocs.length > 0) extracted = extractCognitiveText(ctxPseudoDocs);
-          if (extracted) {
-            const formatted = formatCognitiveExtract(sanitizeTone(extracted));
-            const content = derivedFirstName ? capitalizeSentences(personalize(formatted, derivedFirstName, meta.pronouns)) : formatted;
-            uSec(sid, { content });
-            showToast("Cognitive text extracted from uploaded report", "success");
-            setGenning(false);
-            return;
-          } else if (wiscDocs.length > 0) {
-            const rawDump = wiscDocs[0].extractedText;
-            uSec(sid, { content: rawDump });
-            showToast("Could not locate cognitive section anchors — full document text inserted for manual editing.", "warn");
-            setGenning(false);
-            return;
-          }
-          // ── WAIS-IV manual score entry → fill template directly (no AI needed) ──
-          if (useWAISByAge || tools.some(t => t.id === "wais-iv" && t.used)) {
-            const wm = secs.cognitive?.waisManual || {};
-            const hasScores = ["fsiq","vci","pri","wmi","psi"].some(k => wm[k + "Score"]);
-            if (hasScores) {
-              const content = fillWAISCognitiveTemplate(wm, derivedFirstName, meta.pronouns);
-              uSec(sid, { content });
-              showToast("WAIS-IV cognitive section filled from entered scores", "success");
-              setGenning(false);
-              return;
-            }
-            // WAIS selected but no text extracted and no manual scores — hard stop, no AI
-            showToast("Upload the WAIS-IV report as a PDF or .docx, or enter scores manually in the form above.", "warn");
-            setGenning(false);
-            return;
-          }
-          // ── WPPSI-IV manual score entry → fill template directly (no AI needed) ──
-          if (useWPPSIByAge || tools.some(t => t.id === "wppsi-iv" && t.used)) {
-            const wm = secs.cognitive?.wppsiManual || {};
-            const hasScores = ["fsiq","vci","vsi","fri","wmi","psi"].some(k => wm[k + "Score"]);
-            if (hasScores) {
-              const content = fillWPPSICognitiveTemplate(wm, derivedFirstName, meta.pronouns);
-              uSec(sid, { content });
-              showToast("WPPSI-IV cognitive section filled from entered scores", "success");
-              setGenning(false);
-              return;
-            }
-            // WPPSI selected but no text extracted and no manual scores — hard stop, no AI
-            showToast("Upload the WPPSI-IV report as a PDF or .docx, or enter scores manually in the form above.", "warn");
-            setGenning(false);
-            return;
-          }
-          // WISC-V: no extraction succeeded — fall through to AI generation below
-        }
-
-        if (sid === "summary") {
-          let extracted = extractSummaryText(wiscDocs.length > 0 ? wiscDocs : allTextDocs);
-          if (extracted) {
-            const content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
-            uSec(sid, { content });
-            showToast("Summary extracted from uploaded report (no AI)", "success");
-            setGenning(false);
-            return;
-          }
-          // No deterministic extraction — fall through to AI generation below
-        }
-
-        if (sid === "recommendations") {
-          let extracted = extractRecommendationsText(wiscDocs.length > 0 ? wiscDocs : allTextDocs);
-          if (extracted) {
-            const content = derivedFirstName ? capitalizeSentences(personalize(extracted, derivedFirstName, meta.pronouns)) : extracted;
-            uSec(sid, { content });
-            showToast("Recommendations extracted from uploaded report (no AI)", "success");
-            setGenning(false);
-            return;
-          }
-          // No deterministic extraction — fall through to AI generation below
-        }
-
-        if (sid === "appendix_tables") {
-          const blocks = secs.appendix_tables?.tableBlocks || [];
-
-          // ── Unified score extraction from ALL sources ──
-          const allSources = allTextDocs.length > 0 ? allTextDocs : docs;
-          const scoreMap = extractAllScoresMap(allSources);
-
-          // Also try extracting from already-generated section content (cognitive, academic, memory)
-          const pseudoDocs = [];
-          const cogContent = secs.cognitive?.content?.trim();
-          if (cogContent && cogContent.length > 100 && /WISC|WPPSI|WAIS|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI|PRI/i.test(cogContent)) {
-            pseudoDocs.push({ extractedText: cogContent, name: "_cognitive_", _docxTables: null, _pdfPages: null });
-          }
-          const acadContent = secs.academic?.content?.trim();
-          if (acadContent && acadContent.length > 100 && /WIAT/i.test(acadContent)) {
-            pseudoDocs.push({ extractedText: acadContent, name: "_academic_", _docxTables: null, _pdfPages: null });
-          }
-          const memContent = secs.memory?.content?.trim();
-          if (memContent && memContent.length > 100 && /WRAML/i.test(memContent)) {
-            pseudoDocs.push({ extractedText: memContent, name: "_memory_", _docxTables: null, _pdfPages: null });
-          }
-          if (pseudoDocs.length > 0) {
-            const sectionScores = extractAllScoresMap(pseudoDocs);
-            // Merge section scores (don't overwrite PDF-extracted scores)
-            for (const [k, val] of Object.entries(sectionScores)) {
-              if (!scoreMap[k]) scoreMap[k] = val;
-            }
-          }
-
-          const filledCount = Object.keys(scoreMap).length;
-
-          // ── MANDATORY: Always build the 3 fixed tables (cognitive subtest, cognitive index, WIAT-III) ──
-          let cogTestType = useWAISByAge ? "wais-iv" : useWPPSIByAge ? "wppsi-iv" : "wisc-v";
-          if (cogTestType === "wisc-v") {
-            if (tools.find(t => t.id === "wais-iv" && t.used)) cogTestType = "wais-iv";
-            else if (tools.find(t => t.id === "wppsi-iv" && t.used)) cogTestType = "wppsi-iv";
-            else if (Object.keys(scoreMap).some(k => k.startsWith("WAIS."))) cogTestType = "wais-iv";
-            else if (Object.keys(scoreMap).some(k => k.startsWith("WPPSI."))) cogTestType = "wppsi-iv";
-          }
-          const mandatoryHtml = buildMandatoryAppendixTablesHTML(derivedFirstName || "[firstName]", scoreMap, cogTestType);
-
-          uSec(sid, { content: mandatoryHtml });
-          showToast(filledCount > 0
-            ? `Tables built — ${filledCount} scores auto-filled from docs/sections`
-            : "Mandatory tables created with — placeholders — upload score PDFs or generate other sections first",
-            filledCount > 0 ? "success" : "info");
-          setGenning(false);
-          return;
-        }
-      }
-
-      // ── DETERMINISTIC + AI SUMMARY: Memory from WRAML3 ──
-      if (sid === "memory") {
-        const memDocs = selDocs(sid);
-        const extracted = extractMemoryText(memDocs, derivedFirstName, meta.pronouns);
-        if (extracted) {
-          // Extract the score summary block for AI
-          const scoreBlockMatch = extracted.match(/\[MEMORY_SCORES_FOR_SUMMARY\]\n([\s\S]*?)\n\[\/MEMORY_SCORES_FOR_SUMMARY\]/);
-          const cleanedText = extracted.replace(/\n*\[MEMORY_SCORES_FOR_SUMMARY\][\s\S]*?\[\/MEMORY_SCORES_FOR_SUMMARY\]\s*/, "").trim();
-
-          if (scoreBlockMatch) {
-            // Call AI for interpretive summary
-            uSec(sid, { content: cleanedText + "\n\n[Generating summary...]" });
-            try {
-              const summaryPrompt = `Write a Summary of Memory and Learning paragraph (150-250 words) for a psychoeducational assessment report.
-
-Based on the following WRAML-3 scores, write a cohesive summary that:
-1. Describes the student's overall memory and learning profile
-2. Compares immediate vs delayed memory
-3. Compares visual vs verbal memory
-4. Notes attention/concentration functioning
-5. Identifies clear strengths and weaknesses
-6. Describes implications for the student's academic functioning (e.g., how memory weaknesses may affect learning, note-taking, following instructions, retaining information)
-7. Uses cautious, professional language — "may", "suggests", "is expected to"
-
-SCORES:
-${scoreBlockMatch[1]}
-
-Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write in connected paragraphs. Do NOT restate individual scores — synthesize them into a functional narrative. Output only the summary paragraph(s).`;
-
-              const summaryResult = await aiGen(
-                meta, tools,
-                summaryPrompt,
-                { name: "Standard", desc: "Functional impact, strengths-based, Ontario style." },
-                "",
-                [],
-                GLOBAL_TONE_RULES,
-                2000,
-                "memory",
-                accessPassword,
-                proxyUrl,
-                apiKey,
-                controller.signal,
-                openaiModel
-              );
-
-              if (summaryResult.ok) {
-                let summary = cleanAIOutput(summaryResult.text, "memory");
-                // Ensure it starts with "Summary of Memory and Learning" heading if not present
-                if (!/summary\s+of\s+memory/i.test(summary)) {
-                  summary = "Summary of Memory and Learning\n\n" + summary;
-                }
-                uSec(sid, { content: cleanedText + "\n\n" + summary });
-                showToast("Memory text + AI summary generated from WRAML3 report", "success");
-              } else {
-                uSec(sid, { content: cleanedText });
-                showToast("Memory text generated — AI summary failed, please add manually", "warning");
-              }
-            } catch (e) {
-              uSec(sid, { content: cleanedText });
-              showToast("Memory text generated — AI summary failed, please add manually", "warning");
-            }
-          } else {
-            uSec(sid, { content: cleanedText });
-            showToast("Memory text generated from WRAML3 report", "success");
-          }
-          setGenning(false);
-          return;
-        }
-      }
-
-      // ── DETERMINISTIC: Academic from WIAT ──
-      if (sid === "academic") {
-        const acadDocs = selDocs(sid);
-        const extracted = extractAcademicText(acadDocs, derivedFirstName, meta.pronouns);
-        if (extracted) {
-          uSec(sid, { content: extracted.text });
-          if (extracted.unfilled > 0) {
-            showToast(`Academic template filled — ${extracted.unfilled} placeholder(s) need manual entry (⟦___⟧)`, "warning");
-          } else {
-            showToast("Academic text auto-populated from WIAT III report.", "success");
-          }
-          setGenning(false);
-          return;
-        }
-      }
-
-      // ── DETERMINISTIC: Visual Motor from VMI percentile ──
-      if (sid === "visual_motor") {
-        const pct = s.vmiPercentile;
-        if (pct != null && String(pct).trim() !== "") {
-          const filled = buildVMIText(pct, derivedFirstName || "[firstName]", meta.pronouns);
-          if (filled) {
-            uSec(sid, { content: filled });
-            const range = vmiPercentileToRange(pct);
-            showToast(`VMI template filled — ${range} range (${pct}th percentile) + Summary added`, "success");
-            setGenning(false);
-            return;
-          }
-        }
-      }
-
-      // ── AI GENERATION (only for sections without deterministic extractors, or when extraction returned null) ──
-      const sectionPrompt = resolvePrompt(sid, customPrompts);
-      const toneRules = GLOBAL_TONE_RULES;
 
       // Build context based on selected sources
       const ctxParts = [];
@@ -9051,8 +7569,8 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
 
       // Include appendix tables context — feed all section content with scores
       if (sid === "appendix_tables") {
-        const atCogTest = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : "wisc-v";
-        const atCogLabel = atCogTest === "wais-iv" ? "WAIS-IV" : "WISC-V";
+        const atCogTest = "wisc-v";
+        const atCogLabel = "WISC-V";
         const scoreSectionMap = [
           { id: "cognitive", label: `COGNITIVE/INTELLECTUAL FUNCTIONING (${atCogLabel})`, tableType: `${atCogLabel} Subtest Score Summary + ${atCogLabel} Index Score Summary` },
           { id: "academic", label: "ACADEMIC TESTING (WIAT-III)", tableType: "WIAT-III Subtest Score Summary" },
@@ -9074,10 +7592,8 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
         const cogScoreTable = extractCognitiveScoreTable(allDocsWithText);
         if (cogScoreTable) ctxParts.push(cogScoreTable);
         // MANDATORY TABLES REMINDER — dynamic based on selected cognitive test
-        const genCogTest = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
-        if (genCogTest === "wais-iv") {
-          ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WAIS-IV Subtest Score Summary (up to 15 rows: Similarities, Vocabulary, Information, Comprehension, Block Design, Matrix Reasoning, Visual Puzzles, Figure Weights, Picture Completion, Digit Span, Arithmetic, Letter-Number Sequencing, Symbol Search, Coding, Cancellation — include only administered subtests)\n2. Table 2. WAIS-IV Index Score Summary (up to 7 rows: VCI, PRI, WMI, PSI, FSIQ, GAI, CPI — include only computed indexes)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Oral Reading Fluency, Spelling, Sentence Composition, Essay Composition, Numerical Operations, Math Problem Solving)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows: Oral Language, Total Reading, Basic Reading, Reading Comprehension & Fluency, Written Expression, Mathematics, Total Achievement)\nNEVER modify structure. Use \u2014 for missing values.`);
-        } else if (genCogTest === "wppsi-iv") {
+        const genCogTest = tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
+        if (genCogTest === "wppsi-iv") {
           ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WPPSI-IV Subtest Score Summary (up to 15 rows: Information, Similarities, Vocabulary, Comprehension, Receptive Vocabulary, Picture Naming, Block Design, Object Assembly, Matrix Reasoning, Picture Concepts, Picture Memory, Zoo Locations, Bug Search, Cancellation, Animal Coding — include only administered subtests)\n2. Table 2. WPPSI-IV Index Score Summary (up to 10 rows: VCI, VSI, FRI, WMI, PSI, FSIQ, GAI, CPI, NVI, VAI — include only computed indexes)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows)\nNEVER modify structure. Use \u2014 for missing values.`);
         } else {
           ctxParts.push(`\n=== MANDATORY TABLE RULES ===\nYou MUST produce these tables in this order:\n1. Table 1. WISC-V Subtest Score Summary (up to 17 rows: Similarities, Vocabulary, Information, Comprehension, Block Design, Visual Puzzles, Matrix Reasoning, Figure Weights, Picture Span, Digit Span, Letter-Number Sequencing, Arithmetic, Coding, Symbol Search, Cancellation, Naming Speed Literacy, Naming Speed Quantity — include only administered subtests)\n2. Table 2. WISC-V Index Score Summary (up to 14 rows: VCI, VSI, FRI, WMI, PSI, FSIQ, GAI, CPI, NVI, QRI, AWMI, NSI, STI, SRI — include only computed indexes)\n3. Table 3. WIAT-III Subtest Score Summary (12 fixed rows: Listening Comprehension, Receptive Vocabulary, Oral Discourse Comprehension, Word Reading, Pseudoword Decoding, Reading Comprehension, Oral Reading Fluency, Spelling, Sentence Composition, Essay Composition, Numerical Operations, Math Problem Solving)\n4. Table 4. WIAT-III Composite Score Summary (7 fixed rows: Oral Language, Total Reading, Basic Reading, Reading Comprehension & Fluency, Written Expression, Mathematics, Total Achievement)\nNEVER modify structure. Use \u2014 for missing values.`);
@@ -9208,7 +7724,7 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
 
                 if (sid === "cognitive" || sid === "summary" || sid === "recommendations" || sid === "appendix_tables") {
           // ── DETERMINISTIC EXTRACTION — NO AI ──
-          const wiscDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 200 && /WISC|WPPSI|WAIS|Wechsler/i.test(d.extractedText) && !d.extractedText.startsWith("["));
+          const wiscDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 200 && /WISC|WPPSI|Wechsler/i.test(d.extractedText) && !d.extractedText.startsWith("["));
           const allTextDocs = docs.filter((d) => d.extractedText && d.extractedText.length > 100 && !d.extractedText.startsWith("["));
 
           if (sid === "cognitive") {
@@ -9285,7 +7801,7 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
               // Also merge from already-generated section content
               const pseudoDocs = [];
               const cogContent = (localContent.cognitive || secs.cognitive?.content || "").trim();
-              if (cogContent && cogContent.length > 100 && /WISC|WPPSI|WAIS|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI|PRI/i.test(cogContent)) {
+              if (cogContent && cogContent.length > 100 && /WISC|WPPSI|Wechsler|FSIQ|VCI|VSI|FRI|WMI|PSI|PRI/i.test(cogContent)) {
                 pseudoDocs.push({ extractedText: cogContent, name: "_cognitive_", _docxTables: null, _pdfPages: null });
               }
               const acadContent = (localContent.academic || secs.academic?.content || "").trim();
@@ -9303,25 +7819,6 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
                 }
               }
               // Inject WAIS/WPPSI manual scores (may have been auto-populated from PDF)
-              const waisM = secs.cognitive?.waisManual;
-              if (waisM) {
-                for (const [abbr, key] of [["FSIQ","fsiq"],["VCI","vci"],["PRI","pri"],["WMI","wmi"],["PSI","psi"],["GAI","gai"]]) {
-                  if (waisM[key + "Score"] && !scoreMap[`WAIS.${abbr}.score`]) {
-                    scoreMap[`WAIS.${abbr}.score`] = waisM[key + "Score"];
-                    if (waisM[key + "Percentile"]) {
-                      scoreMap[`WAIS.${abbr}.percentile`] = waisM[key + "Percentile"];
-                      scoreMap[`WAIS.${abbr}.qualitative`] = percentileToDescriptor(waisM[key + "Percentile"]) || "";
-                    }
-                  }
-                }
-                // Inject WAIS subtests
-                for (const abbr of ["SI","VC","IN","BD","MR","VP","DS","AR","SS","CD"]) {
-                  if (waisM[`sub_${abbr}_scaled`] && !scoreMap[`WAIS.${abbr}.scaled`]) {
-                    scoreMap[`WAIS.${abbr}.scaled`] = waisM[`sub_${abbr}_scaled`];
-                    if (waisM[`sub_${abbr}_pct`]) scoreMap[`WAIS.${abbr}.percentile`] = waisM[`sub_${abbr}_pct`];
-                  }
-                }
-              }
               const wppsiM = secs.cognitive?.wppsiManual;
               if (wppsiM) {
                 for (const [abbr, key] of [["FSIQ","fsiq"],["VCI","vci"],["VSI","vsi"],["FRI","fri"],["WMI","wmi"],["PSI","psi"]]) {
@@ -9446,12 +7943,11 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
         }
         // Include appendix tables context — feed all section content with scores
         if (sid === "appendix_tables") {
-          let atCogTest2 = useWAISByAge ? "wais-iv" : useWPPSIByAge ? "wppsi-iv" : "wisc-v";
+          let atCogTest2 = useWPPSIByAge ? "wppsi-iv" : "wisc-v";
           if (atCogTest2 === "wisc-v") {
-            if (tools.find(t => t.id === "wais-iv" && t.used)) atCogTest2 = "wais-iv";
-            else if (tools.find(t => t.id === "wppsi-iv" && t.used)) atCogTest2 = "wppsi-iv";
+            if (tools.find(t => t.id === "wppsi-iv" && t.used)) atCogTest2 = "wppsi-iv";
           }
-          const atCogLabel2 = atCogTest2 === "wais-iv" ? "WAIS-IV" : atCogTest2 === "wppsi-iv" ? "WPPSI-IV" : "WISC-V";
+          const atCogLabel2 = atCogTest2 === "wppsi-iv" ? "WPPSI-IV" : "WISC-V";
           const scoreSectionMap2 = [
             { id: "cognitive", label: `COGNITIVE/INTELLECTUAL FUNCTIONING (${atCogLabel2})`, tableType: `${atCogLabel2} Subtest + Index tables` },
             { id: "memory", label: "MEMORY AND LEARNING (WRAML-3 / CMS)", tableType: "Memory Score Summary table" },
@@ -10723,7 +9219,7 @@ Use [firstName] and correct pronouns throughout. Do NOT use bullet points. Write
 
                   {/* ─── APPENDIX: Score Tables (ALWAYS shown) ─── */}
                   {(() => {
-                    const prevCogTest = tools.find(t => t.id === "wais-iv" && t.used) ? "wais-iv" : tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
+                    const prevCogTest = tools.find(t => t.id === "wppsi-iv" && t.used) ? "wppsi-iv" : "wisc-v";
                     const previewScoreMap = (() => {
                       const pseudoDocs = [];
                       for (const secId of ["cognitive", "academic", "memory"]) {
